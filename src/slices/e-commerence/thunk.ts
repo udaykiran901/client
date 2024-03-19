@@ -14,6 +14,7 @@ import {
   deleteCustomer as deleteCustomerApi,
   getCart as getCartApi,
   deleteCart as deleteCartApi,
+  addToCart as addToCartAPI,
 } from "../../helpers/fakebackend_helper";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,8 +24,6 @@ export const getProducts = createAsyncThunk(
   async () => {
     try {
       const response = getProductsApi();
-      console.log("in thunk");
-      console.log(response);
       return response;
     } catch (error) {
       return error;
@@ -161,9 +160,10 @@ export const getShops = createAsyncThunk("ecommerence/getshops", async () => {
 });
 
 //cart
-export const getCart = createAsyncThunk("ecommerence/getCart", async () => {
+export const getCart = createAsyncThunk("/ecommerce/getCart", async () => {
   try {
     const response = getCartApi();
+
     return response;
   } catch (error) {
     return error;
@@ -175,6 +175,20 @@ export const deleteCart = createAsyncThunk(
   async (cart: any) => {
     try {
       const response = deleteCartApi(cart);
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+//mine
+// /addtocart
+export const addProductToCart = createAsyncThunk(
+  "/ecommerce/addtocart",
+  async (cart: any) => {
+    try {
+      const response = addToCartAPI(cart);
       return response;
     } catch (error) {
       return error;

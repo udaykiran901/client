@@ -6,7 +6,7 @@ import {
   productsData,
   comments,
   recentProducts,
-  productListvar,
+  // productListvar,
 } from "common/data";
 
 let users = [
@@ -264,18 +264,18 @@ const fakeBackend = () => {
   });
 
   //cart
-  mock.onGet(url.GET_CART).reply(() => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (productListvar) {
-          // Passing fake JSON data as response
-          resolve([200, productListvar]);
-        } else {
-          reject([400, "Cannot get cart data"]);
-        }
-      });
-    });
-  });
+  // mock.onGet(url.GET_CART).reply(() => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       if (productListvar) {
+  //         // Passing fake JSON data as response
+  //         resolve([200, productListvar]);
+  //       } else {
+  //         reject([400, "Cannot get cart data"]);
+  //       }
+  //     });
+  //   });
+  // });
 
   mock.onDelete(url.DELETE_CART).reply((config: any) => {
     return new Promise((resolve, reject) => {

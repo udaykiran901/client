@@ -1,57 +1,71 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import withRouter from "Components/Common/withRouter";
+import { isUserLoggedin } from "../../../helpers/api_helper";
+
 import {
   Button,
   Card,
   CardBody,
   Col,
   Container,
-  Nav,
-  NavItem,
-  NavLink,
   Row,
   TabContent,
   Table,
   TabPane,
+  Modal,
+  ModalHeader,
+  Alert,
 } from "reactstrap";
 import classnames from "classnames";
 import { isEmpty } from "lodash";
 
-import RecentProduct from "./RecentProducts";
-import Reviews from "./Reviews";
+// import RecentProduct from "./RecentProducts";
+// import Reviews from "./Reviews";
 
 //Import Star Ratings
 import StarRatings from "react-star-ratings";
 
 //Import Breadcrumb
 import Breadcrumbs from "Components/Common/Breadcrumb";
+// import { useState } from "react";
 
 //Import actions
-import { getProductDetail as onGetProductDetail } from "slices/thunk";
+import {
+  getProductDetail as onGetProductDetail,
+  addProductToCart,
+  getCart as onGetCart,
+} from "slices/thunk";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 import { EcoAction } from "../type";
 import Navbar from "pages/Welcome/Navbar/Navbar";
+import {
+  closeModal,
+  loginWarningModal,
+  showModal,
+} from "slices/e-commerence/reducer";
+import { KDM_ECOMMERCE_USER_JWT_TOKEN } from "common/tokens";
+
+// import { productListvar } from "common/data";
 
 const EcommerceProductDetail = (props) => {
   //meta title
-  document.title = "Product Details Route | KDM Engineers Group";
-
+  document.title = "Product Details | KDM Engineers Group";
   const dispatch = useDispatch<any>();
-
   const selectProperties = createSelector(
     (state: EcoAction) => state.ecommerce,
+
     (ecommerce) => ({
       productDetail: ecommerce.productDetail,
+      cart: ecommerce.cart,
+      modal: ecommerce.modal,
     })
   );
 
-  const { productDetail } = useSelector(selectProperties);
-
-  const [activeTab, setActiveTab] = useState("1");
+  const { productDetail, modal, cart } = useSelector(selectProperties);
 
   const params = props.router.params;
 
@@ -63,161 +77,120 @@ const EcommerceProductDetail = (props) => {
     }
   }, [dispatch, params]);
 
-  const toggleTab = (tab) => {
-    if (activeTab !== tab) {
-      setActiveTab(tab);
+  useEffect(() => {
+    // dispatch(onGetCart());
+  }, [dispatch]);
+
+  const onAddToCart = () => {
+    const isUserLogin = isUserLoggedin(KDM_ECOMMERCE_USER_JWT_TOKEN);
+    if (!isUserLogin) {
+      dispatch(showModal(loginWarningModal));
+      return;
     }
+
+    const cartItem: any = {
+      product_id: productDetail?.id,
+    };
+    dispatch(addProductToCart(cartItem));
+    dispatch(onGetCart());
   };
 
-  const imageShow = (img: any, id: any) => {
-    const expandImg: any = document.getElementById("expandedImg" + id);
-    expandImg.src = img;
-  };
+  function removeBodyCss() {
+    document.body.classList.add("no_padding");
+  }
+
+  function tog_large() {
+    dispatch(closeModal());
+    dispatch(onGetProductDetail(params.id));
+    removeBodyCss();
+  }
+
+  const productIsInCart = cart?.filter(
+    (cartItem) => cartItem.id === productDetail?.id
+  );
+
+  // const [inCart, setInCart] = useState<boolean>(
+  //   (productIsInCart && productIsInCart?.length > 0) || false
+  // );
+  console.log("in component");
+  console.log(modal);
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container>
-          {/* <Container fluid> */}
           <Navbar />
           <Breadcrumbs title="Ecommerce" breadcrumbItem="Product Detail" />
           {!isEmpty(productDetail) && (
             <Row>
+              <Modal
+                size="lg"
+                isOpen={modal.modalStatus}
+                toggle={() => {
+                  tog_large();
+                }}
+              >
+                <ModalHeader
+                  toggle={() => {
+                    tog_large();
+                  }}
+                >
+                  <div className="modal-title mt-0 h5" id="myLargeModalLabel">
+                    {modal.modalHeading}
+                  </div>
+                </ModalHeader>
+                <div className="modal-body">
+                  <p>{modal.modalDescription}</p>
+                </div>
+              </Modal>
+
               <Col>
                 <Card>
                   <CardBody>
                     <Row>
-                      <Col xl={6}>
+                      <Col xl={4}>
                         <div className="product-detai-imgs">
                           <Row>
-                            <Col md={2} sm={3} className="col-4">
-                              <Nav className="flex-column" pills>
-                                <NavItem>
-                                  <NavLink
-                                    className={classnames({
-                                      active: activeTab === "1",
-                                    })}
-                                    onClick={() => {
-                                      toggleTab("1");
-                                    }}
-                                  >
-                                    <img
-                                      src={productDetail["subImage"][0]}
-                                      alt=""
-                                      onClick={() => {
-                                        imageShow(
-                                          productDetail["subImage"][0],
-                                          1
-                                        );
-                                      }}
-                                      className="img-fluid mx-auto d-block rounded"
-                                    />
-                                  </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                  <NavLink
-                                    className={classnames({
-                                      active: activeTab === "2",
-                                    })}
-                                    onClick={() => {
-                                      toggleTab("2");
-                                    }}
-                                  >
-                                    <img
-                                      src={productDetail["subImage"][1]}
-                                      alt=""
-                                      onClick={() => {
-                                        imageShow(
-                                          productDetail["subImage"][1],
-                                          2
-                                        );
-                                      }}
-                                      className="img-fluid mx-auto d-block rounded"
-                                    />
-                                  </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                  <NavLink
-                                    className={classnames({
-                                      active: activeTab === "3",
-                                    })}
-                                    onClick={() => {
-                                      toggleTab("3");
-                                    }}
-                                  >
-                                    <img
-                                      src={productDetail["subImage"][2]}
-                                      alt=""
-                                      onClick={() => {
-                                        imageShow(
-                                          productDetail["subImage"][2],
-                                          3
-                                        );
-                                      }}
-                                      className="img-fluid mx-auto d-block rounded"
-                                    />
-                                  </NavLink>
-                                </NavItem>
-                              </Nav>
-                            </Col>
-                            <Col md={7} sm={9} className="offset-md-1 col-8">
-                              <TabContent activeTab={activeTab}>
+                            <Col md={10} sm={9} className="offset-md-1 col-8">
+                              <TabContent activeTab={"1"}>
                                 <TabPane tabId="1">
                                   <div>
                                     <img
-                                      src={productDetail.image}
+                                      src={productDetail.image_lg}
                                       alt=""
                                       id="expandedImg1"
                                       className="img-fluid mx-auto d-block"
                                     />
                                   </div>
                                 </TabPane>
-                                <TabPane tabId="2">
-                                  <div>
-                                    <img
-                                      src={productDetail.image}
-                                      id="expandedImg2"
-                                      alt=""
-                                      className="img-fluid mx-auto d-block"
-                                    />
-                                  </div>
-                                </TabPane>
-                                <TabPane tabId="3">
-                                  <div>
-                                    <img
-                                      src={productDetail.image}
-                                      id="expandedImg3"
-                                      alt=""
-                                      className="img-fluid mx-auto d-block"
-                                    />
-                                  </div>
-                                </TabPane>
-                                <TabPane tabId="4">
-                                  <div>
-                                    <img
-                                      src={productDetail.image}
-                                      id="expandedImg4"
-                                      alt=""
-                                      className="img-fluid mx-auto d-block"
-                                    />
-                                  </div>
-                                </TabPane>
                               </TabContent>
+                              {productIsInCart &&
+                                productIsInCart.length > 0 && (
+                                  <Alert
+                                    color="danger"
+                                    role="alert"
+                                    className="mt-2"
+                                  >
+                                    This product is already in your cart
+                                  </Alert>
+                                )}
                               <div className="text-center">
                                 <Button
                                   type="button"
-                                  color="primary"
+                                  color={
+                                    productIsInCart ? "warning" : "secondary"
+                                  }
                                   className="btn mt-2 me-1"
+                                  onClick={() => {
+                                    onAddToCart();
+                                  }}
+                                  disabled={
+                                    (productIsInCart &&
+                                      productIsInCart?.length > 0) ||
+                                    false
+                                  }
                                 >
                                   <i className="bx bx-cart me-2" /> Add to cart
-                                </Button>
-                                <Button
-                                  type="button"
-                                  color="success"
-                                  className="ms-1 btn mt-2"
-                                >
-                                  <i className="bx bx-shopping-bag me-2" /> Buy
-                                  now
                                 </Button>
                               </div>
                             </Col>
@@ -225,7 +198,7 @@ const EcommerceProductDetail = (props) => {
                         </div>
                       </Col>
 
-                      <Col xl="6">
+                      <Col xl="8">
                         <div className="mt-4 mt-xl-3">
                           <Link to="#" className="text-primary">
                             {productDetail.category}
@@ -234,7 +207,7 @@ const EcommerceProductDetail = (props) => {
 
                           <div className="text-muted float-start me-3">
                             <StarRatings
-                              rating={4}
+                              rating={productDetail.rating}
                               starRatedColor="#F1B44C"
                               starEmptyColor="#74788d"
                               numberOfStars={5}
@@ -255,57 +228,70 @@ const EcommerceProductDetail = (props) => {
                           <h5 className="mb-4">
                             Price :{" "}
                             <span className="text-muted me-2">
-                              <del>${productDetail.oldPrice} USD</del>
+                              <del>Rs. {productDetail.basePrice} </del>
                             </span>{" "}
-                            <b>${productDetail.newPrice} USD</b>
+                            <b className="text-success">
+                              Rs. {productDetail.basePrice} /-
+                            </b>
                           </h5>
                           <p className="text-muted mb-4">
-                            To achieve this, it would be necessary to have
-                            uniform grammar pronunciation and more common words
-                            If several languages coalesce
+                            {productDetail.description}
                           </p>
+                          <Row lg={12}>
+                            <b className="text-success mb-3">
+                              Explore the benefits
+                            </b>
+                          </Row>
                           <Row className="mb-3">
-                            <Col md="6">
-                              {productDetail.features &&
-                                productDetail.features.map(
-                                  (item: any, i: number) => (
-                                    <div key={i}>
-                                      <p className="text-muted">
-                                        <i
-                                          className={classnames(
-                                            item.icon,
-                                            "font-size-16 align-middle text-primary me-2"
-                                          )}
-                                        />
-                                        {item.type && `${item.type}: `}
-                                        {item.value}
-                                      </p>
-                                    </div>
-                                  )
-                                )}
-                            </Col>
-                            <Col md="6">
-                              {productDetail.features &&
-                                productDetail.features.map(
-                                  (item: any, i: number) => (
-                                    <div key={i}>
-                                      <p className="text-muted">
-                                        <i
-                                          className={classnames(
-                                            item.icon,
-                                            "font-size-16 align-middle text-primary me-2"
-                                          )}
-                                        />
-                                        {item.type && `${item.type}:`}
-                                        {item.value}
-                                      </p>
-                                    </div>
-                                  )
-                                )}
+                            <Col md="12">
+                              <dl>
+                                {productDetail.additionalInfo &&
+                                  productDetail.additionalInfo.map(
+                                    (info, index) => (
+                                      <React.Fragment key={index}>
+                                        <dt>
+                                          <i
+                                            className={classnames(
+                                              "fa fa-caret-right",
+                                              "font-size-16 align-middle text-primary me-2"
+                                            )}
+                                          />
+                                          <span className="text-primary unbold">
+                                            {Object.keys(info)[0]}
+                                          </span>
+                                        </dt>
+                                        <dd className="mb-2">
+                                          {" "}
+                                          {Object.values(info)[0]}
+                                        </dd>
+                                      </React.Fragment>
+                                    )
+                                  )}
+                              </dl>
+
+                              {/* <dl>
+                                {productDetail.additionalInfo &&
+                                  productDetail.additionalInfo.forEach(
+                                    (item: any, i: number) => (
+                                      <React.Fragment key={item.id}>
+                                        <dt>
+                                          <i
+                                            className={classnames(
+                                              item.icon,
+                                              "font-size-16 align-middle text-primary me-2"
+                                            )}
+                                          />
+                                          {`${item}:`}
+                                        </dt>
+                                        <dd>{item.value}</dd>
+                                      </React.Fragment>
+                                    )
+                                  )}
+                              </dl> */}
                             </Col>
                           </Row>
 
-                          <div className="product-color">
+                          {/* <div className="product-color">
                             <h5 className="font-size-15">Color :</h5>
                             {productDetail.colorOptions &&
                               (productDetail.colorOptions || [])?.map(
@@ -322,24 +308,24 @@ const EcommerceProductDetail = (props) => {
                                   </Link>
                                 )
                               )}
-                          </div>
+                          </div> */}
                         </div>
                       </Col>
                     </Row>
-
+                    {/* Specifications */}
                     <div className="mt-5">
                       <h5 className="mb-3">Specifications :</h5>
 
                       <div className="table-responsive">
                         <Table className="table mb-0 table-bordered">
                           <tbody>
-                            {productDetail.specification &&
-                              productDetail.specification.map(
+                            {productDetail.specifications &&
+                              productDetail.specifications.map(
                                 (specification: any, i: number) => (
                                   <tr key={i}>
                                     <th
                                       scope="row"
-                                      style={{ width: "400px" }}
+                                      style={{ width: "200px" }}
                                       className={"text-capitalize"}
                                     >
                                       {specification.type}
@@ -353,13 +339,13 @@ const EcommerceProductDetail = (props) => {
                       </div>
                     </div>
 
-                    <Reviews />
+                    {/* <Reviews /> */}
                   </CardBody>
                 </Card>
               </Col>
             </Row>
           )}
-          <RecentProduct productDetail={productDetail || []} />
+          {/* <RecentProduct productDetail={productDetail || []} /> */}
         </Container>
       </div>
     </React.Fragment>

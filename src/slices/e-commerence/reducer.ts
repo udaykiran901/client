@@ -1,163 +1,269 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-    getProducts, getProductDetail, getOrders, deleteOrder, addNewOrder, updateOrder, getCustomers, getShops, deleteCustomer, updateCustomer, addNewCustomer, getCart, deleteCart
-} from './thunk';
+  getProducts,
+  getProductDetail,
+  getOrders,
+  deleteOrder,
+  addNewOrder,
+  updateOrder,
+  getCustomers,
+  getShops,
+  deleteCustomer,
+  updateCustomer,
+  addNewCustomer,
+  getCart,
+  deleteCart,
+  addProductToCart,
+} from "./thunk";
 
-import { EComShop, Product, ProductCustomer, ProductOrder, cart } from "pages/Ecommerce/type";
+import { productsData } from "common/data/ecommerce";
 
-interface InitialState {
-    products?: Product[];
-    productDetail?: Product[];
-    orders?: ProductOrder[];
-    customers?: ProductCustomer[];
-    shops?: EComShop[];
-    cart?: cart[];
-    error: object;
-    loading?: boolean;
+import {
+  EComShop,
+  Product,
+  ProductCustomer,
+  ProductOrder,
+  cart,
+  NewCart,
+} from "pages/Ecommerce/type";
+
+export interface ModalType {
+  isSuccessModal: boolean;
+  modalStatus: boolean; //stiores boolean value if it is set to true the modal has to display
+  modalHeading: string; //stores modal Heading
+  modalDescription: string; // stores modal Description
 }
 
+interface InitialState {
+  products?: Product[];
+  productDetail?: Product[];
+  orders?: ProductOrder[];
+  customers?: ProductCustomer[];
+  shops?: EComShop[];
+  cart?: cart[];
+  error: object;
+  loading?: boolean;
+  modal: ModalType;
+  newCart: NewCart[];
+}
+
+export const loginWarningModal: ModalType = {
+  isSuccessModal: false,
+  modalStatus: true,
+  modalHeading: "Login Required",
+  modalDescription:
+    "To access this feature, please log in to your account. If you don't have an account yet, you can create a free account with KDM Engineers Group.",
+};
+
 export const initialState: InitialState = {
-    products: [],
-    productDetail: [],
-    orders: [],
-    customers: [],
-    shops: [],
-    cart: [],
-    error: {},
-    loading: true
+  products: [],
+  productDetail: [],
+  orders: [],
+  customers: [],
+  shops: [],
+  cart: [],
+  error: {},
+  loading: true,
+  modal: {} as ModalType,
+  newCart: [],
 };
 
 const EcommerceSlice = createSlice({
-    name: 'EcommerceSlice',
-    initialState,
-    reducers: {},
-    extraReducers: (builder) => {
-        builder.addCase(getProducts.fulfilled, (state: any, action: any) => {
-            state.products = action.payload;
-            state.loading = true
-        });
+  name: "EcommerceSlice",
+  initialState,
+  reducers: {
+    showModal(state, action) {
+      const { isSuccessModal, modalStatus, modalHeading, modalDescription } =
+        action.payload;
 
-        builder.addCase(getProducts.rejected, (state: any, action: any) => {
-            state.error = action.payload ? action.payload?.error : null;
-        });
+      return {
+        ...state,
+        modal: {
+          ...state.modal,
+          isSuccessModal,
+          modalStatus,
+          modalHeading,
+          modalDescription,
+        },
+      };
+    },
+    closeModal(state) {
+      state.modal.isSuccessModal = false;
+      state.modal.modalStatus = false;
+      state.modal.modalHeading = "";
+      state.modal.modalDescription = "";
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getProducts.fulfilled, (state: any, action: any) => {
+      state.products = action.payload;
+      state.loading = true;
+    });
 
-        builder.addCase(getProductDetail.fulfilled, (state: any, action: any) => {
-            state.productDetail = action.payload;
-        });
+    builder.addCase(getProducts.rejected, (state: any, action: any) => {
+      state.error = action.payload ? action.payload?.error : null;
+    });
 
-        builder.addCase(getProductDetail.rejected, (state: any, action: any) => {
-            state.error = action.payload ? action.payload?.error : null;
-        });
+    builder.addCase(getProductDetail.fulfilled, (state: any, action: any) => {
+      state.productDetail = action.payload;
+    });
 
-        builder.addCase(getOrders.fulfilled, (state: any, action: any) => {
-            state.orders = action.payload;
-            state.isOrderCreated = false;
-            state.isOrderSuccess = true;
-            state.loading = true
-        });
+    builder.addCase(getProductDetail.rejected, (state: any, action: any) => {
+      state.error = action.payload ? action.payload?.error : null;
+    });
 
-        builder.addCase(getOrders.rejected, (state: any, action: any) => {
-            state.error = action.payload ? action.payload?.error : null;
-            state.isOrderCreated = false;
-            state.isOrderSuccess = false;
-        });
+    builder.addCase(getOrders.fulfilled, (state: any, action: any) => {
+      state.orders = action.payload;
+      state.isOrderCreated = false;
+      state.isOrderSuccess = true;
+      state.loading = true;
+    });
 
-        builder.addCase(addNewOrder.fulfilled, (state: any, action: any) => {
-            state.orders.unshift(action.payload);
-            state.isOrderCreated = true;
-        });
+    builder.addCase(getOrders.rejected, (state: any, action: any) => {
+      state.error = action.payload ? action.payload?.error : null;
+      state.isOrderCreated = false;
 
-        builder.addCase(addNewOrder.rejected, (state: any, action: any) => {
-            state.error = action.payload || null;
-        });
+      state.isOrderSuccess = false;
+    });
 
-        builder.addCase(updateOrder.fulfilled, (state: any, action: any) => {
-            state.orders = state.orders.map((order: any) =>
-                order.id === action.payload.id
-                    ? { ...order, ...action.payload }
-                    : order
-            );
-        });
+    builder.addCase(addNewOrder.fulfilled, (state: any, action: any) => {
+      state.orders.unshift(action.payload);
+      state.isOrderCreated = true;
+    });
 
-        builder.addCase(updateOrder.rejected, (state: any, action: any) => {
-            state.error = action.payload || null;
-        });
+    builder.addCase(addNewOrder.rejected, (state: any, action: any) => {
+      state.error = action.payload || null;
+    });
 
-        builder.addCase(deleteOrder.fulfilled, (state: any, action: any) => {
-            state.orders = state.orders.filter(
-                (order: any) => order.id !== action.payload
-            );
-        });
+    builder.addCase(updateOrder.fulfilled, (state: any, action: any) => {
+      state.orders = state.orders.map((order: any) =>
+        order.id === action.payload.id ? { ...order, ...action.payload } : order
+      );
+    });
 
-        builder.addCase(deleteOrder.rejected, (state: any, action: any) => {
-            state.error = action.payload.error || null;
-        });
+    builder.addCase(updateOrder.rejected, (state: any, action: any) => {
+      state.error = action.payload || null;
+    });
 
-        builder.addCase(getCustomers.fulfilled, (state: any, action: any) => {
-            state.customers = action.payload;
-            state.isCustomerCreated = false;
-            state.isCustomerSuccess = true;
-            state.loading = true
-        });
+    builder.addCase(deleteOrder.fulfilled, (state: any, action: any) => {
+      state.orders = state.orders.filter(
+        (order: any) => order.id !== action.payload
+      );
+    });
 
-        builder.addCase(getCustomers.rejected, (state: any, action: any) => {
-            state.error = action.payload ? action.payload?.error : null;
-            state.isCustomerCreated = false;
-            state.isCustomerSuccess = false;
-        });
+    builder.addCase(deleteOrder.rejected, (state: any, action: any) => {
+      state.error = action.payload.error || null;
+    });
 
-        builder.addCase(addNewCustomer.fulfilled, (state: any, action: any) => {
-            state.customers.unshift(action.payload);
-            state.isCustomerCreated = true;
-        });
-        builder.addCase(addNewCustomer.rejected, (state: any, action: any) => {
-            state.error = action.payload.error || null;
-        });
+    builder.addCase(getCustomers.fulfilled, (state: any, action: any) => {
+      state.customers = action.payload;
+      state.isCustomerCreated = false;
+      state.isCustomerSuccess = true;
+      state.loading = true;
+    });
 
-        builder.addCase(updateCustomer.fulfilled, (state: any, action: any) => {
-            state.customers = state.customers.map((customer: any) =>
-                customer.id === action.payload.id
-                    ? { ...customer, ...action.payload }
-                    : customer
-            );
-        });
+    builder.addCase(getCustomers.rejected, (state: any, action: any) => {
+      state.error = action.payload ? action.payload?.error : null;
+      state.isCustomerCreated = false;
+      state.isCustomerSuccess = false;
+    });
 
-        builder.addCase(updateCustomer.rejected, (state: any, action: any) => {
-            state.error = action.payload || null;
-        });
+    builder.addCase(addNewCustomer.fulfilled, (state: any, action: any) => {
+      state.customers.unshift(action.payload);
+      state.isCustomerCreated = true;
+    });
+    builder.addCase(addNewCustomer.rejected, (state: any, action: any) => {
+      state.error = action.payload.error || null;
+    });
 
-        builder.addCase(deleteCustomer.fulfilled, (state: any, action: any) => {
-            state.customers = state.customers.filter(
-                (customer: any) => customer.id !== action.payload
-            );
-        });
+    builder.addCase(updateCustomer.fulfilled, (state: any, action: any) => {
+      state.customers = state.customers.map((customer: any) =>
+        customer.id === action.payload.id
+          ? { ...customer, ...action.payload }
+          : customer
+      );
+    });
 
-        builder.addCase(deleteCustomer.rejected, (state: any, action: any) => {
-            state.error = action.payload.error || null;
-        });
+    builder.addCase(updateCustomer.rejected, (state: any, action: any) => {
+      state.error = action.payload || null;
+    });
 
-        builder.addCase(getShops.fulfilled, (state: any, action: any) => {
-            state.shops = action.payload
-            state.loading = true
-        })
+    builder.addCase(deleteCustomer.fulfilled, (state: any, action: any) => {
+      state.customers = state.customers.filter(
+        (customer: any) => customer.id !== action.payload
+      );
+    });
 
-        builder.addCase(getShops.rejected, (state: any, action: any) => {
-            state.error = action.payload ? action.payload?.error : null;
-        })
+    builder.addCase(deleteCustomer.rejected, (state: any, action: any) => {
+      state.error = action.payload.error || null;
+    });
 
-        builder.addCase(getCart.fulfilled, (state: any, action: any) => {
-            state.cart = action.payload;
-        })
-        builder.addCase(getCart.rejected, (state: any, action: any) => {
-            state.error = action.payload ? action.payload?.error : null;
-        })
-        builder.addCase(deleteCart.fulfilled, (state: any, action: any) => {
-            state.cart = (state.cart || []).filter((data: any) => data.id !== action.payload);
-        })
-        builder.addCase(deleteCart.rejected, (state: any, action: any) => {
-            state.error = action.payload.error || null;
-        })
-    }
+    builder.addCase(getShops.fulfilled, (state: any, action: any) => {
+      state.shops = action.payload;
+      state.loading = true;
+    });
+
+    builder.addCase(getShops.rejected, (state: any, action: any) => {
+      state.error = action.payload ? action.payload?.error : null;
+    });
+
+    builder.addCase(getCart.fulfilled, (state: any, action: any) => {
+      const { cartItems } = action.payload;
+
+      // Map over the cartItems and find corresponding product data
+      const updatedCartItems = cartItems.map((cartItem: any) => {
+        const pd = productsData.find(
+          (product: Product) => product.id === cartItem.product_id
+        );
+
+        // Filter only the required keys from productData
+        const filteredProductData = {
+          id: pd?.id,
+          img: pd?.image,
+          name: pd?.name,
+          category: pd?.category,
+          basePrice: pd?.basePrice,
+          isOffer: pd?.isOffer || false,
+          offer: pd?.offer || 0,
+          cart_id: cartItem.cart_id,
+        };
+
+        return filteredProductData;
+      });
+
+      state.cart = [...updatedCartItems];
+    });
+    builder.addCase(getCart.rejected, (state: any, action: any) => {
+      state.error = action.payload ? action.payload?.error : null;
+    });
+    builder.addCase(deleteCart.fulfilled, (state: any, action: any) => {
+      state.cart = (state.cart || []).filter(
+        (data: any) => data.id !== action.payload
+      );
+    });
+    builder.addCase(deleteCart.rejected, (state: any, action: any) => {
+      state.error = action.payload.error || null;
+    });
+
+    //i defined them
+    builder.addCase(addProductToCart.fulfilled, (state, action) => {
+      state.modal.isSuccessModal = true;
+      state.modal.modalStatus = true;
+      state.modal.modalHeading = "Product successfully added to cart";
+      state.modal.modalDescription = action.payload.message;
+      console.log("fullfilled");
+      console.log(action.payload);
+    });
+
+    builder.addCase(addProductToCart.rejected, (state: any, action: any) => {
+      state.error = action.payload ? action.payload?.message : null;
+      console.log("rejected");
+      console.log(action);
+      console.log(action.error.message);
+    });
+  },
 });
+
+export const { showModal, closeModal } = EcommerceSlice.actions;
 
 export default EcommerceSlice.reducer;

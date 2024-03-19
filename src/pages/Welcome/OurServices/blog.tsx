@@ -7,7 +7,7 @@ import { ourservices } from "common/data";
 const OurServices = () => {
   return (
     <React.Fragment>
-      <section className="section bg-white" id="news">
+      <section className="section bg-white" id="services">
         <Container>
           <Row>
             <Col lg="12">
@@ -26,7 +26,7 @@ const OurServices = () => {
           <Row>
             {ourservices.map((blog, key) => (
               <Col xl="4" sm="6" key={key}>
-                <div className="blog-box mb-4 mb-xl-0 shadow-lg">
+                <div className="blog-box h-100 mb-4 mb-xl-0 shadow-lg">
                   <div className="position-relative ">
                     <img
                       src={blog.imgUrl}

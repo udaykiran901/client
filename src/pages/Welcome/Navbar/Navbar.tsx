@@ -2,14 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Collapse, Container, NavbarToggler, NavLink } from "reactstrap";
 import Scrollspy from "react-scrollspy";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 // Import Images
 import logoDark from "../../../assets/images/logo-dark.png";
 import logoLight from "../../../assets/images/logo-light.png";
+import { KDM_ECOMMERCE_USER_JWT_TOKEN } from "common/tokens";
+import ProfileMenu from "Components/CommonForBoth/TopBarDropDown/ProfileMenu";
 
 const Navbar = () => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [navClass, setNavClass] = useState("");
+  const token = Cookies.get(KDM_ECOMMERCE_USER_JWT_TOKEN);
 
   const toggle = () => setIsOpenMenu(!isOpenMenu);
 
@@ -79,7 +83,7 @@ const Navbar = () => {
                 "features",
                 "roadmap",
                 "team",
-                "news",
+                "Our Services",
                 "faqs",
               ]}
               currentClassName="active"
@@ -87,7 +91,9 @@ const Navbar = () => {
               id="navbar-example"
             >
               <li className="nav-item">
-                <NavLink href="#home">Home</NavLink>
+                <NavLink>
+                  <Link to={"/"}>Home</Link>
+                </NavLink>
               </li>
               <li className="nav-item">
                 <NavLink href="#about">About</NavLink>
@@ -102,18 +108,28 @@ const Navbar = () => {
                 <NavLink href="#team">Team</NavLink>
               </li>
               <li className="nav-item">
-                <NavLink href="#news">News</NavLink>
+                {/* <NavLink href="#services">Services</NavLink> */}
+                <NavLink>
+                  <Link to={"/#services"}>Services</Link>
+                </NavLink>
               </li>
               <li className="nav-item">
                 <NavLink href="#faqs">FAQs</NavLink>
               </li>
             </Scrollspy>
 
-            <div className="my-2 ms-lg-2">
-              <Link to="#" className="btn btn-outline-success w-xs">
-                Sign in
-              </Link>
-            </div>
+            {token ? (
+              <ProfileMenu />
+            ) : (
+              <div className="my-2 ms-lg-2">
+                <Link
+                  to="/ecommerce/login"
+                  className="btn btn-outline-success w-xs"
+                >
+                  Sign in
+                </Link>
+              </div>
+            )}
           </Collapse>
         </Container>
       </nav>

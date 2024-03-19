@@ -25,7 +25,7 @@ const RoadMap = () => {
               <div className="hori-timeline">
                 <Swiper
                   slidesPerView={1}
-                  // spaceBetween={10}
+                  spaceBetween={10}
                   navigation
                   pagination={{
                     clickable: true,
@@ -144,7 +144,7 @@ const RoadMap = () => {
                     </div>
                   </SwiperSlide>
 
-                  <SwiperSlide className="item event-list">
+                  <SwiperSlide className="item event-list ">
                     <div>
                       <div className="event-date">
                         <div className="text-primary mb-1">May, 2020</div>

@@ -1,41 +1,43 @@
 import React from "react";
-import { Container, Row, Col, Card, CardBody, CardHeader } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
+// import { Container, Row, Col, Card, CardBody, CardHeader } from "reactstrap";
+
 import { Link } from "react-router-dom";
 
 //Import Countdown
-import Countdown from "react-countdown";
+// import Countdown from "react-countdown";
 
 const Section = () => {
-  const renderer = ({ days, hours, minutes, seconds, completed }) => {
-    if (completed) {
-      // Render a completed state
-      return <span>You are good to go!</span>;
-    } else {
-      return (
-        <>
-          <div className="counter-number ico-countdown">
-            <div id="days" className="coming-box">
-              {days}
-              <span>Days</span>
-            </div>
-            <div id="hours" className="coming-box">
-              {hours}
-              <span>Hours</span>
-            </div>
-            <div id="mins" className="coming-box">
-              {minutes}
-              <span>Hours</span>
-            </div>
-            <div id="secs" className="coming-box">
-              {seconds}
-              <span>Seconds</span>
-            </div>
-            <div id="end" className="h1"></div>
-          </div>
-        </>
-      );
-    }
-  };
+  // const renderer = ({ days, hours, minutes, seconds, completed }) => {
+  //   if (completed) {
+  //     // Render a completed state
+  //     return <span>You are good to go!</span>;
+  //   } else {
+  //     return (
+  //       <>
+  //         <div className="counter-number ico-countdown">
+  //           <div id="days" className="coming-box">
+  //             {days}
+  //             <span>Days</span>
+  //           </div>
+  //           <div id="hours" className="coming-box">
+  //             {hours}
+  //             <span>Hours</span>
+  //           </div>
+  //           <div id="mins" className="coming-box">
+  //             {minutes}
+  //             <span>Hours</span>
+  //           </div>
+  //           <div id="secs" className="coming-box">
+  //             {seconds}
+  //             <span>Seconds</span>
+  //           </div>
+  //           <div id="end" className="h1"></div>
+  //         </div>
+  //       </>
+  //     );
+  //   }
+  // };
 
   return (
     <React.Fragment>
@@ -60,9 +62,11 @@ const Section = () => {
                 </p>
 
                 <div className="d-flex flex-wrap gap-2 mt-4">
-                  <Link to="#" className="btn btn-success">
+                  <a href="#services" className="btn btn-success">
+                    {" "}
                     Get Started
-                  </Link>
+                  </a>
+
                   <Link to="#" className="btn btn-light">
                     Request a Phone call
                   </Link>

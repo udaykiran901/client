@@ -3,7 +3,7 @@ export const POST_FAKE_REGISTER = "/post-fake-register";
 
 //LOGIN
 export const POST_FAKE_LOGIN = "/post-fake-login";
-export const POST_FAKE_JWT_LOGIN = "/post-jwt-login";
+// export const USER_LOGIN = "/user/login";
 export const POST_FAKE_PASSWORD_FORGET = "/fake-forget-pwd";
 export const POST_FAKE_JWT_PASSWORD_FORGET = "/jwt-forget-pwd";
 export const SOCIAL_LOGIN = "/social-login";
@@ -34,9 +34,15 @@ export const GET_SHOPS = "/shops";
 
 //cart
 
-export const GET_CART = "/cart";
 export const DELETE_CART = "/delete-cart";
 
 export const UPDATE_PROJECT = "/update/project";
 export const DELETE_PROJECT = "/delete/project";
 export const DELETE_MAIL = "/mail/delete";
+
+//mine
+export const ECOMMERCE_USER_REGISTER = "/ecommerce/user/register";
+export const ECOMMERCE_USER_LOGIN = "/ecommerce/user/login";
+export const ECOMMERCE_ADD_MATERIAL_TO_CART = "/ecommerce/addtocart";
+//cart
+export const GET_CART = "/ecommerce/getCart";

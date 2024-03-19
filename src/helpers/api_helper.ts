@@ -1,7 +1,9 @@
 import axios from "axios";
+import Cookies from "js-cookie";
+import { KDM_ECOMMERCE_USER_JWT_TOKEN } from "common/tokens";
 
 // default
-axios.defaults.baseURL = "";
+axios.defaults.baseURL = "http://localhost:8081";
 
 // content type
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -36,8 +38,11 @@ axios.interceptors.response.use(
  * Sets the default authorization
  * @param {*} token
  */
-const setAuthorization = (token: any) => {
-  axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+const setAuthorization = () => {
+  const ecommerce_user_token = Cookies.get(KDM_ECOMMERCE_USER_JWT_TOKEN);
+
+  axios.defaults.headers.common["Authorization"] =
+    "Bearer " + ecommerce_user_token;
 };
 
 class APIClient {
@@ -50,6 +55,7 @@ class APIClient {
   // };
   get = (url: any, params: any) => {
     let response: any;
+    setAuthorization();
 
     let paramKeys: any = [];
 
@@ -64,10 +70,7 @@ class APIClient {
       response = axios.get(`${url}?${queryString}`, params);
     } else {
       response = axios.get(`${url}`, params);
-      console.log(url);
     }
-    console.log("in get function");
-    console.log(response);
 
     return response;
   };
@@ -75,7 +78,9 @@ class APIClient {
    * post given data to url
    */
   create = (url: any, data: any) => {
-    return axios.post(url, data);
+    const res = axios.post(url, data);
+
+    return res;
   };
   /**
    * Updates data
@@ -104,4 +109,10 @@ const getLoggedinUser = () => {
   }
 };
 
-export { APIClient, setAuthorization, getLoggedinUser };
+const isUserLoggedin = (token: string) => {
+  const jwt_token = Cookies.get(token);
+  if (jwt_token) return true;
+  return false;
+};
+
+export { APIClient, setAuthorization, getLoggedinUser, isUserLoggedin };

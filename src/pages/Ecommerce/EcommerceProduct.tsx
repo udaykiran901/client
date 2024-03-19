@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import withRouter from "../../Components/Common/withRouter";
 import {
-  Card,
-  CardBody,
+  // Card,
+  // CardBody,
   // CardTitle,
   Col,
   Container,
@@ -20,7 +20,7 @@ import classnames from "classnames";
 import { isEmpty } from "lodash";
 
 // import { Discount, EcoAction, FilterClothes, Product } from "./type";
-import { EcoAction, FilterClothes, Product } from "./type";
+import { EcoAction, Product } from "./type";
 
 import Spinners from "Components/Common/Spinner";
 import { handleSearchData } from "Components/Common/SearchFile";
@@ -48,7 +48,7 @@ import Navbar from "pages/Welcome/Navbar/Navbar";
 
 const EcommerceProducts = (props: any) => {
   //meta title
-  document.title = "KDM Engineers Group | Materials";
+  document.title = "Materials | KDM Engineers Group";
 
   const dispatch: any = useDispatch();
 
@@ -96,18 +96,18 @@ const EcommerceProducts = (props: any) => {
     }
   };
 
-  const onSelectDiscount = (e: any) => {
-    const { value } = e.target;
+  // const onSelectDiscount = (e: any) => {
+  //   const { value } = e.target;
 
-    if (value !== null) {
-      const filteredProducts = (products || [])?.filter(
-        (product: any) => product.offer.toString() === value.toString()
-      );
-      setProductList(filteredProducts);
-    } else {
-      setProductList(products);
-    }
-  };
+  //   if (value !== null) {
+  //     const filteredProducts = (products || [])?.filter(
+  //       (product: any) => product.offer.toString() === value.toString()
+  //     );
+  //     setProductList(filteredProducts);
+  //   } else {
+  //     setProductList(products);
+  //   }
+  // };
   //Product Filter with noUi slider
   const [minCost, setMinCost] = useState<number>(0);
   const [maxCost, setMaxCost] = useState<number>(500);
@@ -115,7 +115,7 @@ const EcommerceProducts = (props: any) => {
   const onUpdate = useCallback(
     (value: any) => {
       const filterData = (products || [])?.filter((i: Product) => {
-        return i.newPrice >= minCost && i.newPrice <= maxCost;
+        return i.basePrice >= minCost && i.basePrice <= maxCost;
       });
       setProductList(filterData);
       setMinCost(value[0]);
@@ -155,117 +155,11 @@ const EcommerceProducts = (props: any) => {
         <Container>
           <Breadcrumbs title="Ecommerce" breadcrumbItem="Products" />
           <Row>
-            {/* <Col lg={3}>
-              <Card>
-                <CardBody>
-                  <CardTitle className="mb-4">Filter</CardTitle>
-                  <div>
-                    <h5 className="font-size-14 mb-3">Clothes</h5>
-                    <ul className="list-unstyled product-list">
-                      {(filterClothes || [])?.map(
-                        (cloth: FilterClothes, key: number) => (
-                          <li key={"_li_" + key}>
-                            <Link to={cloth.link}>
-                              <i className="mdi mdi-chevron-right me-2" />{" "}
-                              {cloth.name}
-                            </Link>
-                          </li>
-                        )
-                      )}
-                    </ul>
-                  </div>
-                  <div className="mt-4 pt-3">
-                    <h5 className="font-size-14 mb-3">Price</h5>
-                    <br />
-
-                    <Nouislider
-                      range={{ min: 0, max: 600 }}
-                      tooltips={true}
-                      start={[minCost, maxCost]}
-                      connect
-                      step={10}
-                      onSlide={onUpdate}
-                    />
-                  </div>
-
-                  <div className="mt-4 pt-3">
-                    <h5 className="font-size-14 mb-3">Discount</h5>
-                    {(discountData || []).map(
-                      (discount: Discount, i: number) => (
-                        <FormGroup check className="mt-2" key={i}>
-                          <Input
-                            type="checkbox"
-                            value={discount.value}
-                            onChange={onSelectDiscount}
-                          />
-                          <Label check>{discount.label} </Label>
-                        </FormGroup>
-                      )
-                    )}
-                  </div>
-
-                  <div className="mt-4 pt-3">
-                    <h5 className="font-size-14 mb-3">Customer Rating</h5>
-                    <div>
-                      <FormGroup check className="mt-2">
-                        <Input
-                          type="checkbox"
-                          id="productratingCheck1"
-                          onChange={(e) => {
-                            onChangeRating(4);
-                          }}
-                        />
-                        <Label check htmlFor="productratingCheck1">
-                          4 <i className="bx bx-star text-warning" /> & Above
-                        </Label>
-                      </FormGroup>
-                      <FormGroup check className="mt-2">
-                        <Input
-                          type="checkbox"
-                          id="productratingCheck2"
-                          onChange={(e) => {
-                            onChangeRating(3);
-                          }}
-                        />
-                        <Label check htmlFor="productratingCheck2">
-                          3 <i className="bx bx-star text-warning" /> & Above
-                        </Label>
-                      </FormGroup>
-                      <FormGroup check className="mt-2">
-                        <Input
-                          type="checkbox"
-                          id="productratingCheck3"
-                          onChange={(e) => {
-                            onChangeRating(2);
-                          }}
-                        />
-                        <Label check htmlFor="productratingCheck3">
-                          2 <i className="bx bx-star text-warning" /> & Above
-                        </Label>
-                      </FormGroup>
-                      <FormGroup check className="mt-2">
-                        <Input
-                          type="checkbox"
-                          id="productratingCheck4"
-                          onChange={(e) => {
-                            onChangeRating(1);
-                          }}
-                        />
-                        <Label check htmlFor="productratingCheck4">
-                          1 <i className="bx bx-star text-warning" />
-                        </Label>
-                      </FormGroup>
-                    </div>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col> */}
-
             <Col lg={12}>
               <Row className="mb-3">
                 <Col xl={4} sm={6}>
                   <div className="mt-2">
-                    <h5>Clothes</h5>
+                    <h5>Materials</h5>
                   </div>
                 </Col>
                 <Col lg={8} sm={6}>
@@ -317,20 +211,26 @@ const EcommerceProducts = (props: any) => {
                     {!isEmpty(productList) &&
                       (productList || []).map(
                         (product: Product, key: number) => (
-                          <Col xl={3} sm={6} key={"_col_" + key}>
-                            <Card
+                          <Col
+                            className="mb-3"
+                            xl={4}
+                            sm={6}
+                            key={"_col_" + key}
+                          >
+                            <div
+                              className="shadow-lg  h-100"
                               onClick={() =>
                                 navigate(
                                   `/ecommerce-product-detail/${product.id}`
                                 )
                               }
                             >
-                              <CardBody>
+                              <div>
                                 <div className="product-img position-relative">
                                   {product.isOffer ? (
-                                    <div className="avatar-sm product-ribbon">
-                                      <span className="avatar-title rounded-circle bg-primary">
-                                        {`- ${product.offer} %`}
+                                    <div className="avatar-xs m-2 product-ribbon">
+                                      <span className="product-avatar-title rounded-circle bg-primary">
+                                        {`-${product.offer}%`}
                                       </span>
                                     </div>
                                   ) : null}
@@ -338,12 +238,12 @@ const EcommerceProducts = (props: any) => {
                                   <img
                                     style={{ height: "auto" }}
                                     src={product.image}
-                                    alt=""
-                                    className="img-fluid mx-auto d-block"
+                                    alt={product.name}
+                                    className="d-block w-100 div-h-200"
                                   />
                                 </div>
-                                <div className="mt-4 text-center">
-                                  <h5 className="mb-3 text-truncate">
+                                <div className="mt-4 p-2 ">
+                                  <h5>
                                     <Link
                                       to={
                                         "/ecommerce-product-detail/" +
@@ -365,20 +265,38 @@ const EcommerceProducts = (props: any) => {
                                       starSpacing="1px"
                                     />
                                   </div>
-                                  <h5 className="my-0">
+                                  <h6 className="my-0 mb-4">
                                     <span className="text-muted me-2">
-                                      <del>${product.oldPrice}</del>
+                                      <del>Rs.{product.basePrice} /-</del>
                                     </span>
-                                    <b>${product.newPrice}</b>
-                                  </h5>
+                                    <span>Rs.{product.basePrice}/-</span>
+                                  </h6>
+                                  <p className="text-success">Importance</p>
+
+                                  {product.additionalInfo &&
+                                    product.additionalInfo.map(
+                                      (info, index) => (
+                                        <div key={index}>
+                                          <p className="text-muted">
+                                            <i
+                                              className={classnames(
+                                                "fa fa-caret-right",
+                                                "font-size-16 align-middle text-primary me-2"
+                                              )}
+                                            />
+                                            {Object.keys(info)[0]}
+                                          </p>
+                                        </div>
+                                      )
+                                    )}
                                 </div>
-                              </CardBody>
-                            </Card>
+                              </div>
+                            </div>
                           </Col>
                         )
                       )}
                   </Row>
-                  <Row>
+                  {/* <Row>
                     <Col lg={12}>
                       <div className="text-center mt-2 mb-5">
                         <Link to="#" className="text-success">
@@ -387,7 +305,7 @@ const EcommerceProducts = (props: any) => {
                         </Link>
                       </div>
                     </Col>
-                  </Row>
+                  </Row> */}
                 </>
               )}
             </Col>

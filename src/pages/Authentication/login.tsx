@@ -2,7 +2,18 @@ import React, { useEffect, useState } from "react";
 
 // Redux
 import { Link } from "react-router-dom";
-import { Row, Col, CardBody, Card, Container, Form, Input, Label, FormFeedback, Alert } from "reactstrap";
+import {
+  Row,
+  Col,
+  CardBody,
+  Card,
+  Container,
+  Form,
+  Input,
+  Label,
+  FormFeedback,
+  Alert,
+} from "reactstrap";
 
 // Formik validation
 import * as Yup from "yup";
@@ -11,65 +22,70 @@ import { useSelector, useDispatch } from "react-redux";
 
 // import images
 import profile from "../../assets/images/profile-img.png";
-import logo from "../../assets/images/logo.svg";
-import lightlogo from "../../assets/images/logo-light.svg";
+// import lightlogo from "../../assets/images/logo-light.svg";
+import logo from "../../assets/images/logo-light.png";
 
 //import thunk
-import { loginuser, resetLoginMsgFlag, socialLogin } from "slices/auth/login/thunk";
+import {
+  loginuser,
+  resetLoginMsgFlag,
+  socialLogin,
+} from "slices/auth/login/thunk";
 
 import withRouter from "Components/Common/withRouter";
-import { createSelector } from 'reselect';
+import { createSelector } from "reselect";
 
 const Login = (props: any) => {
   const [show, setShow] = useState(false);
   const dispatch: any = useDispatch();
 
   //meta title
-  document.title = "Login | Skote - React Admin & Dashboard Template";
-
+  document.title = "Login | KDM Engineers Group";
 
   const selectProperties = createSelector(
     (state: any) => state.Login,
     (login) => ({
-      error: login.error
+      error: login.error,
     })
   );
 
   const { error } = useSelector(selectProperties);
 
-  // Form validation 
+  // Form validation
   const validation: any = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
-      email: "admin@themesbrand.com" || '',
-      password: "123456" || '',
+      email: "",
+      password: "",
     },
+
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your email"),
       password: Yup.string().required("Please Enter Your Password"),
     }),
+
     onSubmit: (values: any) => {
       dispatch(loginuser(values, props.router.navigate));
-    }
+    },
   });
 
   const signIn = (type: any) => {
-    dispatch(socialLogin(type, props.router.navigate))
-  }
+    dispatch(socialLogin(type, props.router.navigate));
+  };
 
   const socialResponse = (type: any) => {
-    signIn(type)
-  }
+    signIn(type);
+  };
 
   useEffect(() => {
     if (error) {
       setTimeout(() => {
-        dispatch(resetLoginMsgFlag())
+        dispatch(resetLoginMsgFlag());
       }, 3000);
     }
-  }, [dispatch, error])
+  }, [dispatch, error]);
 
   return (
     <React.Fragment>
@@ -83,7 +99,7 @@ const Login = (props: any) => {
                     <Col className="col-7">
                       <div className="text-primary p-4">
                         <h5 className="text-primary">Welcome Back !</h5>
-                        <p>Sign in to continue to Skote.</p>
+                        <p>Sign in to continue to KDM Engineers.</p>
                       </div>
                     </Col>
                     <Col className="col-5 align-self-end">
@@ -97,7 +113,7 @@ const Login = (props: any) => {
                       <div className="avatar-md profile-user-wid mb-4">
                         <span className="avatar-title rounded-circle bg-light">
                           <img
-                            src={lightlogo}
+                            src={logo}
                             alt=""
                             className="rounded-circle"
                             height="34"
@@ -110,16 +126,17 @@ const Login = (props: any) => {
                         <span className="avatar-title rounded-circle bg-light">
                           <img
                             src={logo}
-                            alt=""
+                            alt="app-logo"
                             className="rounded-circle"
-                            height="34"
+                            height="40"
                           />
                         </span>
                       </div>
                     </Link>
                   </div>
                   <div className="p-2">
-                    <Form className="form-horizontal"
+                    <Form
+                      className="form-horizontal"
                       onSubmit={(e) => {
                         e.preventDefault();
                         validation.handleSubmit();
@@ -138,11 +155,15 @@ const Login = (props: any) => {
                           onBlur={validation.handleBlur}
                           value={validation.values.email || ""}
                           invalid={
-                            validation.touched.email && validation.errors.email ? true : false
+                            validation.touched.email && validation.errors.email
+                              ? true
+                              : false
                           }
                         />
                         {validation.touched.email && validation.errors.email ? (
-                          <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
+                          <FormFeedback type="invalid">
+                            {validation.errors.email}
+                          </FormFeedback>
                         ) : null}
                       </div>
 
@@ -157,14 +178,26 @@ const Login = (props: any) => {
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
                             invalid={
-                              validation.touched.password && validation.errors.password ? true : false
+                              validation.touched.password &&
+                              validation.errors.password
+                                ? true
+                                : false
                             }
                           />
-                          <button onClick={() => setShow(!show)} className="btn btn-light " type="button" id="password-addon">
-                            <i className="mdi mdi-eye-outline"></i></button>
+                          <button
+                            onClick={() => setShow(!show)}
+                            className="btn btn-light "
+                            type="button"
+                            id="password-addon"
+                          >
+                            <i className="mdi mdi-eye-outline"></i>
+                          </button>
                         </div>
-                        {validation.touched.password && validation.errors.password ? (
-                          <FormFeedback type="invalid">{validation.errors.password}</FormFeedback>
+                        {validation.touched.password &&
+                        validation.errors.password ? (
+                          <FormFeedback type="invalid">
+                            {validation.errors.password}
+                          </FormFeedback>
                         ) : null}
                       </div>
 
@@ -201,7 +234,7 @@ const Login = (props: any) => {
                               className="social-list-item bg-primary text-white border-primary"
                               onClick={(e: any) => {
                                 e.preventDefault();
-                                socialResponse("facebook")
+                                socialResponse("facebook");
                               }}
                             >
                               <i className="mdi mdi-facebook" />
@@ -221,7 +254,7 @@ const Login = (props: any) => {
                               className="social-list-item bg-danger text-white border-danger"
                               onClick={(e: any) => {
                                 e.preventDefault();
-                                socialResponse("google")
+                                socialResponse("google");
                               }}
                             >
                               <i className="mdi mdi-google" />
@@ -243,10 +276,7 @@ const Login = (props: any) => {
               <div className="mt-5 text-center">
                 <p>
                   Don&apos;t have an account ?{" "}
-                  <Link
-                    to="/register"
-                    className="fw-medium text-primary"
-                  >
+                  <Link to="/register" className="fw-medium text-primary">
                     {" "}
                     Signup now{" "}
                   </Link>{" "}

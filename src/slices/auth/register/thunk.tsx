@@ -1,37 +1,28 @@
-//Include Both Helper File with needed methods
-import { getFirebaseBackend } from "../../../helpers/firebase_helper";
-import {
-  postFakeRegister,
-  postJwtRegister,
-} from "../../../helpers/fakebackend_helper";
+import { postJwtRegister } from "../../../helpers/fakebackend_helper";
+import Cookies from "js-cookie";
 
 // action
 import {
   registerUserSuccessful,
   registerUserFailed,
   resetRegisterFlagChange,
-  apiErrorChange
+  apiErrorChange,
 } from "./reducer";
 
-// initialize relavant method of both Auth
-const fireBaseBackend = getFirebaseBackend();
+import { KDM_ECOMMERCE_USER_JWT_TOKEN } from "common/tokens";
+import { setAuthorization } from "../../../helpers/api_helper";
 
 // Is user register successfull then direct plot user in redux.
 export const registerUser = (user: any) => async (dispatch: any) => {
   try {
-    let response;
-
-    if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-      response = fireBaseBackend.registerUser(user.email, user.password);
-    } else if (process.env.REACT_APP_DEFAULTAUTH === "jwt") {
-      response = postJwtRegister('/post-jwt-register', user);
-    } else if (process.env.REACT_APP_DEFAULTAUTH) {
-      response = postFakeRegister(user);
-      const data: any = await response;
-      dispatch(registerUserSuccessful(data));
-    }
+    let response = postJwtRegister("/ecommerce/user/register", user);
+    const data: any = await response;
+    dispatch(registerUserSuccessful(data));
+    const { jwt_token } = data;
+    Cookies.set(KDM_ECOMMERCE_USER_JWT_TOKEN, jwt_token);
+    setAuthorization();
   } catch (error) {
-    dispatch(registerUserFailed(error));
+    dispatch(registerUserFailed(true));
   }
 };
 

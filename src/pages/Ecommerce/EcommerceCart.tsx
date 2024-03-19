@@ -7,10 +7,10 @@ import {
   Card,
   CardBody,
   Table,
-  Input,
+  // Input,
   CardTitle,
-  InputGroup,
-  Button,
+  // InputGroup,
+  // Button,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import Navbar from "pages/Welcome/Navbar/Navbar";
@@ -20,8 +20,8 @@ import Breadcrumbs from "../../Components/Common/Breadcrumb";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
-// import { productListvar } from "../../common/data";
 import { deleteCart as onDeleteCart, getCart as onGetCart } from "slices/thunk";
+import { cart } from "./type";
 
 const EcommerceCart = () => {
   //meta title
@@ -37,12 +37,12 @@ const EcommerceCart = () => {
   const { cart } = useSelector(selectProperties);
 
   const dispatch = useDispatch<any>();
-  const [productList, setproductList] = useState<any>();
+  const [productList, setproductList] = useState<cart[]>();
   const [dic, setDic] = useState<number>(0);
   const [tax, setTax] = useState<number>(0);
   const [charge, setCharge] = useState<number>(0);
 
-  const assigned = (productList || [])?.map((item: any) => item.total);
+  const assigned = (productList || [])?.map((item: any) => item.basePrice);
   let subTotal = 0;
   for (let i = 0; i < assigned.length; i++) {
     subTotal += Math.round(assigned[i]);
@@ -64,33 +64,33 @@ const EcommerceCart = () => {
     dispatch(onDeleteCart(id));
   }
 
-  function countUP(id: any, prev_data_attr: any, price: any) {
-    setproductList(
-      (productList || [])?.map((count: any) => {
-        return count.id === id
-          ? {
-              ...count,
-              data_attr: prev_data_attr + 1,
-              total: (prev_data_attr + 1) * price,
-            }
-          : count;
-      })
-    );
-  }
+  // function countUP(id: any, prev_data_attr: any, price: any) {
+  //   setproductList(
+  //     (productList || [])?.map((count: any) => {
+  //       return count.id === id
+  //         ? {
+  //             ...count,
+  //             data_attr: prev_data_attr + 1,
+  //             total: (prev_data_attr + 1) * price,
+  //           }
+  //         : count;
+  //     })
+  //   );
+  // }
 
-  function countDown(id: any, prev_data_attr: any, price: any) {
-    setproductList(
-      (productList || [])?.map((count: any) =>
-        count.id === id && count.data_attr > 0
-          ? {
-              ...count,
-              data_attr: prev_data_attr - 1,
-              total: (prev_data_attr - 1) * price,
-            }
-          : count
-      )
-    );
-  }
+  // function countDown(id: any, prev_data_attr: any, price: any) {
+  //   setproductList(
+  //     (productList || [])?.map((count: any) =>
+  //       count.id === id && count.data_attr > 0
+  //         ? {
+  //             ...count,
+  //             data_attr: prev_data_attr - 1,
+  //             total: (prev_data_attr - 1) * price,
+  //           }
+  //         : count
+  //     )
+  //   );
+  // }
 
   useEffect(() => {
     dispatch(onGetCart());
@@ -105,7 +105,7 @@ const EcommerceCart = () => {
       <div className="page-content">
         <Navbar />
         <Container>
-          {/* <Breadcrumbs title="Ecommerce" breadcrumbItem="Cart" /> */}
+          <Breadcrumbs title="Ecommerce" breadcrumbItem="Cart" />
           <Row>
             <Col xl={8}>
               <Card>
@@ -117,12 +117,11 @@ const EcommerceCart = () => {
                           <th>Product</th>
                           <th>Product Desc</th>
                           <th>Price</th>
-                          <th>Quantity</th>
-                          <th colSpan={2}>Total</th>
+                          <th>Remove</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {(productList || [])?.map((product: any) => {
+                        {(productList || [])?.map((product: cart) => {
                           return (
                             <tr key={product.id}>
                               <td>
@@ -146,66 +145,15 @@ const EcommerceCart = () => {
                                 </h5>
                                 <p className="mb-0">
                                   {" "}
-                                  Color :
+                                  Group :
                                   <span className="fw-medium">
                                     {" "}
-                                    {product.color}{" "}
+                                    {product.category}{" "}
                                   </span>
                                 </p>
                               </td>
-                              <td>$ {product.price}</td>
-                              <td>
-                                {/* <div className="me-3" style={{ width: "120px" }}>
-                                  <InputGroup className="bootstrap-touchspin bootstrap-touchspin-injected">
-                                    <Input type="text" name="demo_vertical" value={product.data_attr} readOnly />
-                                    <span className="input-group-btn-vertical">
-                                      <Button color="primary" className="bootstrap-touchspin-up " type="button" onClick={() => countUP(product.id, product.data_attr, product.price)}>+</Button>
-                                      <Button color="primary" className="bootstrap-touchspin-down " type="button" onClick={() => countDown(product.id, product.data_attr, product.price)} >-</Button>
-                                    </span>
-                                  </InputGroup>
-                                </div> */}
-                                <div style={{ width: "120px" }}>
-                                  <InputGroup>
-                                    <div className="input-group-prepend">
-                                      <Button
-                                        type="button"
-                                        color="primary"
-                                        onClick={() =>
-                                          countUP(
-                                            product.id,
-                                            product.data_attr,
-                                            product.price
-                                          )
-                                        }
-                                      >
-                                        +{" "}
-                                      </Button>
-                                    </div>
-                                    <Input
-                                      type="text"
-                                      value={product.data_attr}
-                                      name="demo_vertical"
-                                      readOnly
-                                    />
-                                    <div className="input-group-append">
-                                      <Button
-                                        type="button"
-                                        color="primary"
-                                        onClick={() =>
-                                          countDown(
-                                            product.id,
-                                            product.data_attr,
-                                            product.price
-                                          )
-                                        }
-                                      >
-                                        -
-                                      </Button>
-                                    </div>
-                                  </InputGroup>
-                                </div>
-                              </td>
-                              <td>$ {product.total}</td>
+
+                              <td>$ {product.basePrice}</td>
                               <td>
                                 <Link
                                   to="#"
@@ -223,10 +171,7 @@ const EcommerceCart = () => {
                   </div>
                   <Row className="mt-4">
                     <Col sm="6">
-                      <Link
-                        to="/ecommerce-products"
-                        className="btn btn-secondary"
-                      >
+                      <Link to="/material" className="btn btn-secondary">
                         <i className="mdi mdi-arrow-left me-1" /> Continue
                         Shopping
                       </Link>

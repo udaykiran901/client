@@ -7,7 +7,7 @@ export const initialState = {
   user: null,
   success: false,
   error: false,
-  isUserLogout: true
+  isUserLogout: true,
 };
 
 const registerSlice = createSlice({
@@ -34,15 +34,15 @@ const registerSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
       state.isUserLogout = false;
-    }
-  }
+    },
+  },
 });
 
 export const {
   registerUserSuccessful,
   registerUserFailed,
   resetRegisterFlagChange,
-  apiErrorChange
+  apiErrorChange,
 } = registerSlice.actions;
 
 export default registerSlice.reducer;

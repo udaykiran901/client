@@ -69,9 +69,13 @@ export const postJwtRegister = (url: any, data: any) => {
           message =
             "Sorry! something went wrong, please contact our support team";
           break;
+        case 400:
+          message = "User Already exists";
+          break;
         case 401:
           message = "Invalid credentials";
           break;
+
         default:
           message = err[1];
           break;
@@ -83,7 +87,7 @@ export const postJwtRegister = (url: any, data: any) => {
 
 // Login Method
 export const postJwtLogin = (data: any) =>
-  api.create(url.POST_FAKE_JWT_LOGIN, data);
+  api.create(url.ECOMMERCE_USER_LOGIN, data);
 
 // postForgetPwd
 export const postJwtForgetPwd = (data: any) =>
@@ -101,8 +105,6 @@ export const getProducts = () => api.get(url.GET_PRODUCTS, null);
 export const getProductDetail = (id: number) =>
   api.get(`${url.GET_PRODUCTS_DETAIL}/${id}`, { params: { id } });
 
-//cart----
-export const getCart = () => api.get(url.GET_CART, null);
 export const deleteCart = (cart: any) =>
   api.delete(url.DELETE_CART, { headers: { cart } });
 
@@ -136,3 +138,9 @@ export const updateCustomer = (customer: any) =>
 // delete Customers--
 export const deleteCustomer = (customer: any) =>
   api.delete(url.DELETE_CUSTOMER, { headers: { customer } });
+
+//mine
+export const addToCart = (product: any) =>
+  api.create(url.ECOMMERCE_ADD_MATERIAL_TO_CART, product);
+
+export const getCart = () => api.get(url.GET_CART, null);

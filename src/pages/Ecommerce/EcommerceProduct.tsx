@@ -11,9 +11,6 @@ import {
   // FormGroup,
   Input,
   // Label,
-  Nav,
-  NavItem,
-  NavLink,
   Row,
 } from "reactstrap";
 import classnames from "classnames";
@@ -64,18 +61,8 @@ const EcommerceProducts = (props: any) => {
   const [isLoading, setLoading] = useState(loading);
   const { navigate } = props.router;
 
-  // eslint-disable-next-line no-unused-vars
-  // const filterClothes: FilterClothes[] = [
-  //   { id: 1, name: "T-shirts", link: "#" },
-  //   { id: 2, name: "Shirts", link: "#" },
-  //   { id: 3, name: "Jeans", link: "#" },
-  //   { id: 4, name: "Jackets", link: "#" },
-  // ];
-
   const [productList, setProductList] = useState<Product[]>();
-  const [activeTab, setActiveTab] = useState<string>("1");
 
-  // eslint-disable-next-line no-unused-vars
   const [discountDataList, setDiscountDataList] = useState<any>([]);
 
   useEffect(() => {
@@ -89,12 +76,6 @@ const EcommerceProducts = (props: any) => {
   useEffect(() => {
     dispatch(onGetProducts());
   }, [dispatch]);
-
-  const toggleTab = (tab: any) => {
-    if (activeTab !== tab) {
-      setActiveTab(tab);
-    }
-  };
 
   // const onSelectDiscount = (e: any) => {
   //   const { value } = e.target;
@@ -163,43 +144,18 @@ const EcommerceProducts = (props: any) => {
                   </div>
                 </Col>
                 <Col lg={8} sm={6}>
-                  <Form className="mt-4 mt-sm-0 float-sm-end d-sm-flex align-items-center">
+                  <Form className="mt-4 mt-sm-0 float-sm-end d-sm-flex align-items-center shadow">
                     <div className="search-box me-2">
                       <div className="position-relative">
                         <Input
                           type="text"
                           className="border-0"
-                          placeholder="Search..."
+                          placeholder="Search here"
                           onChange={(e: any) => handleSearch(e.target)}
                         />
                         <i className="bx bx-search-alt search-icon" />
                       </div>
                     </div>
-                    <Nav
-                      className="product-view-nav justify-content-end mt-3 mt-sm-0"
-                      pills
-                    >
-                      <NavItem>
-                        <NavLink
-                          className={classnames({ active: activeTab === "1" })}
-                          onClick={() => {
-                            toggleTab("1");
-                          }}
-                        >
-                          <i className="bx bx-grid-alt" />
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({ active: activeTab === "2" })}
-                          onClick={() => {
-                            toggleTab("2");
-                          }}
-                        >
-                          <i className="bx bx-list-ul" />
-                        </NavLink>
-                      </NavItem>
-                    </Nav>
                   </Form>
                 </Col>
               </Row>
@@ -266,12 +222,29 @@ const EcommerceProducts = (props: any) => {
                                     />
                                   </div>
                                   <h6 className="my-0 mb-4">
-                                    <span className="text-muted me-2">
-                                      <del>Rs.{product.basePrice} /-</del>
-                                    </span>
-                                    <span>Rs.{product.basePrice}/-</span>
+                                    {product.isOffer ? (
+                                      <>
+                                        <span className="text-muted me-2">
+                                          <small className="text-muted me-2">
+                                            <del>Rs.{product.basePrice} /-</del>
+                                          </small>
+                                        </span>
+                                        <span>
+                                          Rs.
+                                          {product.basePrice -
+                                            (product.basePrice *
+                                              product.offer) /
+                                              100}
+                                          /-
+                                        </span>
+                                      </>
+                                    ) : (
+                                      <span>Rs.{product.basePrice}/-</span>
+                                    )}
                                   </h6>
-                                  <p className="text-success">Importance</p>
+                                  <p className="text-success">
+                                    Benifits of this Test
+                                  </p>
 
                                   {product.additionalInfo &&
                                     product.additionalInfo.map(

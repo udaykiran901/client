@@ -138,7 +138,7 @@ const EcommerceCart = () => {
                                     to={
                                       "/ecommerce-product-detail/" + product.id
                                     }
-                                    className="text-dark"
+                                    className="text-primary"
                                   >
                                     {product.name}
                                   </Link>
@@ -147,13 +147,17 @@ const EcommerceCart = () => {
                                   {" "}
                                   Group :
                                   <span className="fw-medium">
-                                    {" "}
                                     {product.category}{" "}
                                   </span>
                                 </p>
                               </td>
 
-                              <td>$ {product.basePrice}</td>
+                              <td>
+                                <span> ₹ {product.basePrice}</span>
+                                {product.isOffer && (
+                                  <p className="text-success"> Offer Applied</p>
+                                )}
+                              </td>
                               <td>
                                 <Link
                                   to="#"

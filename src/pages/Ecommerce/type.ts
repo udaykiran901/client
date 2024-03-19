@@ -39,7 +39,7 @@ export interface Product {
 
   basePrice: number;
   isOffer?: boolean;
-  offer?: number;
+  offer: number;
   reviews: number;
 
   specifications: Specification[]; //test specifications (IS Code etc)

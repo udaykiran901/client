@@ -109,12 +109,6 @@ const EcommerceProductDetail = (props) => {
     (cartItem) => cartItem.id === productDetail?.id
   );
 
-  // const [inCart, setInCart] = useState<boolean>(
-  //   (productIsInCart && productIsInCart?.length > 0) || false
-  // );
-  console.log("in component");
-  console.log(modal);
-
   return (
     <React.Fragment>
       <div className="page-content">
@@ -227,16 +221,30 @@ const EcommerceProductDetail = (props) => {
                           )}
                           <h5 className="mb-4">
                             Price :{" "}
-                            <span className="text-muted me-2">
-                              <del>Rs. {productDetail.basePrice} </del>
-                            </span>{" "}
-                            <b className="text-success">
-                              Rs. {productDetail.basePrice} /-
-                            </b>
+                            {productDetail.isOffer ? (
+                              <>
+                                <span className="text-muted me-2">
+                                  <del>Rs. {productDetail.basePrice} </del>
+                                </span>{" "}
+                                <b className="text-success">
+                                  Rs.{" "}
+                                  {productDetail.basePrice -
+                                    ((productDetail.basePrice *
+                                      productDetail.offer) as number) /
+                                      100}{" "}
+                                  /-
+                                </b>
+                              </>
+                            ) : (
+                              <b className="text-success">
+                                Rs. {productDetail.basePrice} /-
+                              </b>
+                            )}
                           </h5>
                           <p className="text-muted mb-4">
                             {productDetail.description}
                           </p>
+
                           <Row lg={12}>
                             <b className="text-success mb-3">
                               Explore the benefits

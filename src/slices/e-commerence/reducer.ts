@@ -55,6 +55,14 @@ export const loginWarningModal: ModalType = {
     "To access this feature, please log in to your account. If you don't have an account yet, you can create a free account with KDM Engineers Group.",
 };
 
+export const successAddToCartModal: ModalType = {
+  isSuccessModal: true,
+  modalStatus: true,
+  modalHeading: "Product successfully added to cart",
+  modalDescription:
+    "Congratulations! The product has been successfully added to your cart. You can view your cart to proceed with the checkout process or continue shopping for more amazing products.",
+};
+
 export const initialState: InitialState = {
   products: [],
   productDetail: [],
@@ -246,20 +254,12 @@ const EcommerceSlice = createSlice({
     });
 
     //i defined them
-    builder.addCase(addProductToCart.fulfilled, (state, action) => {
-      state.modal.isSuccessModal = true;
-      state.modal.modalStatus = true;
-      state.modal.modalHeading = "Product successfully added to cart";
-      state.modal.modalDescription = action.payload.message;
-      console.log("fullfilled");
-      console.log(action.payload);
+    builder.addCase(addProductToCart.fulfilled, (state) => {
+      state.modal = successAddToCartModal;
     });
 
     builder.addCase(addProductToCart.rejected, (state: any, action: any) => {
       state.error = action.payload ? action.payload?.message : null;
-      console.log("rejected");
-      console.log(action);
-      console.log(action.error.message);
     });
   },
 });

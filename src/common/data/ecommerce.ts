@@ -37,6 +37,32 @@ import silica_lg from "../../assets/images/materials/silica-lg.png";
 
 import lime from "../../assets/images/materials/lime.png";
 
+import wood from "../../assets/images/materials/wood.png";
+import wood_lg from "../../assets/images/materials/wood-lg.png";
+
+import fineAgg from "../../assets/images/materials/fineagg.png";
+import fineAgg_lg from "../../assets/images/materials/fineagg-lg.png";
+
+import ggbs from "../../assets/images/materials/ggbs.jpg";
+import ggbs_lg from "../../assets/images/materials/ggbs-lg.jpg";
+
+import be from "../../assets/images/materials/be.png";
+import be_lg from "../../assets/images/materials/be-lg.jpg";
+
+import bitumen from "../../assets/images/materials/bitumen.jpg";
+import bitumen_lg from "../../assets/images/materials/bitumen-lg.png";
+
+import ca from "../../assets/images/materials/ca.png";
+import ca_lg from "../../assets/images/materials/ca-lg.png";
+
+import cw from "../../assets/images/materials/CW.jpg";
+import cw_lg from "../../assets/images/materials/cw-lg.jpg";
+
+import admix from "../../assets/images/materials/admix.jpg";
+import admix_lg from "../../assets/images/materials/admix-lg.jpg";
+
+import flyash from "../../assets/images/materials/flyAsh.png";
+
 const BUILDING_MATERIALS = "Building Materials";
 const WATER = "Water";
 const RAW_MATERIALS = "Raw Materials";
@@ -142,8 +168,8 @@ const productsData: Product[] = [
 
   {
     id: 2,
-    image: soil,
-    image_lg: soil_lg,
+    image: flyash,
+    image_lg: flyash,
     name: "Fly Ash",
     link: "#",
     category: BUILDING_MATERIALS,
@@ -188,8 +214,8 @@ const productsData: Product[] = [
 
   {
     id: 3,
-    image: soil,
-    image_lg: soil_lg,
+    image: admix,
+    image_lg: admix_lg,
     name: "Admixture",
     link: "#",
     category: BUILDING_MATERIALS,
@@ -280,8 +306,8 @@ const productsData: Product[] = [
 
   {
     id: 6,
-    image: soil,
-    image_lg: soil_lg,
+    image: cw,
+    image_lg: cw_lg,
     name: "Construction Water",
     link: "#",
     category: WATER,
@@ -372,8 +398,8 @@ const productsData: Product[] = [
 
   {
     id: 8,
-    image: soil,
-    image_lg: soil_lg,
+    image: bitumen,
+    image_lg: bitumen_lg,
     name: "Bitumen",
     link: "#",
     category: BUILDING_MATERIALS,
@@ -418,8 +444,8 @@ const productsData: Product[] = [
 
   {
     id: 9,
-    image: soil,
-    image_lg: soil_lg,
+    image: be,
+    image_lg: be_lg,
     name: "Bitumen Emulsion",
     link: "#",
     category: BUILDING_MATERIALS,
@@ -510,8 +536,8 @@ const productsData: Product[] = [
 
   {
     id: 11,
-    image: soil,
-    image_lg: soil_lg,
+    image: fineAgg,
+    image_lg: fineAgg_lg,
     name: "Fine Aggregates",
     link: "#",
     category: BUILDING_MATERIALS,
@@ -556,8 +582,8 @@ const productsData: Product[] = [
 
   {
     id: 12,
-    image: soil,
-    image_lg: soil_lg,
+    image: ca,
+    image_lg: ca_lg,
     name: "Coarse Aggregates",
     link: "#",
     category: BUILDING_MATERIALS,
@@ -694,8 +720,8 @@ const productsData: Product[] = [
 
   {
     id: 15,
-    image: soil,
-    image_lg: soil_lg,
+    image: ggbs,
+    image_lg: ggbs_lg,
     name: "Ground Granulated Blast Furnace Slag (GGBS)",
     link: "#",
     category: BUILDING_MATERIALS,
@@ -780,6 +806,52 @@ const productsData: Product[] = [
       {
         "Quality Assurance and Performance Validation":
           "Our testing services ensure that microsilica meets regulatory requirements and industry standards, providing quality assurance and performance validation for concrete producers, contractors, and project stakeholders.",
+      },
+    ],
+  },
+
+  {
+    id: 17,
+    image: wood,
+    image_lg: wood_lg,
+    name: "Wood",
+    link: "#",
+    category: BUILDING_MATERIALS,
+    rating: 4.9,
+    basePrice: 120,
+    isOffer: true,
+    offer: 20,
+    reviews: 0,
+    description:
+      "Wood is a natural and renewable building material widely used in construction for structural, decorative, and functional purposes. Our specialized testing service ensures the quality, strength, and durability of wood products, contributing to safe, resilient, and sustainable building practices.",
+
+    specifications: [
+      { type: "Moisture Content", value: "ASTM D4442" },
+      { type: "Density", value: "ASTM D2395" },
+      { type: "Strength Properties", value: "ASTM D198" },
+      { type: "Dimensional Stability", value: "ASTM D1037" },
+    ],
+
+    additionalInfo: [
+      {
+        "Structural Integrity and Safety":
+          "Testing wood quality ensures structural integrity, strength, and safety of wooden components, such as beams, columns, and trusses, providing reliable support and resistance to loads and forces in buildings and structures.",
+      },
+      {
+        "Durability and Resistance":
+          "Evaluation of wood properties, including moisture content, density, and dimensional stability, ensures durability, weather resistance, and resistance to decay, insects, and fungal growth, prolonging the service life of wood products.",
+      },
+      {
+        "Aesthetic Appeal and Versatility":
+          "Wooden materials offer aesthetic appeal, warmth, and natural beauty, enhancing interior and exterior spaces with diverse textures, colors, and grain patterns, while offering versatility in design and customization for architectural and decorative applications.",
+      },
+      {
+        "Sustainable and Eco-Friendly":
+          "Utilizing wood from responsibly managed forests promotes sustainability, carbon sequestration, and environmental conservation, supporting green building practices and certifications, such as LEED (Leadership in Energy and Environmental Design).",
+      },
+      {
+        "Quality Assurance and Compliance":
+          "Through rigorous testing, we provide quality assurance and compliance verification, ensuring that wood products meet industry standards, building codes, and project specifications, delivering safe, high-quality, and reliable building materials.",
       },
     ],
   },

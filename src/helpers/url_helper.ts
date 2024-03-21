@@ -34,15 +34,19 @@ export const GET_SHOPS = "/shops";
 
 //cart
 
-export const DELETE_CART = "/delete-cart";
-
 export const UPDATE_PROJECT = "/update/project";
 export const DELETE_PROJECT = "/delete/project";
 export const DELETE_MAIL = "/mail/delete";
 
 //mine
+
+//auth
 export const ECOMMERCE_USER_REGISTER = "/ecommerce/user/register";
 export const ECOMMERCE_USER_LOGIN = "/ecommerce/user/login";
 export const ECOMMERCE_ADD_MATERIAL_TO_CART = "/ecommerce/addtocart";
 //cart
 export const GET_CART = "/ecommerce/getCart";
+export const DELETE_CART = "/ecommerce/delete-cart";
+
+//BD Module
+export const REQUEST_CALLBACK = "/bd/on-request-callback";

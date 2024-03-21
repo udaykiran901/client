@@ -133,11 +133,3 @@ export interface NewCart {
   cart_id: string;
   product_id: number;
 }
-
-export interface OrderSummary {
-  id: number;
-  img: string;
-  productTitle: string;
-  price: number;
-  qty: number;
-}

@@ -55,14 +55,6 @@ export const loginWarningModal: ModalType = {
     "To access this feature, please log in to your account. If you don't have an account yet, you can create a free account with KDM Engineers Group.",
 };
 
-export const successAddToCartModal: ModalType = {
-  isSuccessModal: true,
-  modalStatus: true,
-  modalHeading: "Product successfully added to cart",
-  modalDescription:
-    "Congratulations! The product has been successfully added to your cart. You can view your cart to proceed with the checkout process or continue shopping for more amazing products.",
-};
-
 export const initialState: InitialState = {
   products: [],
   productDetail: [],
@@ -130,7 +122,6 @@ const EcommerceSlice = createSlice({
     builder.addCase(getOrders.rejected, (state: any, action: any) => {
       state.error = action.payload ? action.payload?.error : null;
       state.isOrderCreated = false;
-
       state.isOrderSuccess = false;
     });
 
@@ -244,22 +235,25 @@ const EcommerceSlice = createSlice({
     builder.addCase(getCart.rejected, (state: any, action: any) => {
       state.error = action.payload ? action.payload?.error : null;
     });
-    builder.addCase(deleteCart.fulfilled, (state: any, action: any) => {
-      state.cart = (state.cart || []).filter(
-        (data: any) => data.id !== action.payload
-      );
-    });
-    builder.addCase(deleteCart.rejected, (state: any, action: any) => {
-      state.error = action.payload.error || null;
-    });
 
     //i defined them
-    builder.addCase(addProductToCart.fulfilled, (state) => {
-      state.modal = successAddToCartModal;
+    builder.addCase(addProductToCart.fulfilled, (state, payload) => {
+      // state.modal = successAddToCartModal;
+      console.log(payload);
     });
 
     builder.addCase(addProductToCart.rejected, (state: any, action: any) => {
       state.error = action.payload ? action.payload?.message : null;
+    });
+
+    //cart
+    builder.addCase(deleteCart.fulfilled, (state: any, action: any) => {
+      state.cart = (state.cart || []).filter(
+        (data: any) => data.cart_id !== action.meta.arg
+      );
+    });
+    builder.addCase(deleteCart.rejected, (state: any, action: any) => {
+      state.error = action.payload.error || null;
     });
   },
 });

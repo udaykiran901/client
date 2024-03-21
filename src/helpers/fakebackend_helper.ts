@@ -105,9 +105,6 @@ export const getProducts = () => api.get(url.GET_PRODUCTS, null);
 export const getProductDetail = (id: number) =>
   api.get(`${url.GET_PRODUCTS_DETAIL}/${id}`, { params: { id } });
 
-export const deleteCart = (cart: any) =>
-  api.delete(url.DELETE_CART, { headers: { cart } });
-
 // get shops--
 export const getShops = () => api.get(url.GET_SHOPS, null);
 
@@ -144,3 +141,11 @@ export const addToCart = (product: any) =>
   api.create(url.ECOMMERCE_ADD_MATERIAL_TO_CART, product);
 
 export const getCart = () => api.get(url.GET_CART, null);
+
+export const deleteCart = (data: any) =>
+  api.delete(url.DELETE_CART, { headers: { data } });
+
+//BD Module
+
+export const requestCallback = (data: any) =>
+  api.create(url.REQUEST_CALLBACK, data);

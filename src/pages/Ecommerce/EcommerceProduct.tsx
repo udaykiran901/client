@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import withRouter from "../../Components/Common/withRouter";
 import {
@@ -58,11 +58,10 @@ const EcommerceProducts = (props: any) => {
   );
 
   const { products, loading } = useSelector(selectProperties);
+
   const [isLoading, setLoading] = useState(loading);
   const { navigate } = props.router;
-
   const [productList, setProductList] = useState<Product[]>();
-
   const [discountDataList, setDiscountDataList] = useState<any>([]);
 
   useEffect(() => {
@@ -90,24 +89,24 @@ const EcommerceProducts = (props: any) => {
   //   }
   // };
   //Product Filter with noUi slider
-  const [minCost, setMinCost] = useState<number>(0);
-  const [maxCost, setMaxCost] = useState<number>(500);
+  // const [minCost, setMinCost] = useState<number>(0);
+  // const [maxCost, setMaxCost] = useState<number>(500);
 
-  const onUpdate = useCallback(
-    (value: any) => {
-      const filterData = (products || [])?.filter((i: Product) => {
-        return i.basePrice >= minCost && i.basePrice <= maxCost;
-      });
-      setProductList(filterData);
-      setMinCost(value[0]);
-      setMaxCost(value[1]);
-    },
-    [minCost, maxCost, products]
-  );
+  // const onUpdate = useCallback(
+  //   (value: any) => {
+  //     const filterData = (products || [])?.filter((i: Product) => {
+  //       return i.basePrice >= minCost && i.basePrice <= maxCost;
+  //     });
+  //     setProductList(filterData);
+  //     setMinCost(value[0]);
+  //     setMaxCost(value[1]);
+  //   },
+  //   [minCost, maxCost, products]
+  // );
 
-  useEffect(() => {
-    onUpdate([minCost, maxCost]);
-  }, [minCost, maxCost, onUpdate]);
+  // useEffect(() => {
+  //   onUpdate([minCost, maxCost]);
+  // }, [minCost, maxCost, onUpdate]);
 
   /*
   on change rating checkbox method
@@ -128,6 +127,9 @@ const EcommerceProducts = (props: any) => {
     const query = ele.value.toLowerCase();
     handleSearchData({ setState: setProductList, data: products, item: query });
   };
+
+  console.log();
+  console.log(productList?.length);
 
   return (
     <React.Fragment>

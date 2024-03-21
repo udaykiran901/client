@@ -9,8 +9,6 @@ import {
   Table,
   // Input,
   CardTitle,
-  // InputGroup,
-  // Button,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import Navbar from "pages/Welcome/Navbar/Navbar";
@@ -22,15 +20,17 @@ import { createSelector } from "reselect";
 
 import { deleteCart as onDeleteCart, getCart as onGetCart } from "slices/thunk";
 import { cart } from "./type";
+// import { closeModal } from "slices/e-commerence/reducer";
+import { ToastContainer } from "react-toastify";
 
 const EcommerceCart = () => {
-  //meta title
   document.title = "Cart | KDM Engineers Group";
 
   const selectProperties = createSelector(
     (state: any) => state.ecommerce,
     (ecommerce) => ({
       cart: ecommerce.cart,
+      modal: ecommerce.modal,
     })
   );
 
@@ -60,37 +60,9 @@ const EcommerceCart = () => {
     setTax(tax);
   }, [subTotal]);
 
-  function removeCartItem(id: any) {
-    dispatch(onDeleteCart(id));
+  function removeCartItem(cart_id: string) {
+    dispatch(onDeleteCart(cart_id));
   }
-
-  // function countUP(id: any, prev_data_attr: any, price: any) {
-  //   setproductList(
-  //     (productList || [])?.map((count: any) => {
-  //       return count.id === id
-  //         ? {
-  //             ...count,
-  //             data_attr: prev_data_attr + 1,
-  //             total: (prev_data_attr + 1) * price,
-  //           }
-  //         : count;
-  //     })
-  //   );
-  // }
-
-  // function countDown(id: any, prev_data_attr: any, price: any) {
-  //   setproductList(
-  //     (productList || [])?.map((count: any) =>
-  //       count.id === id && count.data_attr > 0
-  //         ? {
-  //             ...count,
-  //             data_attr: prev_data_attr - 1,
-  //             total: (prev_data_attr - 1) * price,
-  //           }
-  //         : count
-  //     )
-  //   );
-  // }
 
   useEffect(() => {
     dispatch(onGetCart());
@@ -144,7 +116,6 @@ const EcommerceCart = () => {
                                   </Link>
                                 </h5>
                                 <p className="mb-0">
-                                  {" "}
                                   Group :
                                   <span className="fw-medium">
                                     {product.category}{" "}
@@ -161,7 +132,9 @@ const EcommerceCart = () => {
                               <td>
                                 <Link
                                   to="#"
-                                  onClick={() => removeCartItem(product.id)}
+                                  onClick={() =>
+                                    removeCartItem(product.cart_id)
+                                  }
                                   className="action-icon text-danger"
                                 >
                                   <i className="mdi mdi-trash-can font-size-18" />
@@ -175,7 +148,7 @@ const EcommerceCart = () => {
                   </div>
                   <Row className="mt-4">
                     <Col sm="6">
-                      <Link to="/material" className="btn btn-secondary">
+                      <Link to="/material" className="btn btn-success">
                         <i className="mdi mdi-arrow-left me-1" /> Continue
                         Shopping
                       </Link>
@@ -254,24 +227,25 @@ const EcommerceCart = () => {
                       <tbody>
                         <tr>
                           <td>Grand Total :</td>
-                          <td>$ {subTotal || ""}</td>
+                          <td>Rs. {subTotal || ""}</td>
                         </tr>
                         <tr>
                           <td>Discount : </td>
-                          <td>- $ {dic.toFixed(2) || ""}</td>
+                          <td>- Rs. {dic.toFixed(2) || ""}</td>
                         </tr>
                         <tr>
                           <td>Shipping Charge :</td>
-                          <td>$ {charge || ""}</td>
+                          <td>Rs. {charge || ""}</td>
                         </tr>
                         <tr>
                           <td>Estimated Tax : </td>
-                          <td>$ {tax.toFixed(2) || ""}</td>
+                          <td>Rs. {tax.toFixed(2) || ""}</td>
                         </tr>
                         <tr>
                           <th>Total :</th>
                           <th>
-                            $ {(subTotal + charge + tax - dic).toFixed(2) || ""}
+                            Rs.{" "}
+                            {(subTotal + charge + tax - dic).toFixed(2) || ""}
                           </th>
                         </tr>
                       </tbody>
@@ -281,6 +255,7 @@ const EcommerceCart = () => {
               </Card>
             </Col>
           </Row>
+          <ToastContainer />
         </Container>
       </div>
     </React.Fragment>

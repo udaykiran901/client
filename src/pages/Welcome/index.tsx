@@ -13,6 +13,8 @@ import Blog from "./OurServices/blog";
 // import FAQs from "./Faqs/FAQs";
 import Footer from "./Footer/footer";
 
+import { ToastContainer } from "react-toastify";
+
 import {
   Button,
   Col,
@@ -69,6 +71,7 @@ const Welcome = () => {
       {/* <FAQs /> */}
 
       {/* footer */}
+      <ToastContainer />
       <Footer />
 
       {/* subscribe ModalHeader */}

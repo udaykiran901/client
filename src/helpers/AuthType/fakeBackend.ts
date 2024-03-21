@@ -277,18 +277,18 @@ const fakeBackend = () => {
   //   });
   // });
 
-  mock.onDelete(url.DELETE_CART).reply((config: any) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (config && config.headers.cart) {
-          // Passing fake JSON data as response
-          resolve([200, config.headers.cart]);
-        } else {
-          reject([400, "Cannot get cart data"]);
-        }
-      });
-    });
-  });
+  // mock.onDelete(url.DELETE_CART).reply((config: any) => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       if (config && config.headers.cart) {
+  //         // Passing fake JSON data as response
+  //         resolve([200, config.headers.cart]);
+  //       } else {
+  //         reject([400, "Cannot get cart data"]);
+  //       }
+  //     });
+  //   });
+  // });
 };
 
 export default fakeBackend;

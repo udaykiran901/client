@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import withRouter from "Components/Common/withRouter";
 import { isUserLoggedin } from "../../../helpers/api_helper";
+import { ToastContainer } from "react-toastify";
 
 import {
   Button,
@@ -15,10 +16,10 @@ import {
   TabPane,
   Modal,
   ModalHeader,
-  Alert,
 } from "reactstrap";
 import classnames from "classnames";
 import { isEmpty } from "lodash";
+import { showModal } from "slices/e-commerence/reducer";
 
 // import RecentProduct from "./RecentProducts";
 // import Reviews from "./Reviews";
@@ -34,7 +35,6 @@ import Breadcrumbs from "Components/Common/Breadcrumb";
 import {
   getProductDetail as onGetProductDetail,
   addProductToCart,
-  getCart as onGetCart,
 } from "slices/thunk";
 
 //redux
@@ -42,11 +42,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
 import { EcoAction } from "../type";
 import Navbar from "pages/Welcome/Navbar/Navbar";
-import {
-  closeModal,
-  loginWarningModal,
-  showModal,
-} from "slices/e-commerence/reducer";
+import { loginWarningModal } from "slices/e-commerence/reducer";
 import { KDM_ECOMMERCE_USER_JWT_TOKEN } from "common/tokens";
 
 // import { productListvar } from "common/data";
@@ -60,12 +56,11 @@ const EcommerceProductDetail = (props) => {
 
     (ecommerce) => ({
       productDetail: ecommerce.productDetail,
-      cart: ecommerce.cart,
       modal: ecommerce.modal,
     })
   );
 
-  const { productDetail, modal, cart } = useSelector(selectProperties);
+  const { productDetail, modal } = useSelector(selectProperties);
 
   const params = props.router.params;
 
@@ -77,9 +72,9 @@ const EcommerceProductDetail = (props) => {
     }
   }, [dispatch, params]);
 
-  useEffect(() => {
-    // dispatch(onGetCart());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   // dispatch(onGetCart());
+  // }, [dispatch]);
 
   const onAddToCart = () => {
     const isUserLogin = isUserLoggedin(KDM_ECOMMERCE_USER_JWT_TOKEN);
@@ -92,22 +87,21 @@ const EcommerceProductDetail = (props) => {
       product_id: productDetail?.id,
     };
     dispatch(addProductToCart(cartItem));
-    dispatch(onGetCart());
+    // dispatch(onGetCart());
   };
+
+  // const productIsInCart = cart?.filter(
+  //   (cartItem) => cartItem.id === productDetail?.id
+  // );
 
   function removeBodyCss() {
     document.body.classList.add("no_padding");
   }
 
   function tog_large() {
-    dispatch(closeModal());
     dispatch(onGetProductDetail(params.id));
     removeBodyCss();
   }
-
-  const productIsInCart = cart?.filter(
-    (cartItem) => cartItem.id === productDetail?.id
-  );
 
   return (
     <React.Fragment>
@@ -158,7 +152,7 @@ const EcommerceProductDetail = (props) => {
                                   </div>
                                 </TabPane>
                               </TabContent>
-                              {productIsInCart &&
+                              {/* {productIsInCart &&
                                 productIsInCart.length > 0 && (
                                   <Alert
                                     color="danger"
@@ -167,22 +161,22 @@ const EcommerceProductDetail = (props) => {
                                   >
                                     This product is already in your cart
                                   </Alert>
-                                )}
+                                )} */}
                               <div className="text-center">
                                 <Button
                                   type="button"
-                                  color={
-                                    productIsInCart ? "warning" : "secondary"
-                                  }
-                                  className="btn mt-2 me-1"
+                                  // color={
+                                  //   productIsInCart ? "warning" : "secondary"
+                                  // }
+                                  className="bg-primary w-100 mt-2"
                                   onClick={() => {
                                     onAddToCart();
                                   }}
-                                  disabled={
-                                    (productIsInCart &&
-                                      productIsInCart?.length > 0) ||
-                                    false
-                                  }
+                                  // disabled={
+                                  //   (productIsInCart &&
+                                  //     productIsInCart?.length > 0) ||
+                                  //   false
+                                  // }
                                 >
                                   <i className="bx bx-cart me-2" /> Add to cart
                                 </Button>
@@ -353,6 +347,7 @@ const EcommerceProductDetail = (props) => {
               </Col>
             </Row>
           )}
+          <ToastContainer />
           {/* <RecentProduct productDetail={productDetail || []} /> */}
         </Container>
       </div>

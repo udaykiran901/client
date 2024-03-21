@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Container,
@@ -19,7 +19,7 @@ import {
   CardTitle,
   FormFeedback,
 } from "reactstrap";
-import Select from "react-select";
+// import Select from "react-select";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -31,50 +31,57 @@ import Navbar from "pages/Welcome/Navbar/Navbar";
 import Breadcrumbs from "../../Components/Common/Breadcrumb";
 
 //Import Images
-import img1 from "../../assets/images/product/img-1.png";
-import img7 from "../../assets/images/product/img-7.png";
-import { OrderSummary } from "./type";
 
-const optionGroup = [
-  {
-    label: "Picnic",
-    options: [
-      { label: "Mustard", value: "Mustard" },
-      { label: "Ketchup", value: "Ketchup" },
-      { label: "Relish", value: "Relish" },
-    ],
-  },
-  {
-    label: "Camping",
-    options: [
-      { label: "Tent", value: "Tent" },
-      { label: "Flashlight", value: "Flashlight" },
-      { label: "Toilet Paper", value: "Toilet Paper" },
-    ],
-  },
-];
+import { cart } from "./type";
+import { useDispatch } from "react-redux";
+import { getCart } from "slices/thunk";
+import { createSelector } from "reselect";
+import { useSelector } from "react-redux";
 
-const orderSummary: OrderSummary[] = [
-  {
-    id: 1,
-    img: img1,
-    productTitle: "Half sleeve T-shirt (64GB)",
-    price: 450,
-    qty: 1,
-  },
-  { id: 2, img: img7, productTitle: "Wireless Headphone", price: 225, qty: 1 },
-];
+// const optionGroup = [
+//   {
+//     label: "Picnic",
+//     options: [
+//       { label: "Mustard", value: "Mustard" },
+//       { label: "Ketchup", value: "Ketchup" },
+//       { label: "Relish", value: "Relish" },
+//     ],
+//   },
+//   {
+//     label: "Camping",
+//     options: [
+//       { label: "Tent", value: "Tent" },
+//       { label: "Flashlight", value: "Flashlight" },
+//       { label: "Toilet Paper", value: "Toilet Paper" },
+//     ],
+//   },
+// ];
 
 const EcommerceCheckout = () => {
   //meta title
   document.title = "Checkout | KDM Engineers Group";
 
   const [activeTab, setActiveTab] = useState<any>("1");
-  const [selectedGroup, setSelectedGroup] = useState<any>(null);
+  // const [selectedGroup, setSelectedGroup] = useState<any>(null);
 
-  const handleSelectGroup = (selectedGroup: any) => {
-    setSelectedGroup(selectedGroup);
-  };
+  const selectProperties = createSelector(
+    (state: any) => state.ecommerce,
+    (ecommerce) => ({
+      cart: ecommerce.cart,
+    })
+  );
+
+  const { cart } = useSelector(selectProperties);
+
+  // const handleSelectGroup = (selectedGroup: any) => {
+  //   setSelectedGroup(selectedGroup);
+  // };
+
+  const dispatch: any = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCart());
+  });
 
   const validation: any = useFormik({
     initialValues: {
@@ -91,8 +98,8 @@ const EcommerceCheckout = () => {
       email: Yup.string().email().required("Please Enter your Email Address"),
       phone: Yup.string().required("Please Enter your Phone"),
       address: Yup.string().required("Please Enter your Address"),
-      country: Yup.string().required("Please Enter your Country Name"),
-      states: Yup.string().required("Please Enter your States"),
+      // country: Yup.string().required("Please Enter your Country Name"),
+      // states: Yup.string().required("Please Enter your States"),
       order: Yup.string().required("Please Enter your Order Note"),
     }),
     onSubmit: (values: any) => {
@@ -292,7 +299,7 @@ const EcommerceCheckout = () => {
                               </Col>
                             </FormGroup>
 
-                            <FormGroup className="select2-container mb-4" row>
+                            {/* <FormGroup className="select2-container mb-4" row>
                               <Label md={2} className="col-form-label">
                                 Country
                               </Label>
@@ -573,9 +580,9 @@ const EcommerceCheckout = () => {
                                   </FormFeedback>
                                 ) : null}
                               </Col>
-                            </FormGroup>
+                            </FormGroup> */}
 
-                            <FormGroup className="select2-container mb-4" row>
+                            {/* <FormGroup className="select2-container mb-4" row>
                               <Label md={2} className="col-form-label">
                                 States
                               </Label>
@@ -590,7 +597,7 @@ const EcommerceCheckout = () => {
                                   classNamePrefix="select2-selection"
                                 />
                               </Col>
-                            </FormGroup>
+                            </FormGroup> */}
                             <div className="form-group row mb-0">
                               <Label
                                 md={2}
@@ -775,12 +782,12 @@ const EcommerceCheckout = () => {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {(orderSummary || [])?.map(
-                                    (orderItem: OrderSummary, key: number) => (
+                                  {(cart || [])?.map(
+                                    (cartItem: cart, key: number) => (
                                       <tr key={"_orderSummary_" + key}>
                                         <th scope="row">
                                           <img
-                                            src={orderItem.img}
+                                            src={cartItem.img}
                                             alt="product-img"
                                             title="product-img"
                                             className="avatar-md"
@@ -789,19 +796,29 @@ const EcommerceCheckout = () => {
                                         <td>
                                           <h5 className="font-size-14 text-truncate">
                                             <Link
-                                              to="/ecommerce-product-detail"
+                                              to={`/ecommerce-product-detail/${cartItem.id}`}
                                               className="text-dark"
                                             >
-                                              {orderItem.productTitle}{" "}
+                                              {cartItem.name}
                                             </Link>
                                           </h5>
                                           <p className="text-muted mb-0">
-                                            $ {orderItem.price} x{" "}
-                                            {orderItem.qty}
+                                            Rs. {cartItem.basePrice}
+                                            <br />
+                                            <span className="text-success">
+                                              {" "}
+                                              {cartItem.isOffer
+                                                ? `${cartItem.offer}% offer Applied`
+                                                : null}
+                                            </span>
                                           </p>
                                         </td>
                                         <td>
-                                          $ {orderItem.price * orderItem.qty}
+                                          Rs.
+                                          {cartItem.basePrice -
+                                            ((cartItem.basePrice *
+                                              cartItem.offer) as number) /
+                                              100}
                                         </td>
                                       </tr>
                                     )

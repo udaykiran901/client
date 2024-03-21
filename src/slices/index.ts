@@ -10,6 +10,8 @@ import AccountReducer from "./auth/register/reducer";
 //Ecommerse
 import EcommerenceReducer from "./e-commerence/reducer";
 
+import BDslice from "./BD/reducer";
+
 const rootReducer = combineReducers({
   Layout: LayoutReducer,
   Login: LoginReducer,
@@ -17,6 +19,7 @@ const rootReducer = combineReducers({
   ForgetPassword: ForgotPasswordReducer,
   Account: AccountReducer,
   ecommerce: EcommerenceReducer,
+  bdModule: BDslice,
 });
 
 export default rootReducer;

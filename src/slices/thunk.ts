@@ -15,3 +15,6 @@ export * from "./auth/forgetpwd/thunk";
 
 //ecommerse
 export * from "./e-commerence/thunk";
+
+//BD
+export * from "./BD/thunk";

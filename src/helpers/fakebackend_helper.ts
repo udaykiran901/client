@@ -1,4 +1,5 @@
 import { APIClient } from "./api_helper";
+// import axios from "axios";
 
 import * as url from "./url_helper";
 
@@ -99,7 +100,8 @@ export const postSocialLogin = (data: any) =>
 
 // Ecommerce
 // api.get Products
-export const getProducts = () => api.get(url.GET_PRODUCTS, null);
+export const getProducts = () =>
+  api.get(url.ON_GET_MATERIALS_PARTIAL_DATA, null);
 
 // api.get ProductDetails-----
 export const getProductDetail = (id: number) =>
@@ -149,3 +151,54 @@ export const deleteCart = (data: any) =>
 
 export const requestCallback = (data: any) =>
   api.create(url.REQUEST_CALLBACK, data);
+
+export const onSubscribeUpdates = (data: any) =>
+  api.create(url.ON_SUBSCRIBE, data);
+
+export const onAddingNewProduct = (data: any) => {
+  api.create(url.ON_ADDING_NEW_PRODUCT, data);
+};
+
+export const onGettingProductNameId = () => {
+  api.get(url.GET_PRODUCT_NAME_ID, null);
+};
+
+export const addingParameterBH = (data: any) => api.create(url.ADD_PARAM, data);
+
+// HR and Admin
+export const getRoles = () => api.get(url.GET_ROLES, null);
+export const getBranches = () => api.get(url.GET_BRANCHES, null);
+export const getEmployees = () => api.get(url.GET_EMPLOYEES, null);
+export const getDepartments = () => api.get(url.GET_DEPARTMENTS, null);
+export const getAccessKeys = () => api.get(url.GET_ACCESS_KEYS, null);
+
+export const onRegisteringNewEmployee = (data: any) =>
+  api.create(url.REGISTER_NEW_EMPLOYEE, data);
+
+export const onEmployeeLogin = (data: any) =>
+  api.create(url.EMPLOYEE_LOGIN, data);
+
+//jobs related
+// get jobs
+export const getJobList = () => api.get(url.GET_JOB_LIST, null);
+// delete jobs
+export const deleteJobList = (jobs: any) =>
+  api.delete(url.DELETE_JOB_LIST, { headers: { jobs } });
+// add jobs
+export const addNewJobList = (job: any) =>
+  api.create(url.ADD_NEW_JOB_LIST, job);
+
+// update jobs
+export const updateJobList = (job: any) => api.put(url.UPDATE_JOB_LIST, job);
+
+// get Apply Jobs
+export const getApplyJob = () => api.get(url.GET_APPLY_JOB, null);
+// Delete Apply Jobs
+export const deleteApplyJob = (jobs: any) =>
+  api.delete(url.DELETE_APPLY_JOB, { headers: { jobs } });
+
+//grid job
+export const getJobGrid = () => api.get(url.GET_JOB_GRID, null);
+
+//job Candidate List
+export const getJobCandidateList = () => api.get(url.GET_CANDIDATE0_LIST, null);

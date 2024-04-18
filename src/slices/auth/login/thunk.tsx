@@ -11,6 +11,7 @@ import {
 } from "./reducer";
 import { KDM_ECOMMERCE_USER_JWT_TOKEN } from "common/tokens";
 import { setAuthorization } from "../../../helpers/api_helper";
+import { saveProfile } from "../profile/reducer";
 
 export const loginuser = (user: any, history: any) => async (dispatch: any) => {
   try {
@@ -19,13 +20,20 @@ export const loginuser = (user: any, history: any) => async (dispatch: any) => {
       email: user.email,
       password: user.password,
     });
-    const { jwt_token } = response;
-    Cookies.set(KDM_ECOMMERCE_USER_JWT_TOKEN, jwt_token);
-    dispatch(loginSuccess(response));
-    setAuthorization();
-    history("/");
-  } catch (error) {
-    dispatch(apiError(error));
+
+    if (response.status === 200) {
+      const { jwt_token, userDetails } = response.data;
+      Cookies.set(KDM_ECOMMERCE_USER_JWT_TOKEN, jwt_token);
+      console.log(userDetails);
+      dispatch(saveProfile(userDetails));
+      setAuthorization();
+      history("/");
+    } else {
+      console.log(response);
+      dispatch(apiError(response.message));
+    }
+  } catch (error: any) {
+    dispatch(apiError(error.data.message));
   }
 };
 

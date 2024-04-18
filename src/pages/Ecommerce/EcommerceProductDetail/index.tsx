@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import withRouter from "Components/Common/withRouter";
 import { isUserLoggedin } from "../../../helpers/api_helper";
 import { ToastContainer } from "react-toastify";
+import Select from "react-select";
 
 import {
   Button,
@@ -19,7 +20,7 @@ import {
 } from "reactstrap";
 import classnames from "classnames";
 import { isEmpty } from "lodash";
-import { showModal } from "slices/e-commerence/reducer";
+import { closeModal, showModal } from "slices/e-commerence/reducer";
 
 // import RecentProduct from "./RecentProducts";
 // import Reviews from "./Reviews";
@@ -40,12 +41,10 @@ import {
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
-import { EcoAction } from "../type";
+import { EcoAction, Tests } from "../type";
 import Navbar from "pages/Welcome/Navbar/Navbar";
 import { loginWarningModal } from "slices/e-commerence/reducer";
 import { KDM_ECOMMERCE_USER_JWT_TOKEN } from "common/tokens";
-
-// import { productListvar } from "common/data";
 
 const EcommerceProductDetail = (props) => {
   //meta title
@@ -59,24 +58,19 @@ const EcommerceProductDetail = (props) => {
       modal: ecommerce.modal,
     })
   );
-
   const { productDetail, modal } = useSelector(selectProperties);
-
   const params = props.router.params;
+  const [selectedTests, setSelectedTests] = useState(null) as any[];
+  const [basket, setBasket] = useState<any>();
 
   useEffect(() => {
     if (params && params.id) {
       dispatch(onGetProductDetail(params.id));
-    } else {
-      dispatch(onGetProductDetail(1));
     }
   }, [dispatch, params]);
 
-  // useEffect(() => {
-  //   // dispatch(onGetCart());
-  // }, [dispatch]);
-
   const onAddToCart = () => {
+    console.log(basket);
     const isUserLogin = isUserLoggedin(KDM_ECOMMERCE_USER_JWT_TOKEN);
     if (!isUserLogin) {
       dispatch(showModal(loginWarningModal));
@@ -87,12 +81,7 @@ const EcommerceProductDetail = (props) => {
       product_id: productDetail?.id,
     };
     dispatch(addProductToCart(cartItem));
-    // dispatch(onGetCart());
   };
-
-  // const productIsInCart = cart?.filter(
-  //   (cartItem) => cartItem.id === productDetail?.id
-  // );
 
   function removeBodyCss() {
     document.body.classList.add("no_padding");
@@ -100,7 +89,12 @@ const EcommerceProductDetail = (props) => {
 
   function tog_large() {
     dispatch(onGetProductDetail(params.id));
+    dispatch(closeModal());
     removeBodyCss();
+  }
+
+  function selectingTestToCart(tests: any) {
+    setSelectedTests(tests);
   }
 
   return (
@@ -139,7 +133,7 @@ const EcommerceProductDetail = (props) => {
                       <Col xl={4}>
                         <div className="product-detai-imgs">
                           <Row>
-                            <Col md={10} sm={9} className="offset-md-1 col-8">
+                            <Col md={11} sm={12} className="offset-md-1 col-8">
                               <TabContent activeTab={"1"}>
                                 <TabPane tabId="1">
                                   <div>
@@ -152,35 +146,21 @@ const EcommerceProductDetail = (props) => {
                                   </div>
                                 </TabPane>
                               </TabContent>
-                              {/* {productIsInCart &&
-                                productIsInCart.length > 0 && (
-                                  <Alert
-                                    color="danger"
-                                    role="alert"
-                                    className="mt-2"
+
+                              {productDetail.completePack && (
+                                <div className="text-center">
+                                  <Button
+                                    type="button"
+                                    className="bg-primary w-100 mt-2"
+                                    onClick={() => {
+                                      onAddToCart();
+                                    }}
                                   >
-                                    This product is already in your cart
-                                  </Alert>
-                                )} */}
-                              <div className="text-center">
-                                <Button
-                                  type="button"
-                                  // color={
-                                  //   productIsInCart ? "warning" : "secondary"
-                                  // }
-                                  className="bg-primary w-100 mt-2"
-                                  onClick={() => {
-                                    onAddToCart();
-                                  }}
-                                  // disabled={
-                                  //   (productIsInCart &&
-                                  //     productIsInCart?.length > 0) ||
-                                  //   false
-                                  // }
-                                >
-                                  <i className="bx bx-cart me-2" /> Add to cart
-                                </Button>
-                              </div>
+                                    <i className="bx bx-cart me-2" /> Add to
+                                    cart
+                                  </Button>
+                                </div>
+                              )}
                             </Col>
                           </Row>
                         </div>
@@ -238,110 +218,136 @@ const EcommerceProductDetail = (props) => {
                           <p className="text-muted mb-4">
                             {productDetail.description}
                           </p>
-
-                          <Row lg={12}>
-                            <b className="text-success mb-3">
-                              Explore the benefits
-                            </b>
-                          </Row>
-                          <Row className="mb-3">
-                            <Col md="12">
-                              <dl>
-                                {productDetail.additionalInfo &&
-                                  productDetail.additionalInfo.map(
-                                    (info, index) => (
-                                      <React.Fragment key={index}>
-                                        <dt>
-                                          <i
-                                            className={classnames(
-                                              "fa fa-caret-right",
-                                              "font-size-16 align-middle text-primary me-2"
-                                            )}
-                                          />
-                                          <span className="text-primary unbold">
-                                            {Object.keys(info)[0]}
-                                          </span>
-                                        </dt>
-                                        <dd className="mb-2">
-                                          {" "}
-                                          {Object.values(info)[0]}
-                                        </dd>
-                                      </React.Fragment>
-                                    )
-                                  )}
-                              </dl>
-
-                              {/* <dl>
-                                {productDetail.additionalInfo &&
-                                  productDetail.additionalInfo.forEach(
-                                    (item: any, i: number) => (
-                                      <React.Fragment key={item.id}>
-                                        <dt>
-                                          <i
-                                            className={classnames(
-                                              item.icon,
-                                              "font-size-16 align-middle text-primary me-2"
-                                            )}
-                                          />
-                                          {`${item}:`}
-                                        </dt>
-                                        <dd>{item.value}</dd>
-                                      </React.Fragment>
-                                    )
-                                  )}
-                              </dl> */}
-                            </Col>
-                          </Row>
-
-                          {/* <div className="product-color">
-                            <h5 className="font-size-15">Color :</h5>
-                            {productDetail.colorOptions &&
-                              (productDetail.colorOptions || [])?.map(
-                                (option: any, i: number) => (
-                                  <Link to="#" className="active" key={i}>
-                                    <div className="product-color-item border rounded">
-                                      <img
-                                        src={option.image}
-                                        alt=""
-                                        className="avatar-md"
-                                      />
-                                    </div>
-                                    <p>{option.color}</p>
-                                  </Link>
-                                )
-                              )}
-                          </div> */}
                         </div>
                       </Col>
-                    </Row>
-                    {/* Specifications */}
-                    <div className="mt-5">
-                      <h5 className="mb-3">Specifications :</h5>
 
-                      <div className="table-responsive">
-                        <Table className="table mb-0 table-bordered">
-                          <tbody>
-                            {productDetail.specifications &&
-                              productDetail.specifications.map(
-                                (specification: any, i: number) => (
-                                  <tr key={i}>
+                      {!productDetail.completePack && (
+                        <Row className="mt-5">
+                          <Col sm={12} md={8}>
+                            <Select
+                              placeholder="Please select the tests listed below"
+                              value={selectedTests}
+                              isMulti={true}
+                              onChange={(e: any) => {
+                                // console.log("e", e);
+                                setBasket(e);
+                                selectingTestToCart(e.target);
+                              }}
+                              options={productDetail.params}
+                              className="select2-selection"
+                              id="hello"
+                            />
+                          </Col>
+                          <Col sm={12} md={4}>
+                            <Button
+                              type="button"
+                              className="bg-primary w-100"
+                              onClick={() => {
+                                onAddToCart();
+                              }}
+                            >
+                              <i className="bx bx-cart me-2" />
+                              Add to cart
+                            </Button>
+                          </Col>
+                        </Row>
+                      )}
+
+                      <Col xl="12">
+                        <div className="mt-5">
+                          <div className="table-responsive">
+                            <Table className="table mb-0 table-bordered">
+                              <thead>
+                                <tr>
+                                  <th
+                                    scope="row"
+                                    className={"text-capitalize text-primary"}
+                                  >
+                                    name
+                                  </th>
+                                  <th
+                                    scope="row"
+                                    className={"text-capitalize text-primary"}
+                                  >
+                                    Method
+                                  </th>
+                                  <th
+                                    scope="row"
+                                    className={"text-capitalize text-primary"}
+                                  >
+                                    NABL Accrediation
+                                  </th>
+                                  {productDetail.completePack ? null : (
                                     <th
                                       scope="row"
-                                      style={{ width: "200px" }}
-                                      className={"text-capitalize"}
+                                      className={"text-capitalize text-primary"}
                                     >
-                                      {specification.type}
+                                      Price
                                     </th>
-                                    <td>{specification.value}</td>
-                                  </tr>
-                                )
-                              )}
-                          </tbody>
-                        </Table>
-                      </div>
-                    </div>
+                                  )}
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {productDetail.params &&
+                                  productDetail.params[0].options.map(
+                                    (test: Tests, i: number) => (
+                                      <tr key={i}>
+                                        <th
+                                          scope="row"
+                                          className={"text-capitalize"}
+                                        >
+                                          {test.label}
+                                        </th>
+                                        <td>{test.method}</td>
+                                        <td>
+                                          {test.isNABL ? "NABL" : "Non-NABL"}
+                                        </td>
 
-                    {/* <Reviews /> */}
+                                        {productDetail.completePack ? null : (
+                                          <td>{test.price}</td>
+                                        )}
+                                      </tr>
+                                    )
+                                  )}
+                              </tbody>
+                            </Table>
+                          </div>
+                        </div>
+                      </Col>
+
+                      <Col lg={12}>
+                        <div className="mt-5">
+                          <b className="text-success">
+                            Why you need this test ?
+                          </b>
+                        </div>
+                      </Col>
+
+                      <Col xl="10">
+                        <dl className="mt-2">
+                          {productDetail.additionalInfo &&
+                            productDetail.additionalInfo.map((info, index) => (
+                              <React.Fragment key={index}>
+                                <dt>
+                                  <i
+                                    className={classnames(
+                                      "fa fa-caret-right",
+                                      "font-size-16 align-middle text-primary me-2"
+                                    )}
+                                  />
+                                  <span className="text-primary unbold">
+                                    {Object.keys(info)[0]}
+                                  </span>
+                                </dt>
+                                <dd className="mb-2">
+                                  {" "}
+                                  {Object.values(info)[0]}
+                                </dd>
+                              </React.Fragment>
+                            ))}
+                        </dl>
+                      </Col>
+                    </Row>
                   </CardBody>
                 </Card>
               </Col>

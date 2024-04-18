@@ -17,14 +17,14 @@ import { createSelector } from "reselect";
 import user1 from "../../../assets/images/users/avatar-1.jpg";
 
 import { useSelector } from "react-redux";
-import { KDM_ECOMMERCE_USER_JWT_TOKEN } from "common/tokens";
+import { KDM_ECOMMERCE_USER_JWT_TOKEN, LOGGED_IN_USER } from "common/tokens";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getProfile } from "slices/auth/profile/reducer";
+import { getCart } from "slices/thunk";
 
 const ProfileMenu = (props: any) => {
-  // Declare a new state variable, which we'll call "menu"
   const [menu, setMenu] = useState(false);
-
-  const [username, setUsername] = useState("Admin");
 
   const selectProfileProperties = createSelector(
     (state: any) => state.Profile,
@@ -33,25 +33,46 @@ const ProfileMenu = (props: any) => {
     })
   );
 
+  const selectedProps2 = createSelector(
+    (state: any) => state.ecommerce,
+    (ecommerce) => ({
+      cart: ecommerce.cart,
+    })
+  );
+
   const { user } = useSelector(selectProfileProperties);
+  const { cart } = useSelector(selectedProps2);
+
+  const { email } = user;
+
+  const dispatch: any = useDispatch();
 
   useEffect(() => {
-    if (localStorage.getItem(KDM_ECOMMERCE_USER_JWT_TOKEN)) {
-      if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-        const obj = JSON.parse(localStorage.getItem("authUser") || "");
-        setUsername(obj.displayName);
-      }
-      {
-        setUsername(user?.username);
-      }
-    }
-  }, [user]);
+    dispatch(getProfile());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getCart());
+  }, [dispatch]);
+
+  // useEffect(() => {
+  //   if (localStorage.getItem(KDM_ECOMMERCE_USER_JWT_TOKEN)) {
+  //     if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
+  //       const obj = JSON.parse(localStorage.getItem("authUser") || "");
+  //       setUsername(obj.displayName);
+  //     }
+  //     {
+  //       setUsername(user?.username);
+  //     }
+  //   }
+  // }, [user]);
 
   const navigate = useNavigate();
 
   const onClickLogout = () => {
     navigate("/ecommerce/login");
     Cookies.remove(KDM_ECOMMERCE_USER_JWT_TOKEN);
+    Cookies.remove(LOGGED_IN_USER);
   };
 
   return (
@@ -67,7 +88,7 @@ const ProfileMenu = (props: any) => {
           tag="button"
         >
           <span className="d-none d-xl-inline-block ms-2 me-1 text-black">
-            {"Hi" + username + "!" || "admin"}
+            {"Hi " + email + " !" || "User"}
           </span>
           <i className="mdi mdi-chevron-down d-none d-xl-inline-block" />
           <img
@@ -89,7 +110,7 @@ const ProfileMenu = (props: any) => {
 
           <Link to={"/ecommerce-cart"}>
             <DropdownItem>
-              <span className="badge bg-success float-end">11</span>
+              <span className="badge bg-success float-end">{cart.length}</span>
               <i className="bx bx-wrench font-size-16 align-middle me-1" />
               {props.t("Cart")}
             </DropdownItem>

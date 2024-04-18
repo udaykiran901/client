@@ -15,10 +15,9 @@ import { setAuthorization } from "../../../helpers/api_helper";
 // Is user register successfull then direct plot user in redux.
 export const registerUser = (user: any) => async (dispatch: any) => {
   try {
-    let response = postJwtRegister("/ecommerce/user/register", user);
-    const data: any = await response;
-    dispatch(registerUserSuccessful(data));
-    const { jwt_token } = data;
+    let response = await postJwtRegister("/ecommerce/user/register", user);
+    dispatch(registerUserSuccessful(response.data));
+    const { jwt_token } = response.data;
     Cookies.set(KDM_ECOMMERCE_USER_JWT_TOKEN, jwt_token);
     setAuthorization();
   } catch (error) {

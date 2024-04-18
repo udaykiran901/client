@@ -28,16 +28,17 @@ import { ourservices } from "./welcome";
 //   recentTasksData,
 // } from "./tasks";
 // import { mailDB, labelsData, mailChatData } from "./mails";
+import { jobs } from "./job";
 import {
-  comments,
-  customerData,
+  // comments,
+  // customerData,
   discountData,
-  orders,
+  // orders,
   productsData,
-  recentProducts,
+  // recentProducts,
   shops,
-  productComments,
-  productListvar,
+  // productComments,
+  // productListvar,
 } from "./ecommerce";
 // import { chats, contacts, groups, messages } from "./chat";
 // import { calenderDefaultCategories, events } from "./calender";
@@ -59,7 +60,7 @@ import {
 //   chartsData,
 // } from "./dashboard-job";
 
-// import { jobs, jobListCandidate, jobApply } from "./job";
+import { jobListCandidate, jobApply } from "./job";
 // import {
 //   walletOptions,
 //   transactionsDataALL,
@@ -79,13 +80,17 @@ import {
 //   blogPost,
 // } from "./dashboard-blog";
 // import { categoriesData, archiveData, popularPosts, tagsData } from "./blog";
-// import { jobsGridData, experienceData, jobType } from "./job-Grid";
+import { jobsGridData, experienceData, jobType } from "./job-Grid";
 
 export {
   //   recentTasksData,
-  //   jobsGridData,
-  //   experienceData,
-  //   jobType,
+  jobsGridData,
+  experienceData,
+  jobType,
+  jobs,
+  jobListCandidate,
+  jobApply,
+
   //   categoriesData,
   //   archiveData,
   //   popularPosts,
@@ -161,13 +166,13 @@ export {
   // myFiles,
   // recentFile,
   ourservices,
-  comments,
-  customerData,
+  // comments,
+  // customerData,
   discountData,
-  orders,
+  // orders,
   productsData,
-  recentProducts,
+  // recentProducts,
   shops,
-  productComments,
-  productListvar,
+  // productComments,
+  // productListvar,
 };

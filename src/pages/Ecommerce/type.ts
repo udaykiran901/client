@@ -10,6 +10,8 @@ export interface EcoAction {
     cart?: cart[];
     loading?: boolean;
     modal: ModalType;
+    productPartialInfo: ProductPartialInfo[];
+    productNameId: ProductNameId[];
   };
 }
 
@@ -24,6 +26,21 @@ export interface Discount {
   value: number;
 }
 
+export interface ProductNameId {
+  name: string;
+  id: string;
+}
+
+export interface ProductPartialInfo {
+  id: number;
+  image: string;
+  name: string;
+  offer: number | 0;
+  isOffer: boolean;
+  base_price: number;
+  features: string[];
+}
+
 interface KeyValue {
   [key: string]: string;
 }
@@ -36,13 +53,15 @@ export interface Product {
   link: string;
   category: string;
   rating: number;
+  prefix: string;
+  completePack: boolean;
 
   basePrice: number;
   isOffer?: boolean;
   offer: number;
   reviews: number;
 
-  specifications: Specification[]; //test specifications (IS Code etc)
+  params: Params[]; //test specifications (IS Code etc)
 
   recentProducts?: RecentProducts[];
   comments?: Comment[];
@@ -50,9 +69,17 @@ export interface Product {
   description?: string;
 }
 
-export interface Specification {
-  type: string;
-  value: string;
+export interface Tests {
+  value: string; //id of the param
+  label: string; //name of the parameter
+  price: number;
+  method: string;
+  isNABL: Boolean;
+  discipline: "CHEMICAL" | "PHYSICAL";
+}
+export interface Params {
+  label: string;
+  options: Tests[];
 }
 
 export interface Feature {
@@ -122,14 +149,8 @@ export interface cart {
   img: string;
   name: string;
   category: string;
-
   basePrice: number;
   isOffer: boolean;
   offer: number;
   cart_id: string;
-}
-
-export interface NewCart {
-  cart_id: string;
-  product_id: number;
 }

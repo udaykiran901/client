@@ -1,18 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
-import { publicRoutes } from "./Routes/allRoutes";
+import { publicRoutes, HRandAdminRoutes, BDRoutes } from "./Routes/allRoutes";
 import { Route, Routes } from "react-router-dom";
-// import VerticalLayout from "./Layouts/VerticalLayout";
-// import HorizontalLayout from "./Layouts/HorizontalLayout/index";
+import VerticalLayout from "./Layouts/VerticalLayout";
+import HorizontalLayout from "./Layouts/HorizontalLayout/index";
 import "./assets/scss/theme.scss";
 import NonAuthLayout from "./Layouts/NonLayout";
 
 //constants
-// import { LAYOUT_TYPES } from "./Components/constants/layout";
+import { LAYOUT_TYPES } from "./Components/constants/layout";
 
 import fakeBackend from "./helpers/AuthType/fakeBackend";
-// import { useSelector } from "react-redux";
-// import { createSelector } from "reselect";
+import { useDispatch } from "react-redux";
+
+import HRroutes from "../src/Routes/HRroutes";
+
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+
+import { restoreCurrentUserInfo } from "slices/CurrentUser/reducer";
+import BDroutes from "Routes/ProtectedBDroutes";
+import ProtectedBDroutes from "Routes/ProtectedBDroutes";
 // import AuthProtected from "./Routes/AuthProtected";
 
 // Import Firebase Configuration file
@@ -35,31 +43,46 @@ import fakeBackend from "./helpers/AuthType/fakeBackend";
 // Activating fake backend
 fakeBackend();
 
-// const getLayout = (layoutType: any) => {
-//   let Layout = VerticalLayout;
-//   switch (layoutType) {
-//     case LAYOUT_TYPES.VERTICAL:
-//       Layout = VerticalLayout;
-//       break;
-//     case LAYOUT_TYPES.HORIZONTAL:
-//       Layout = HorizontalLayout;
-//       break;
-//     default:
-//       break;
-//   }
-//   return Layout;
-// };
+const getLayout = (layoutType: any) => {
+  let Layout = VerticalLayout;
+  switch (layoutType) {
+    case LAYOUT_TYPES.VERTICAL:
+      Layout = VerticalLayout;
+      break;
+    case LAYOUT_TYPES.HORIZONTAL:
+      Layout = HorizontalLayout;
+      break;
+    default:
+      break;
+  }
+  return Layout;
+};
 
 function App() {
-  // const selectLeadData = createSelector(
-  //   (state: any) => state.Layout,
-  //   (layout) => ({
-  //     layoutTypes: layout.layoutTypes,
-  //   })
-  // );
-  // const { layoutTypes } = useSelector(selectLeadData);
+  const selectLeadData = createSelector(
+    (state: any) => state.Layout,
 
-  // const Layout = getLayout(layoutTypes);
+    (layout) => ({
+      layoutTypes: layout.layoutTypes,
+    })
+  );
+
+  // const profile = createSelector((state: any) => state.profile);
+
+  const { layoutTypes } = useSelector(selectLeadData);
+
+  const Layout = getLayout(layoutTypes);
+
+  const dispatch: any = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(getProfile());
+  // }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(restoreCurrentUserInfo());
+  }, [dispatch]);
+
   return (
     <React.Fragment>
       <Routes>
@@ -70,19 +93,34 @@ function App() {
             element={<NonAuthLayout>{route.component}</NonAuthLayout>}
           />
         ))}
-        {/* {authProtectedRoutes.map((route, idx) => (
+
+        {HRandAdminRoutes.map((route, idx) => (
           <Route
             path={route.path}
             key={idx}
             element={
               <React.Fragment>
-                <AuthProtected>
+                <HRroutes>
                   <Layout>{route.component}</Layout>
-                </AuthProtected>
+                </HRroutes>
               </React.Fragment>
             }
           />
-        ))} */}
+        ))}
+
+        {BDRoutes.map((route, idx) => (
+          <Route
+            path={route.path}
+            key={idx}
+            element={
+              <React.Fragment>
+                <ProtectedBDroutes>
+                  <Layout>{route.component}</Layout>
+                </ProtectedBDroutes>
+              </React.Fragment>
+            }
+          />
+        ))}
       </Routes>
     </React.Fragment>
   );

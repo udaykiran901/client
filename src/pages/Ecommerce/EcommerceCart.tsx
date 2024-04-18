@@ -92,6 +92,7 @@ const EcommerceCart = () => {
                           <th>Remove</th>
                         </tr>
                       </thead>
+
                       <tbody>
                         {(productList || [])?.map((product: cart) => {
                           return (
@@ -145,6 +146,11 @@ const EcommerceCart = () => {
                         })}
                       </tbody>
                     </Table>
+                    {cart.length === 0 && (
+                      <h5 className="text-primary text-center mt-5 mb-5 m-auto">
+                        Your cart is empty
+                      </h5>
+                    )}
                   </div>
                   <Row className="mt-4">
                     <Col sm="6">
@@ -153,17 +159,20 @@ const EcommerceCart = () => {
                         Shopping
                       </Link>
                     </Col>
-                    <Col sm="6">
-                      <div className="text-sm-end mt-2 mt-sm-0">
-                        <Link
-                          to="/ecommerce-checkout"
-                          className="btn btn-success"
-                        >
-                          <i className="mdi mdi-cart-arrow-right me-1" />{" "}
-                          Checkout
-                        </Link>
-                      </div>
-                    </Col>
+
+                    {cart.length > 0 && (
+                      <Col sm="6">
+                        <div className="text-sm-end mt-2 mt-sm-0">
+                          <Link
+                            to="/ecommerce-checkout"
+                            className="btn btn-success"
+                          >
+                            <i className="mdi mdi-cart-arrow-right me-1" />{" "}
+                            Checkout
+                          </Link>
+                        </div>
+                      </Col>
+                    )}
                   </Row>
                 </CardBody>
               </Card>

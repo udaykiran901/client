@@ -4,9 +4,14 @@ import * as url from "../url_helper";
 import { accessToken, nodeApiToken } from "../jwt-token-access/accessToken";
 import {
   productsData,
-  comments,
-  recentProducts,
+  // comments,
+  // recentProducts,
   // productListvar,
+  jobs,
+  jobApply,
+  // jobListCandidate,
+  // jobsGridData,
+  jobsGridData,
 } from "common/data";
 
 let users = [
@@ -193,18 +198,18 @@ const fakeBackend = () => {
   });
 
   //Ecommerence Product
-  mock.onGet(url.GET_PRODUCTS).reply(() => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (productsData) {
-          // Passing fake JSON data as response
-          resolve([200, productsData]);
-        } else {
-          reject([400, "Cannot get Ecommerence-product data"]);
-        }
-      });
-    });
-  });
+  // mock.onGet(url.GET_PRODUCTS).reply(() => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       if (productsData) {
+  //         // Passing fake JSON data as response
+  //         resolve([200, productsData]);
+  //       } else {
+  //         reject([400, "Cannot get Ecommerence-product data"]);
+  //       }
+  //     });
+  //   });
+  // });
 
   //Ecommerence product Detailes
   mock.onGet(new RegExp(`${url.GET_PRODUCTS_DETAIL}/*`)).reply((config) => {
@@ -216,7 +221,7 @@ const fakeBackend = () => {
           const product = productsData.find(
             (product) => product.id.toString() === params.id.toString()
           );
-          resolve([200, { ...product, recentProducts, comments }]);
+          resolve([200, { ...product }]);
         } else {
           reject([400, "Cannot get product detail"]);
         }
@@ -262,6 +267,98 @@ const fakeBackend = () => {
       });
     });
   });
+
+  mock.onGet(url.GET_JOB_LIST).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (jobs) {
+          // Passing fake JSON data as response
+          resolve([200, jobs]);
+        } else {
+          reject([400, "Cannot get jobs"]);
+        }
+      });
+    });
+  });
+
+  //job grid
+  mock.onGet(url.GET_JOB_GRID).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (jobsGridData) {
+          // Passing fake JSON data as response
+          resolve([200, jobsGridData]);
+        } else {
+          reject([400, "Cannot get jobs Grid"]);
+        }
+      });
+    });
+  });
+
+  mock.onPost(url.ADD_NEW_JOB_LIST).reply((job) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (job && job.data) {
+          // Passing fake JSON data as response
+          resolve([200, job.data]);
+        } else {
+          reject([400, "Cannot add job"]);
+        }
+      });
+    });
+  });
+
+  mock.onPut(url.UPDATE_JOB_LIST).reply((job) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (job && job.data) {
+          // Passing fake JSON data as response
+          resolve([200, job.data]);
+        } else {
+          reject([400, "Cannot update job"]);
+        }
+      });
+    });
+  });
+
+  mock.onGet(url.GET_APPLY_JOB).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (jobApply) {
+          // Passing fake JSON data as response
+          resolve([200, jobApply]);
+        } else {
+          reject([400, "Cannot get jobsApply"]);
+        }
+      });
+    });
+  });
+
+  mock.onDelete(url.DELETE_APPLY_JOB).reply((config) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (config && config.headers) {
+          // Passing fake JSON data as response
+          resolve([200, config.headers.jobs]);
+        } else {
+          reject([400, "Cannot delete applyJob"]);
+        }
+      });
+    });
+  });
+
+  // mock.onGet(url.GET_JOB_LIST).reply(() => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       if (jobs) {
+  //         // Passing fake JSON data as response
+  //         resolve([200, jobs]);
+  //       } else {
+  //         reject([400, "Cannot get jobs"]);
+  //       }
+  //     });
+  //   });
+  // });
 
   //cart
   // mock.onGet(url.GET_CART).reply(() => {

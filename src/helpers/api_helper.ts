@@ -7,14 +7,11 @@ axios.defaults.baseURL = "http://localhost:8081";
 
 // content type
 axios.defaults.headers.post["Content-Type"] = "application/json";
-// content type
-// let authUser: any = (localStorage.getItem("authUser"));
+axios.defaults.headers.post["Content-Type"] = "multipart/form-data";
 
 // intercepting to capture errors
 axios.interceptors.response.use(
   function (response: any) {
-    console.log("in api helper");
-    console.log(response);
     const formattedResponse = { data: response.data, status: response.status };
 
     return response.data ? formattedResponse : response;
@@ -51,9 +48,19 @@ axios.interceptors.response.use(
  */
 const setAuthorization = () => {
   const ecommerce_user_token = Cookies.get(KDM_ECOMMERCE_USER_JWT_TOKEN);
-
   axios.defaults.headers.common["Authorization"] =
     "Bearer " + ecommerce_user_token;
+};
+
+const containsFiles = (data: any) => {
+  if (typeof data === "object" && data !== null) {
+    for (const key in data) {
+      if (data[key] instanceof File) {
+        return true;
+      }
+    }
+  }
+  return false;
 };
 
 class APIClient {
@@ -89,8 +96,14 @@ class APIClient {
    * post given data to url
    */
   create = (url: any, data: any) => {
-    const res = axios.post(url, data);
+    const filesIncluded = containsFiles(data);
 
+    const contentType = filesIncluded
+      ? "multipart/form-data"
+      : "application/json";
+    axios.defaults.headers.post["Content-Type"] = contentType;
+
+    const res = axios.post(url, data);
     return res;
   };
   /**

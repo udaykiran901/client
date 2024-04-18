@@ -39,14 +39,55 @@ export const DELETE_PROJECT = "/delete/project";
 export const DELETE_MAIL = "/mail/delete";
 
 //mine
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 //auth
 export const ECOMMERCE_USER_REGISTER = "/ecommerce/user/register";
 export const ECOMMERCE_USER_LOGIN = "/ecommerce/user/login";
 export const ECOMMERCE_ADD_MATERIAL_TO_CART = "/ecommerce/addtocart";
+export const ON_GET_MATERIALS_PARTIAL_DATA = "/ecommerce/get-partial-data";
+
 //cart
 export const GET_CART = "/ecommerce/getCart";
 export const DELETE_CART = "/ecommerce/delete-cart";
 
 //BD Module
 export const REQUEST_CALLBACK = "/bd/on-request-callback";
+export const ON_SUBSCRIBE = "/bd/subscribe";
+// export const ON_ADDING_NEW_PRODUCT = "/bd/adding-new-product";
+export const ON_ADDING_NEW_PRODUCT = "/bd/adding-new-product";
+export const GET_PRODUCT_NAME_ID = "/bd/name-id";
+export const ADD_PARAM = "/bd/add-param";
+
+//HR and Admin
+export const GET_ROLES = "/hr-admin/get-roles";
+export const GET_EMPLOYEES = "/hr-admin/get-employees";
+export const GET_BRANCHES = "/hr-admin/get-branch";
+export const GET_DEPARTMENTS = "/hr-admin/get-departments";
+export const GET_ACCESS_KEYS = "/hr-admin/get-accesskeys";
+export const REGISTER_NEW_EMPLOYEE = "/hr-admin/register-employee";
+
+//jobs
+
+export const GET_JOB_LIST = "/jobs";
+export const DELETE_JOB_LIST = "/delete/job";
+export const ADD_NEW_JOB_LIST = "/job/add";
+export const UPDATE_JOB_LIST = "/job/update";
+export const GET_JOB_GRID = "/job-grid";
+
+//job condidate list
+export const GET_CANDIDATE0_LIST = "/condidate-list";
+//Apply Jobs
+export const GET_APPLY_JOB = "/jobApply";
+export const DELETE_APPLY_JOB = "/delete/applyjob";
+
+//Employee
+export const EMPLOYEE_LOGIN = "/employee/login";

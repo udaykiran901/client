@@ -6,6 +6,8 @@ export const initialState = {
   loading: false,
   isUserLogout: false,
   errorMsg: false, // for error
+  userEmail: null,
+  userMobile: null,
 };
 
 const loginSlice = createSlice({
@@ -24,7 +26,6 @@ const loginSlice = createSlice({
       state.errorMsg = true;
     },
     resetLoginFlag(state) {
-      // state.error = null;
       state.error = "";
       state.loading = false;
       state.errorMsg = false;

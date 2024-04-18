@@ -108,13 +108,10 @@ const Navbar = () => {
                 <NavLink href="#team">Team</NavLink>
               </li>
               <li className="nav-item">
-                {/* <NavLink href="#services">Services</NavLink> */}
-                <NavLink>
-                  <Link to={"/#services"}>Services</Link>
-                </NavLink>
+                <NavLink href={"#services"}>Services</NavLink>
               </li>
               <li className="nav-item">
-                <NavLink href="#faqs">FAQs</NavLink>
+                <NavLink href="#careers">Careers</NavLink>
               </li>
             </Scrollspy>
 

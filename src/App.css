@@ -81,3 +81,18 @@ body::-webkit-scrollbar-thumb {
 ::-webkit-scrollbar-thumb {
   background: transparent;
 }
+
+/* mine */
+input[readonly] {
+  background-color: #f4f4f4;
+  color: #000;
+  cursor: not-allowed;
+}
+
+.z-0 {
+  z-index: 1;
+}
+
+.z-999 {
+  z-index: 999;
+}

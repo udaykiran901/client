@@ -3,33 +3,24 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 // Reactstrap
-import { Row, Col, Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
+import { Row, Col, Dropdown, DropdownMenu } from "reactstrap";
 
 // Import menuDropdown
-import LanguageDropdown from "../../Components/Common/LanguageDropdown";
-import NotificationDropDown from "../../Components/CommonForBoth/NotificationDropDown";
-import ProfileMenu from "../../Components/CommonForBoth/TopBarDropDown/ProfileMenu";
-import megamenuImg from "../../assets/images/megamenu-img.png";
 
-// import images
-import github from "../../assets/images/brands/github.png";
-import bitbucket from "../../assets/images/brands/bitbucket.png";
-import dribbble from "../../assets/images/brands/dribbble.png";
-import dropbox from "../../assets/images/brands/dropbox.png";
-import mail_chimp from "../../assets/images/brands/mail_chimp.png";
-import slack from "../../assets/images/brands/slack.png";
+import NotificationDropDown from "../../Components/CommonForBoth/NotificationDropDown";
+
+import megamenuImg from "../../assets/images/megamenu-img.png";
 
 import logo from "../../assets/images/logo.svg";
 import logoLightSvg from "../../assets/images/logo-light.svg";
 
 //i18n
 import { withTranslation } from "react-i18next";
+import EmployeeProfileMenu from "Components/CommonForBoth/TopBarDropDown/EmployeeProfileMenu";
 
 const Header = (props: any) => {
-
   const [search, setsearch] = useState(false);
   const [megaMenu, setmegaMenu] = useState(false);
-  const [socialDrp, setsocialDrp] = useState(false);
 
   const toggleFullscreen = () => {
     let document: any = window.document;
@@ -80,7 +71,6 @@ const Header = (props: any) => {
     }
   }
 
-
   return (
     <React.Fragment>
       <header id="page-topbar">
@@ -108,7 +98,7 @@ const Header = (props: any) => {
             >
               <i className="fa fa-fw fa-bars" />
             </button>
-            <form className="app-search d-none d-lg-block">
+            {/* <form className="app-search d-none d-lg-block">
               <div className="position-relative">
                 <input
                   type="text"
@@ -117,7 +107,7 @@ const Header = (props: any) => {
                 />
                 <span className="bx bx-search-alt" />
               </div>
-            </form>
+            </form> */}
 
             <Dropdown
               className="dropdown-mega d-none d-lg-block ms-2"
@@ -126,10 +116,10 @@ const Header = (props: any) => {
                 setmegaMenu(!megaMenu);
               }}
             >
-              <DropdownToggle className="btn header-item " caret tag="button">
+              {/* <DropdownToggle className="btn header-item " caret tag="button">
                 {" "}
                 {props.t("Mega Menu")} <i className="mdi mdi-chevron-down" />
-              </DropdownToggle>
+              </DropdownToggle> */}
               <DropdownMenu className="dropdown-megamenu">
                 <Row>
                   <Col sm={8}>
@@ -303,66 +293,6 @@ const Header = (props: any) => {
               </div>
             </div>
 
-            <LanguageDropdown />
-
-            <Dropdown
-              className="d-none d-lg-inline-block ms-1"
-              isOpen={socialDrp}
-              toggle={() => setsocialDrp(!socialDrp)}
-            >
-              <DropdownToggle
-                className="btn header-item noti-icon "
-                tag="button"
-              >
-                <i className="bx bx-customize" />
-              </DropdownToggle>
-              <DropdownMenu className="dropdown-menu-lg dropdown-menu-end">
-                <div className="px-lg-2">
-                  <Row className="no-gutters">
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={github} alt="Github" />
-                        <span>GitHub</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={bitbucket} alt="bitbucket" />
-                        <span>Bitbucket</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={dribbble} alt="dribbble" />
-                        <span>Dribbble</span>
-                      </Link>
-                    </Col>
-                  </Row>
-
-                  <Row className="no-gutters">
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={dropbox} alt="dropbox" />
-                        <span>Dropbox</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={mail_chimp} alt="mail_chimp" />
-                        <span>Mail Chimp</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={slack} alt="slack" />
-                        <span>Slack</span>
-                      </Link>
-                    </Col>
-                  </Row>
-                </div>
-              </DropdownMenu>
-            </Dropdown>
-
             <div className="dropdown d-none d-lg-inline-block ms-1">
               <button
                 type="button"
@@ -378,13 +308,13 @@ const Header = (props: any) => {
 
             <NotificationDropDown />
 
-            <ProfileMenu />
+            <EmployeeProfileMenu />
 
             <div className="dropdown d-inline-block">
               <button
                 type="button"
                 className="btn header-item noti-icon right-bar-toggle"
-                onClick={props.toggleCanvas}
+                // onClick={props.toggleCanvas}
               >
                 <i className="bx bx-cog bx-spin" />
               </button>
@@ -395,6 +325,5 @@ const Header = (props: any) => {
     </React.Fragment>
   );
 };
-
 
 export default withTranslation()(Header);

@@ -16,11 +16,38 @@ import EcommerceCart from "pages/Ecommerce/EcommerceCart";
 import EcommerceCheckout from "pages/Ecommerce/EcommerceCheckout";
 import UserLoginForm from "../pages/Authentication/UserLoginForm";
 import UserRegister from "pages/Authentication/UserRegister";
-// import UserLoginForm from "pages/Authentication/UserLoginForm";
+import AppLogin from "pages/Authentication/AppLogin";
 
-// const authProtectedRoutes = [
-//   //Ecommerce
-// ];
+import AddEmp from "forms/AddEmp";
+import Profile from "pages/Dashboard";
+import EmpList from "pages/HRandAdmin/EmpList";
+import AddProduct from "forms/AddProduct";
+
+//jobs
+import JobList from "pages/JobPages/JobList";
+import ApplyJobs from "pages/JobPages/ApplyJobs";
+import JobGrid from "pages/JobPages/JobGrid";
+import JobDetails from "pages/JobPages/JobDetails";
+import JobCategories from "pages/JobPages/JobCategories";
+import CandidateList from "pages/JobPages/CandidateList";
+import CandidateOverview from "pages/JobPages/CandidateOverview";
+import AddParam from "forms/AddParam";
+
+const BDRoutes = [
+  { path: "/bd/product", component: <UserLoginForm /> },
+  { path: "/bd/customer", component: <UserLoginForm /> },
+  { path: "/bd/orders-list", component: <UserLoginForm /> },
+  { path: "/bd/add-product", component: <AddProduct /> },
+  { path: "/bd/add-param", component: <AddParam /> },
+];
+
+const HRandAdminRoutes = [
+  { path: "/hr/add-emp", component: <AddEmp /> },
+  { path: "/hr/emp-list", component: <EmpList /> },
+  { path: "/profile", component: <Profile /> },
+  { path: "/hr/job-list", component: <JobList /> },
+  // { path: "/hr/job-overview", component: <JobDetails /> },
+];
 
 const publicRoutes = [
   { path: "/ecommerce/login", component: <UserLoginForm /> },
@@ -38,7 +65,14 @@ const publicRoutes = [
 
   { path: "/ecommerce-cart", component: <EcommerceCart /> },
   { path: "/ecommerce-checkout", component: <EcommerceCheckout /> },
+  { path: "/app", component: <AppLogin /> },
+
+  //jobs
+  { path: "/job-apply", component: <ApplyJobs /> },
+  { path: "/job-grid", component: <JobGrid /> },
+  { path: "/job-details", component: <JobDetails /> },
+  { path: "/job-categories", component: <JobCategories /> },
+  { path: "/candidate-list", component: <CandidateList /> },
+  { path: "/candidate-overview", component: <CandidateOverview /> },
 ];
-// export { authProtectedRoutes, publicRoutes };
-export { publicRoutes };
-//
+export { BDRoutes, publicRoutes, HRandAdminRoutes };

@@ -1,24 +1,41 @@
-import React from "react"
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Table } from "reactstrap"
+import React from "react";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Table,
+} from "reactstrap";
 
 // Image
-import img7 from "../../../assets/images/product/img-7.png"
-import img4 from "../../../assets/images/product/img-4.png"
+import img7 from "../../../assets/images/product/img-7.png";
+import img4 from "../../../assets/images/product/img-4.png";
 
 const EcommerenceOrdersModal = (props?: any) => {
-
   const { isOpen, toggle, editDetails } = props;
   return (
-    <Modal isOpen={isOpen} role="dialog" autoFocus={true} centered={true} className="exampleModal" tabIndex={-1} toggle={toggle} >
+    <Modal
+      isOpen={isOpen}
+      role="dialog"
+      autoFocus={true}
+      centered={true}
+      className="exampleModal"
+      tabIndex={-1}
+      toggle={toggle}
+    >
       <div className="modal-content">
         <ModalHeader toggle={toggle}>
-          <h5 className="modal-title">Order Details</h5></ModalHeader>
+          <h5 className="modal-title">Order Details</h5>
+        </ModalHeader>
         <ModalBody>
           <p className="mb-2">
-            Product id: <span className="text-primary">{editDetails?.orderId}</span>
+            Product id:{" "}
+            <span className="text-primary">{editDetails?.orderId}</span>
           </p>
           <p className="mb-4">
-            Billing Name: <span className="text-primary">{editDetails?.billingName}</span>
+            Billing Name:{" "}
+            <span className="text-primary">{editDetails?.billingName}</span>
           </p>
 
           <div className="table-responsive">
@@ -86,11 +103,13 @@ const EcommerenceOrdersModal = (props?: any) => {
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button type="button" color="secondary" onClick={toggle}>Close</Button>
+          <Button type="button" color="secondary" onClick={toggle}>
+            Close
+          </Button>
         </ModalFooter>
       </div>
     </Modal>
   );
-}
+};
 
-export default EcommerenceOrdersModal
+export default EcommerenceOrdersModal;

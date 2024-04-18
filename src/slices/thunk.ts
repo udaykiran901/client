@@ -18,3 +18,15 @@ export * from "./e-commerence/thunk";
 
 //BD
 export * from "./BD/thunk";
+
+//HR and Admin
+export * from "./HRandAdmin/thunk";
+
+//Employee
+export * from "./Employee/thunk";
+
+//Jobs
+export * from "./jobs/thunk";
+
+//Current User
+export * from "./CurrentUser/thunk";

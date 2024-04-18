@@ -12,6 +12,8 @@ import RoadMap from "./RoadMap/road-map";
 import Blog from "./OurServices/blog";
 // import FAQs from "./Faqs/FAQs";
 import Footer from "./Footer/footer";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 import { ToastContainer } from "react-toastify";
 
@@ -24,22 +26,60 @@ import {
   Row,
   ModalBody,
   InputGroup,
+  Form,
+  FormGroup,
+  FormFeedback,
+  Label,
 } from "reactstrap";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { KDM_ECOMMERCE_USER_JWT_TOKEN } from "common/tokens";
+import { useDispatch } from "react-redux";
+import { onSubscribe } from "slices/thunk";
+import { toggleSubscribeModal } from "slices/BD/reducer";
+import { createSelector } from "reselect";
+import { useSelector } from "react-redux";
 
 const Welcome = () => {
   //meta title
   document.title = "Home | KDM Engineers Group";
 
-  const [subScribeModal, setSubScribeModal] = useState<boolean>(false);
+  // const [subScribeModal, setSubScribeModal] = useState<boolean>(false);
+  // const [gmail, setGmail] = useState<string>("");
+  const dispatch: any = useDispatch();
+
+  const bdModuleState = createSelector(
+    (state: any) => state.bdModule,
+    (bdModule) => ({
+      showSubscribeModal: bdModule.showSubscribeModal,
+    })
+  );
+
+  const { showSubscribeModal } = useSelector(bdModuleState);
 
   useEffect(() => {
     setTimeout(() => {
       const token = Cookies.get(KDM_ECOMMERCE_USER_JWT_TOKEN);
-      setSubScribeModal(token ? false : true);
+      if (!token) {
+        dispatch(toggleSubscribeModal());
+      }
     }, 2000);
   }, []);
+
+  // const handleOnSubscribe = () => {
+  //   console.log(gmail);
+  // };
+
+  const validation: any = useFormik({
+    initialValues: {
+      email: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email().required("Your mail is required"),
+    }),
+    onSubmit: (values: any) => {
+      dispatch(onSubscribe(values));
+    },
+  });
 
   return (
     <React.Fragment>
@@ -76,18 +116,18 @@ const Welcome = () => {
 
       {/* subscribe ModalHeader */}
       <Modal
-        isOpen={subScribeModal}
+        isOpen={showSubscribeModal}
         autoFocus={true}
         centered
         toggle={() => {
-          setSubScribeModal(!subScribeModal);
+          dispatch(toggleSubscribeModal());
         }}
       >
         <div>
           <ModalHeader
             className="border-bottom-0"
             toggle={() => {
-              setSubScribeModal(!subScribeModal);
+              dispatch(toggleSubscribeModal());
             }}
           />
         </div>
@@ -116,18 +156,30 @@ const Welcome = () => {
                   informed!
                 </p>
 
-                <InputGroup className="rounded bg-light">
-                  <Input
-                    type="email"
-                    className="bg-transparent border-0"
-                    placeholder="Enter Email address"
-                  />
-                  <Button color="primary" type="button" id="button-addon2">
-                    {" "}
-                    <i className="bx bxs-paper-plane"></i>{" "}
-                  </Button>
-                </InputGroup>
+                <Form onSubmit={validation.handleSubmit}>
+                  <InputGroup className="rounded bg-light">
+                    <Input
+                      type="email"
+                      id="email"
+                      placeholder="Enter your email"
+                      name="email"
+                      value={validation.values.email}
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      invalid={
+                        validation.touched.email && validation.errors.email
+                          ? true
+                          : false
+                      }
+                    />
+
+                    <Button color="primary" type="submit" id="button-addon2">
+                      <i className="bx bxs-paper-plane"></i>
+                    </Button>
+                  </InputGroup>
+                </Form>
               </Col>
+              <ToastContainer />
             </Row>
           </div>
         </ModalBody>

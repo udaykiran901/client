@@ -15,12 +15,17 @@ import {
   getCart as getCartApi,
   deleteCart as deleteCartApi,
   addToCart as addToCartAPI,
+  onGettingProductNameId as onGettingProductNameIdAPI,
 } from "../../helpers/fakebackend_helper";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  GET_PRODUCT_NAME_ID,
+  ON_GET_MATERIALS_PARTIAL_DATA,
+} from "../../helpers/url_helper";
 
 export const getProducts = createAsyncThunk(
-  "ecommerce/getProducts",
+  ON_GET_MATERIALS_PARTIAL_DATA,
   async () => {
     try {
       const response = await getProductsApi();
@@ -163,9 +168,9 @@ export const getShops = createAsyncThunk("ecommerence/getshops", async () => {
 export const getCart = createAsyncThunk("/ecommerce/getCart", async () => {
   try {
     const response = await getCartApi();
-
     return response.data;
   } catch (error) {
+    console.log(error);
     return error;
   }
 });
@@ -191,12 +196,22 @@ export const addProductToCart = createAsyncThunk(
     try {
       const response = await addToCartAPI(cart);
       toast.success(response.data.message, { autoClose: 5000 });
-
-      console.log(response);
-
       return response;
     } catch (error: any) {
       toast.error(error.data.message, { autoClose: 5000 });
+      return error;
+    }
+  }
+);
+
+export const getProductsNameId = createAsyncThunk(
+  GET_PRODUCT_NAME_ID,
+  async () => {
+    try {
+      const response = await onGettingProductNameIdAPI();
+      console.log(response);
+      return response;
+    } catch (error) {
       return error;
     }
   }

@@ -3,11 +3,10 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 // reactstrap
-import { Row, Col, Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
+import { Row, Col, Dropdown, DropdownMenu } from "reactstrap";
+import NotificationDropDown from "Components/CommonForBoth/NotificationDropDown";
 
 // Import menuDropdown
-import LanguageDropdown from "../../Components/Common/LanguageDropdown";
-import ProfileMenu from "../../Components/CommonForBoth/TopBarDropDown/ProfileMenu";
 
 import megamenuImg from "../../assets/images/megamenu-img.png";
 import logo from "../../assets/images/logo.svg";
@@ -15,21 +14,13 @@ import logoLight from "../../assets/images/logo-light.png";
 import logoLightSvg from "../../assets/images/logo-light.svg";
 import logoDark from "../../assets/images/logo-dark.png";
 
-// import images
-import github from "../../assets/images/brands/github.png";
-import bitbucket from "../../assets/images/brands/bitbucket.png";
-import dribbble from "../../assets/images/brands/dribbble.png";
-import dropbox from "../../assets/images/brands/dropbox.png";
-import mail_chimp from "../../assets/images/brands/mail_chimp.png";
-import slack from "../../assets/images/brands/slack.png";
-
 //i18n
 import { withTranslation } from "react-i18next";
+import EmployeeProfileMenu from "Components/CommonForBoth/TopBarDropDown/EmployeeProfileMenu";
 
 const Header = (props: any) => {
   const [menu, setMenu] = useState<any>(false);
   const [isSearch, setSearch] = useState<any>(false);
-  const [socialDrp, setsocialDrp] = useState<any>(false);
 
   function toggleFullscreen() {
     let document: any = window.document;
@@ -44,9 +35,10 @@ const Header = (props: any) => {
       } else if (document.documentElement.mozRequestFullScreen) {
         document.documentElement.mozRequestFullScreen();
       } else if (document.documentElement.webkitRequestFullscreen) {
-        document.documentElement.webkitRequestFullscreen(
+        document.documentElement
+          .webkitRequestFullscreen
           //   Element.ALLOW_KEYBOARD_INPUT
-        );
+          ();
       }
     } else {
       if (document.cancelFullScreen) {
@@ -94,29 +86,11 @@ const Header = (props: any) => {
               <i className="fa fa-fw fa-bars" />
             </button>
 
-            <form className="app-search d-none d-lg-block">
-              <div className="position-relative">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search..."
-                />
-                <span className="bx bx-search-alt" />
-              </div>
-            </form>
-
             <Dropdown
               className="dropdown-mega d-none d-lg-block ms-2"
               isOpen={menu}
               toggle={() => setMenu(!menu)}
             >
-              <DropdownToggle
-                className="btn header-item "
-                caret
-                tag="button"
-              >
-                {props.t("Mega Menu")} <i className="mdi mdi-chevron-down" />
-              </DropdownToggle>
               <DropdownMenu className="dropdown-megamenu">
                 <Row>
                   <Col sm={8}>
@@ -291,68 +265,6 @@ const Header = (props: any) => {
               </div>
             </div>
 
-            <LanguageDropdown />
-
-            <Dropdown
-              className="d-none d-lg-inline-block ms-1"
-              isOpen={socialDrp}
-              toggle={() => {
-                setsocialDrp(!socialDrp);
-              }}
-            >
-              <DropdownToggle
-                className="btn header-item noti-icon "
-                caret
-                tag="button"
-              >
-                <i className="bx bx-customize" />
-              </DropdownToggle>
-              <DropdownMenu className="dropdown-menu-lg dropdown-menu-end">
-                <div className="px-lg-2">
-                  <Row className="no-gutters">
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={github} alt="Github" />
-                        <span>GitHub</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={bitbucket} alt="bitbucket" />
-                        <span>Bitbucket</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={dribbble} alt="dribbble" />
-                        <span>Dribbble</span>
-                      </Link>
-                    </Col>
-                  </Row>
-                  <Row className="no-gutters">
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={dropbox} alt="dropbox" />
-                        <span>Dropbox</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={mail_chimp} alt="mail_chimp" />
-                        <span>Mail Chimp</span>
-                      </Link>
-                    </Col>
-                    <Col>
-                      <Link className="dropdown-icon-item" to="#">
-                        <img src={slack} alt="slack" />
-                        <span>Slack</span>
-                      </Link>
-                    </Col>
-                  </Row>
-                </div>
-              </DropdownMenu>
-            </Dropdown>
-
             <div className="dropdown d-none d-lg-inline-block ms-1">
               <button
                 type="button"
@@ -366,9 +278,9 @@ const Header = (props: any) => {
               </button>
             </div>
 
-            {/* <NotificationDropdown /> */}
+            <NotificationDropDown />
 
-            <ProfileMenu />
+            <EmployeeProfileMenu />
 
             <div className="dropdown d-inline-block">
               <button
@@ -386,4 +298,4 @@ const Header = (props: any) => {
   );
 };
 
-export default (withTranslation()(Header));
+export default withTranslation()(Header);

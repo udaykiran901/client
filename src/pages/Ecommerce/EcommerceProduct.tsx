@@ -17,7 +17,7 @@ import classnames from "classnames";
 import { isEmpty } from "lodash";
 
 // import { Discount, EcoAction, FilterClothes, Product } from "./type";
-import { EcoAction, Product } from "./type";
+import { EcoAction, ProductPartialInfo } from "./type";
 
 import Spinners from "Components/Common/Spinner";
 import { handleSearchData } from "Components/Common/SearchFile";
@@ -29,7 +29,7 @@ import StarRatings from "react-star-ratings";
 import "nouislider/distribute/nouislider.css";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../Components/Common/Breadcrumb";
+// import Breadcrumbs from "../../Components/Common/Breadcrumb";
 
 //Import data
 // import { discountData } from "../../common/data";
@@ -52,91 +52,41 @@ const EcommerceProducts = (props: any) => {
   const selectProperties = createSelector(
     (state: EcoAction) => state.ecommerce,
     (ecommerce) => ({
-      products: ecommerce.products,
       loading: ecommerce.loading,
+      productPartialInfo: ecommerce.productPartialInfo,
     })
   );
 
-  const { products, loading } = useSelector(selectProperties);
+  const { productPartialInfo, loading } = useSelector(selectProperties);
 
   const [isLoading, setLoading] = useState(loading);
   const { navigate } = props.router;
-  const [productList, setProductList] = useState<Product[]>();
-  const [discountDataList, setDiscountDataList] = useState<any>([]);
+  const [productList, setProductList] = useState<ProductPartialInfo[]>();
 
   useEffect(() => {
-    setProductList(products);
-  }, [products]);
-
-  useEffect(() => {
-    setDiscountDataList(discountDataList);
-  }, [discountDataList]);
+    setProductList(productPartialInfo);
+  }, [productPartialInfo]);
 
   useEffect(() => {
     dispatch(onGetProducts());
   }, [dispatch]);
 
-  // const onSelectDiscount = (e: any) => {
-  //   const { value } = e.target;
-
-  //   if (value !== null) {
-  //     const filteredProducts = (products || [])?.filter(
-  //       (product: any) => product.offer.toString() === value.toString()
-  //     );
-  //     setProductList(filteredProducts);
-  //   } else {
-  //     setProductList(products);
-  //   }
-  // };
-  //Product Filter with noUi slider
-  // const [minCost, setMinCost] = useState<number>(0);
-  // const [maxCost, setMaxCost] = useState<number>(500);
-
-  // const onUpdate = useCallback(
-  //   (value: any) => {
-  //     const filterData = (products || [])?.filter((i: Product) => {
-  //       return i.basePrice >= minCost && i.basePrice <= maxCost;
-  //     });
-  //     setProductList(filterData);
-  //     setMinCost(value[0]);
-  //     setMaxCost(value[1]);
-  //   },
-  //   [minCost, maxCost, products]
-  // );
-
-  // useEffect(() => {
-  //   onUpdate([minCost, maxCost]);
-  // }, [minCost, maxCost, onUpdate]);
-
-  /*
-  on change rating checkbox method
-  */
-  // const onChangeRating = (value: any) => {
-  //   if (value !== null) {
-  //     const filteredProducts = (products || [])?.filter(
-  //       (product: Product) => product.rating === value
-  //     );
-  //     setProductList(filteredProducts);
-  //   } else {
-  //     setProductList(products);
-  //   }
-  // };
-
   // search
   const handleSearch = (ele: any) => {
     const query = ele.value.toLowerCase();
-    handleSearchData({ setState: setProductList, data: products, item: query });
+    handleSearchData({
+      setState: setProductList,
+      data: productList,
+      item: query,
+    });
   };
-
-  console.log();
-  console.log(productList?.length);
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Navbar />
         <Container>
-          <Breadcrumbs title="Ecommerce" breadcrumbItem="Products" />
+          {/* <Breadcrumbs title="Ecommerce" breadcrumbItem="Products" /> */}
           <Row>
             <Col lg={12}>
               <Row className="mb-3">
@@ -166,9 +116,9 @@ const EcommerceProducts = (props: any) => {
               ) : (
                 <>
                   <Row>
-                    {!isEmpty(productList) &&
-                      (productList || []).map(
-                        (product: Product, key: number) => (
+                    {!isEmpty(productPartialInfo) &&
+                      (productPartialInfo || []).map(
+                        (product: ProductPartialInfo, key: number) => (
                           <Col
                             className="mb-3"
                             xl={4}
@@ -214,7 +164,7 @@ const EcommerceProducts = (props: any) => {
                                   </h5>
                                   <div className="text-muted mb-3">
                                     <StarRatings
-                                      rating={product.rating}
+                                      rating={4}
                                       starRatedColor="#F1B44C"
                                       starEmptyColor="#74788d"
                                       numberOfStars={5}
@@ -228,42 +178,41 @@ const EcommerceProducts = (props: any) => {
                                       <>
                                         <span className="text-muted me-2">
                                           <small className="text-muted me-2">
-                                            <del>Rs.{product.basePrice} /-</del>
+                                            <del>
+                                              Rs.{product.base_price} /-
+                                            </del>
                                           </small>
                                         </span>
                                         <span>
                                           Rs.
-                                          {product.basePrice -
-                                            (product.basePrice *
+                                          {product.base_price -
+                                            (product.base_price *
                                               product.offer) /
                                               100}
                                           /-
                                         </span>
                                       </>
                                     ) : (
-                                      <span>Rs.{product.basePrice}/-</span>
+                                      <span>Rs.{product.base_price}/-</span>
                                     )}
                                   </h6>
                                   <p className="text-success">
                                     Benifits of this Test
                                   </p>
 
-                                  {product.additionalInfo &&
-                                    product.additionalInfo.map(
-                                      (info, index) => (
-                                        <div key={index}>
-                                          <p className="text-muted">
-                                            <i
-                                              className={classnames(
-                                                "fa fa-caret-right",
-                                                "font-size-16 align-middle text-primary me-2"
-                                              )}
-                                            />
-                                            {Object.keys(info)[0]}
-                                          </p>
-                                        </div>
-                                      )
-                                    )}
+                                  {product.features.map((info, index) => (
+                                    <div key={index}>
+                                      <p className="text-muted">
+                                        <i
+                                          className={classnames(
+                                            "fa fa-caret-right",
+                                            "font-size-16 align-middle text-primary me-2"
+                                          )}
+                                        />
+                                        {info}
+                                      </p>
+                                    </div>
+                                  ))}
                                 </div>
                               </div>
                             </div>

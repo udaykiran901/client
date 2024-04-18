@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 import {
   getProducts,
   getProductDetail,
@@ -14,6 +15,7 @@ import {
   getCart,
   deleteCart,
   addProductToCart,
+  getProductsNameId,
 } from "./thunk";
 
 import { productsData } from "common/data/ecommerce";
@@ -24,14 +26,19 @@ import {
   ProductCustomer,
   ProductOrder,
   cart,
-  NewCart,
+  ProductPartialInfo,
 } from "pages/Ecommerce/type";
 
 export interface ModalType {
   isSuccessModal: boolean;
-  modalStatus: boolean; //stiores boolean value if it is set to true the modal has to display
-  modalHeading: string; //stores modal Heading
-  modalDescription: string; // stores modal Description
+  modalStatus: boolean;
+  modalHeading: string;
+  modalDescription: string;
+}
+
+interface ProductNameId {
+  name: string;
+  id: string;
 }
 
 interface InitialState {
@@ -44,7 +51,8 @@ interface InitialState {
   error: object;
   loading?: boolean;
   modal: ModalType;
-  newCart: NewCart[];
+  productPartialInfo: ProductPartialInfo[];
+  productNameId: ProductNameId[];
 }
 
 export const loginWarningModal: ModalType = {
@@ -65,7 +73,8 @@ export const initialState: InitialState = {
   error: {},
   loading: true,
   modal: {} as ModalType,
-  newCart: [],
+  productPartialInfo: [],
+  productNameId: [],
 };
 
 const EcommerceSlice = createSlice({
@@ -96,12 +105,19 @@ const EcommerceSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getProducts.fulfilled, (state: any, action: any) => {
-      state.products = action.payload;
+      console.log(action);
+      state.productPartialInfo = action.payload.products;
       state.loading = true;
     });
 
     builder.addCase(getProducts.rejected, (state: any, action: any) => {
       state.error = action.payload ? action.payload?.error : null;
+    });
+
+    builder.addCase(getProductsNameId.fulfilled, (state: any, action: any) => {
+      console.log(action);
+      // state.productNameId = action.payload.products;
+      // state.loading = true;
     });
 
     builder.addCase(getProductDetail.fulfilled, (state: any, action: any) => {
@@ -237,9 +253,26 @@ const EcommerceSlice = createSlice({
     });
 
     //i defined them
-    builder.addCase(addProductToCart.fulfilled, (state, payload) => {
-      // state.modal = successAddToCartModal;
-      console.log(payload);
+    builder.addCase(addProductToCart.fulfilled, (state, action) => {
+      if (action.payload.status === 200) {
+        const { product_id, cart_id } = action.payload.data.cartItem;
+        //fetching product info from products array
+        const addedCartItem = productsData.filter(
+          (eachProduct) => eachProduct.id === product_id
+        );
+
+        const formattedCartItem: cart = {
+          id: addedCartItem[0].id,
+          img: addedCartItem[0].image,
+          name: addedCartItem[0].name,
+          category: addedCartItem[0].category,
+          basePrice: addedCartItem[0].basePrice,
+          isOffer: addedCartItem[0].isOffer || false,
+          offer: addedCartItem[0].offer,
+          cart_id: cart_id,
+        };
+        state.cart?.push(formattedCartItem);
+      }
     });
 
     builder.addCase(addProductToCart.rejected, (state: any, action: any) => {

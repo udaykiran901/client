@@ -9,8 +9,12 @@ import AccountReducer from "./auth/register/reducer";
 
 //Ecommerse
 import EcommerenceReducer from "./e-commerence/reducer";
+import HRandAdminReducer from "./HRandAdmin/reducer";
 
 import BDslice from "./BD/reducer";
+import EmployeeSlice from "./Employee/reducer";
+import CurrentUserSlice from "./CurrentUser/reducer";
+import JobsReducer from "./jobs/reducer";
 
 const rootReducer = combineReducers({
   Layout: LayoutReducer,
@@ -20,6 +24,10 @@ const rootReducer = combineReducers({
   Account: AccountReducer,
   ecommerce: EcommerenceReducer,
   bdModule: BDslice,
+  hrAndAdmin: HRandAdminReducer,
+  EmployeeSlice: EmployeeSlice,
+  CurrentUserSlice: CurrentUserSlice,
+  jobs: JobsReducer,
 });
 
 export default rootReducer;

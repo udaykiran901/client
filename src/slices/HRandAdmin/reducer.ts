@@ -43,7 +43,7 @@ const HRandAdmin = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getRoles.fulfilled, (state: any, action: any) => {
       state.roles = action.payload;
-      state.loading = true;
+      // state.loading = true;
     });
 
     builder.addCase(getRoles.rejected, (state: any, action: any) => {
@@ -148,6 +148,26 @@ const HRandAdmin = createSlice({
     // builder.addCase(onRegisterEmployee.fulfilled, (state: any, action: any) => {
     //   console.log("hello world");
     // });
+
+    // builder.addMatcher(
+    //   (action) => action.type.endsWith("/pending"),
+    //   (state, action) => {
+    //     state.loading = true;
+    //   }
+    // );
+
+    // builder.addMatcher(
+    //   (action) => action.type.endsWith("/fulfilled"),
+    //   (state, action) => {
+    //     state.loading = false;
+    //   }
+    // );
+    // builder.addMatcher(
+    //   (action) => action.type.endsWith("/rejected"),
+    //   (state, action) => {
+    //     state.loading = false;
+    //   }
+    // );
   },
 });
 

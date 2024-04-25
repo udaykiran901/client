@@ -3,30 +3,21 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getProducts,
   getProductDetail,
-  getOrders,
-  deleteOrder,
-  addNewOrder,
-  updateOrder,
-  getCustomers,
-  getShops,
-  deleteCustomer,
-  updateCustomer,
-  addNewCustomer,
   getCart,
   deleteCart,
   addProductToCart,
-  getProductsNameId,
+  createOrderOnServer,
 } from "./thunk";
 
-import { productsData } from "common/data/ecommerce";
-
 import {
+  BackendParams,
   EComShop,
   Product,
   ProductCustomer,
   ProductOrder,
-  cart,
   ProductPartialInfo,
+  BackendProductDes,
+  CartProduct,
 } from "pages/Ecommerce/type";
 
 export interface ModalType {
@@ -36,10 +27,7 @@ export interface ModalType {
   modalDescription: string;
 }
 
-interface ProductNameId {
-  name: string;
-  id: string;
-}
+export interface BackendProductInfo {}
 
 interface InitialState {
   products?: Product[];
@@ -47,12 +35,14 @@ interface InitialState {
   orders?: ProductOrder[];
   customers?: ProductCustomer[];
   shops?: EComShop[];
-  cart?: cart[];
+  cart?: CartProduct[];
   error: object;
   loading?: boolean;
   modal: ModalType;
   productPartialInfo: ProductPartialInfo[];
-  productNameId: ProductNameId[];
+  // productNameId: ProductNameId[];
+  backendParams: BackendParams[];
+  backendProductDes: BackendProductDes;
 }
 
 export const loginWarningModal: ModalType = {
@@ -63,6 +53,14 @@ export const loginWarningModal: ModalType = {
     "To access this feature, please log in to your account. If you don't have an account yet, you can create a free account with KDM Engineers Group.",
 };
 
+export const addToCartWarningModal: ModalType = {
+  isSuccessModal: false,
+  modalStatus: true,
+  modalHeading: "No Product Selected",
+  modalDescription:
+    "To add a product to your cart, please select at least one product. Browse our collection and choose the items you'd like to purchase.",
+};
+
 export const initialState: InitialState = {
   products: [],
   productDetail: [],
@@ -71,10 +69,12 @@ export const initialState: InitialState = {
   shops: [],
   cart: [],
   error: {},
-  loading: true,
+  loading: false,
   modal: {} as ModalType,
   productPartialInfo: [],
-  productNameId: [],
+
+  backendParams: [],
+  backendProductDes: {} as BackendProductDes,
 };
 
 const EcommerceSlice = createSlice({
@@ -103,191 +103,99 @@ const EcommerceSlice = createSlice({
       state.modal.modalDescription = "";
     },
   },
+
   extraReducers: (builder) => {
     builder.addCase(getProducts.fulfilled, (state: any, action: any) => {
-      console.log(action);
       state.productPartialInfo = action.payload.products;
-      state.loading = true;
+      state.backendParams = action.payload.params;
     });
 
     builder.addCase(getProducts.rejected, (state: any, action: any) => {
       state.error = action.payload ? action.payload?.error : null;
     });
 
-    builder.addCase(getProductsNameId.fulfilled, (state: any, action: any) => {
-      console.log(action);
-      // state.productNameId = action.payload.products;
-      // state.loading = true;
-    });
-
     builder.addCase(getProductDetail.fulfilled, (state: any, action: any) => {
-      state.productDetail = action.payload;
+      state.backendParams = action.payload.params;
+      state.backendProductDes = action.payload.product;
+      state.backendProductDes.sample_count = action.payload.cartItems.length;
     });
 
     builder.addCase(getProductDetail.rejected, (state: any, action: any) => {
       state.error = action.payload ? action.payload?.error : null;
     });
 
-    builder.addCase(getOrders.fulfilled, (state: any, action: any) => {
-      state.orders = action.payload;
-      state.isOrderCreated = false;
-      state.isOrderSuccess = true;
-      state.loading = true;
-    });
-
-    builder.addCase(getOrders.rejected, (state: any, action: any) => {
-      state.error = action.payload ? action.payload?.error : null;
-      state.isOrderCreated = false;
-      state.isOrderSuccess = false;
-    });
-
-    builder.addCase(addNewOrder.fulfilled, (state: any, action: any) => {
-      state.orders.unshift(action.payload);
-      state.isOrderCreated = true;
-    });
-
-    builder.addCase(addNewOrder.rejected, (state: any, action: any) => {
-      state.error = action.payload || null;
-    });
-
-    builder.addCase(updateOrder.fulfilled, (state: any, action: any) => {
-      state.orders = state.orders.map((order: any) =>
-        order.id === action.payload.id ? { ...order, ...action.payload } : order
-      );
-    });
-
-    builder.addCase(updateOrder.rejected, (state: any, action: any) => {
-      state.error = action.payload || null;
-    });
-
-    builder.addCase(deleteOrder.fulfilled, (state: any, action: any) => {
-      state.orders = state.orders.filter(
-        (order: any) => order.id !== action.payload
-      );
-    });
-
-    builder.addCase(deleteOrder.rejected, (state: any, action: any) => {
-      state.error = action.payload.error || null;
-    });
-
-    builder.addCase(getCustomers.fulfilled, (state: any, action: any) => {
-      state.customers = action.payload;
-      state.isCustomerCreated = false;
-      state.isCustomerSuccess = true;
-      state.loading = true;
-    });
-
-    builder.addCase(getCustomers.rejected, (state: any, action: any) => {
-      state.error = action.payload ? action.payload?.error : null;
-      state.isCustomerCreated = false;
-      state.isCustomerSuccess = false;
-    });
-
-    builder.addCase(addNewCustomer.fulfilled, (state: any, action: any) => {
-      state.customers.unshift(action.payload);
-      state.isCustomerCreated = true;
-    });
-    builder.addCase(addNewCustomer.rejected, (state: any, action: any) => {
-      state.error = action.payload.error || null;
-    });
-
-    builder.addCase(updateCustomer.fulfilled, (state: any, action: any) => {
-      state.customers = state.customers.map((customer: any) =>
-        customer.id === action.payload.id
-          ? { ...customer, ...action.payload }
-          : customer
-      );
-    });
-
-    builder.addCase(updateCustomer.rejected, (state: any, action: any) => {
-      state.error = action.payload || null;
-    });
-
-    builder.addCase(deleteCustomer.fulfilled, (state: any, action: any) => {
-      state.customers = state.customers.filter(
-        (customer: any) => customer.id !== action.payload
-      );
-    });
-
-    builder.addCase(deleteCustomer.rejected, (state: any, action: any) => {
-      state.error = action.payload.error || null;
-    });
-
-    builder.addCase(getShops.fulfilled, (state: any, action: any) => {
-      state.shops = action.payload;
-      state.loading = true;
-    });
-
-    builder.addCase(getShops.rejected, (state: any, action: any) => {
-      state.error = action.payload ? action.payload?.error : null;
-    });
-
     builder.addCase(getCart.fulfilled, (state: any, action: any) => {
-      const { cartItems } = action.payload;
-
-      // Map over the cartItems and find corresponding product data
-      const updatedCartItems = cartItems.map((cartItem: any) => {
-        const pd = productsData.find(
-          (product: Product) => product.id === cartItem.product_id
-        );
-
-        // Filter only the required keys from productData
-        const filteredProductData = {
-          id: pd?.id,
-          img: pd?.image,
-          name: pd?.name,
-          category: pd?.category,
-          basePrice: pd?.basePrice,
-          isOffer: pd?.isOffer || false,
-          offer: pd?.offer || 0,
-          cart_id: cartItem.cart_id,
+      const formattedData = action.payload.data.map((eachSample) => {
+        return {
+          ...eachSample,
+          parameters: eachSample.parameters.map((eachParam) => {
+            return {
+              ...eachParam,
+              params: JSON.parse(eachParam.params),
+            };
+          }),
         };
-
-        return filteredProductData;
       });
 
-      state.cart = [...updatedCartItems];
+      state.cart = formattedData;
     });
+
     builder.addCase(getCart.rejected, (state: any, action: any) => {
       state.error = action.payload ? action.payload?.error : null;
     });
 
-    //i defined them
     builder.addCase(addProductToCart.fulfilled, (state, action) => {
-      if (action.payload.status === 200) {
-        const { product_id, cart_id } = action.payload.data.cartItem;
-        //fetching product info from products array
-        const addedCartItem = productsData.filter(
-          (eachProduct) => eachProduct.id === product_id
-        );
+      state.backendProductDes = {
+        ...state.backendProductDes,
+        sample_count: state.backendProductDes.sample_count + 1,
+      };
 
-        const formattedCartItem: cart = {
-          id: addedCartItem[0].id,
-          img: addedCartItem[0].image,
-          name: addedCartItem[0].name,
-          category: addedCartItem[0].category,
-          basePrice: addedCartItem[0].basePrice,
-          isOffer: addedCartItem[0].isOffer || false,
-          offer: addedCartItem[0].offer,
-          cart_id: cart_id,
-        };
-        state.cart?.push(formattedCartItem);
-      }
+      const updatedParams = state.backendParams.map((each: BackendParams) => {
+        return { ...each, selected: false };
+      });
+
+      state.backendParams = updatedParams;
     });
 
     builder.addCase(addProductToCart.rejected, (state: any, action: any) => {
+      console.log("rejected");
       state.error = action.payload ? action.payload?.message : null;
+    });
+
+    builder.addCase(createOrderOnServer.fulfilled, (state, action) => {
+      console.log("createOrderOnServer is fullfilled");
     });
 
     //cart
     builder.addCase(deleteCart.fulfilled, (state: any, action: any) => {
       state.cart = (state.cart || []).filter(
-        (data: any) => data.cart_id !== action.meta.arg
+        (data: CartProduct) => data.sampleId !== action.payload.data
       );
     });
+
     builder.addCase(deleteCart.rejected, (state: any, action: any) => {
       state.error = action.payload.error || null;
     });
+
+    builder.addMatcher(
+      (action) => action.type.endsWith("/pending"),
+      (state, action) => {
+        state.loading = true;
+      }
+    );
+
+    builder.addMatcher(
+      (action) => action.type.endsWith("/fulfilled"),
+      (state, action) => {
+        state.loading = false;
+      }
+    );
+    builder.addMatcher(
+      (action) => action.type.endsWith("/rejected"),
+      (state, action) => {
+        state.loading = false;
+      }
+    );
   },
 });
 

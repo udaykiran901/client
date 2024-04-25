@@ -60,7 +60,7 @@ const JobList = () => {
     })
   );
   const { jobs, loading } = useSelector(selectProperties);
-  const [isLoading, setLoading] = useState<boolean>(loading);
+  // const [isLoading, setLoading] = useState<boolean>(loading);
 
   const [modal, setModal] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -357,8 +357,8 @@ const JobList = () => {
           {/* <Breadcrumbs title="Jobs" breadcrumbItem="Jobs Lists" /> */}
           <Row>
             <Col lg={12}>
-              {isLoading ? (
-                <Spinners setLoading={setLoading} />
+              {loading ? (
+                <Spinners />
               ) : (
                 <Card>
                   <CardBody className="border-bottom">

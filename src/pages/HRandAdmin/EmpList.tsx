@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
@@ -25,14 +25,15 @@ const EmpList = () => {
     (state: any) => state.hrAndAdmin,
     (hrAndAdmin) => ({
       employees: hrAndAdmin.employees,
+      loading: hrAndAdmin.loading,
     })
   );
 
   const navigate = useNavigate();
 
-  const { employees }: any = useSelector(selectedProperties);
+  const { employees, loading }: any = useSelector(selectedProperties);
 
-  const [isLoading, setLoading] = useState<boolean>(false);
+  // const [isLoading, setLoading] = useState<boolean>(false);
 
   const dispatch = useDispatch<any>();
 
@@ -40,23 +41,23 @@ const EmpList = () => {
     dispatch(onGetEmployees());
   }, [dispatch]);
 
-  const [modal, setModal] = useState<boolean>(false);
+  // const [modal, setModal] = useState<boolean>(false);
 
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
 
-  const onClickDelete = (users: any) => {
-    // setContact(users.id);
-    setDeleteModal(true);
-  };
+  // const onClickDelete = (users: any) => {
+  //   // setContact(users.id);
+  //   setDeleteModal(true);
+  // };
 
   const handleDeleteUser = () => {
     //dispatch delete user
     setDeleteModal(false);
   };
 
-  const toggle = useCallback(() => {
-    setModal(!modal);
-  }, [modal]);
+  // const toggle = useCallback(() => {
+  //   setModal(!modal);
+  // }, [modal]);
 
   const columns = useMemo(
     () => [
@@ -204,8 +205,8 @@ const EmpList = () => {
                 className="text-danger"
                 onClick={(event: any) => {
                   event.preventDefault();
-                  const employeeData = cellProps.row.original;
-                  onClickDelete(employeeData);
+                  // const employeeData = cellProps.row.original;
+                  // onClickDelete(employeeData);
                 }}
               >
                 <i className="mdi mdi-delete font-size-18" id="deletetooltip" />
@@ -233,8 +234,8 @@ const EmpList = () => {
         <Container fluid>
           <Row>
             <Col lg="12">
-              {isLoading ? (
-                <Spinners setLoading={setLoading} />
+              {loading ? (
+                <Spinners />
               ) : (
                 <Card>
                   <CardBody>

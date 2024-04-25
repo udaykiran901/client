@@ -96,12 +96,14 @@ class APIClient {
    * post given data to url
    */
   create = (url: any, data: any) => {
+    setAuthorization();
     const filesIncluded = containsFiles(data);
 
     const contentType = filesIncluded
       ? "multipart/form-data"
       : "application/json";
     axios.defaults.headers.post["Content-Type"] = contentType;
+    console.log(data);
 
     const res = axios.post(url, data);
     return res;

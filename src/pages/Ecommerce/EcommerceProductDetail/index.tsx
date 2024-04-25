@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import withRouter from "Components/Common/withRouter";
 import { isUserLoggedin } from "../../../helpers/api_helper";
 import { ToastContainer } from "react-toastify";
-import Select from "react-select";
+import { toast } from "react-toastify";
 
 import {
   Button,
@@ -13,26 +13,12 @@ import {
   Container,
   Row,
   TabContent,
-  Table,
   TabPane,
-  Modal,
-  ModalHeader,
 } from "reactstrap";
 import classnames from "classnames";
-import { isEmpty } from "lodash";
-import { closeModal, showModal } from "slices/e-commerence/reducer";
 
-// import RecentProduct from "./RecentProducts";
-// import Reviews from "./Reviews";
-
-//Import Star Ratings
 import StarRatings from "react-star-ratings";
 
-//Import Breadcrumb
-import Breadcrumbs from "Components/Common/Breadcrumb";
-// import { useState } from "react";
-
-//Import actions
 import {
   getProductDetail as onGetProductDetail,
   addProductToCart,
@@ -41,27 +27,30 @@ import {
 //redux
 import { useSelector, useDispatch } from "react-redux";
 import { createSelector } from "reselect";
-import { EcoAction, Tests } from "../type";
+import { EcoAction, offerDetails } from "../type";
 import Navbar from "pages/Welcome/Navbar/Navbar";
-import { loginWarningModal } from "slices/e-commerence/reducer";
 import { KDM_ECOMMERCE_USER_JWT_TOKEN } from "common/tokens";
+import SelectTable from "./SelectTable";
+import Spinners from "Components/Common/Spinner";
 
 const EcommerceProductDetail = (props) => {
-  //meta title
   document.title = "Product Details | KDM Engineers Group";
   const dispatch = useDispatch<any>();
   const selectProperties = createSelector(
     (state: EcoAction) => state.ecommerce,
 
     (ecommerce) => ({
-      productDetail: ecommerce.productDetail,
-      modal: ecommerce.modal,
+      // modal: ecommerce.modal,
+      backendParams: ecommerce.backendParams,
+      backendProductDes: ecommerce.backendProductDes,
+      loading: ecommerce.loading,
     })
   );
-  const { productDetail, modal } = useSelector(selectProperties);
+
+  const { backendParams, backendProductDes, loading } =
+    useSelector(selectProperties);
+
   const params = props.router.params;
-  const [selectedTests, setSelectedTests] = useState(null) as any[];
-  const [basket, setBasket] = useState<any>();
 
   useEffect(() => {
     if (params && params.id) {
@@ -70,62 +59,76 @@ const EcommerceProductDetail = (props) => {
   }, [dispatch, params]);
 
   const onAddToCart = () => {
-    console.log(basket);
-    const isUserLogin = isUserLoggedin(KDM_ECOMMERCE_USER_JWT_TOKEN);
-    if (!isUserLogin) {
-      dispatch(showModal(loginWarningModal));
+    const formattedCartItems = listOfParams
+      .filter((eachSelectedItem) => eachSelectedItem.selected)
+      .map((eachFilteredItem) => ({
+        subgroup: backendProductDes.id,
+        paramId: eachFilteredItem.paramId,
+      }));
+
+    if (formattedCartItems.length === 0) {
+      toast.error(
+        "Please select at least one parameter before adding to cart",
+        {
+          position: "top-center",
+          autoClose: false,
+        }
+      );
       return;
     }
 
-    const cartItem: any = {
-      product_id: productDetail?.id,
-    };
-    dispatch(addProductToCart(cartItem));
+    const isUserLogin = isUserLoggedin(KDM_ECOMMERCE_USER_JWT_TOKEN);
+    if (!isUserLogin) {
+      toast.error(
+        "Please log in to your account. If you don't have an account,You can create a free account by visiting: http://localhost:3000/ecommerce/login ",
+        {
+          position: "top-center",
+          autoClose: false,
+        }
+      );
+      return;
+    }
+
+    dispatch(addProductToCart({ data: formattedCartItems }));
   };
 
-  function removeBodyCss() {
-    document.body.classList.add("no_padding");
-  }
+  const [listOfParams, setListOfParams] = useState<any>(null);
 
-  function tog_large() {
-    dispatch(onGetProductDetail(params.id));
-    dispatch(closeModal());
-    removeBodyCss();
-  }
+  useEffect(() => {
+    setListOfParams(backendParams);
+  }, [dispatch, backendParams]);
 
-  function selectingTestToCart(tests: any) {
-    setSelectedTests(tests);
-  }
+  const handleTestTriggered = (id) => {
+    setListOfParams((prevState) =>
+      prevState.map((eachParam) => {
+        if (eachParam.paramId == id) {
+          return {
+            ...eachParam,
+            selected: !eachParam.selected,
+          };
+        }
+        return eachParam;
+      })
+    );
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [dispatch]);
+
+  const offerDetails: offerDetails = {
+    isOffer: backendProductDes.isOffer,
+    offerPercentage: backendProductDes.offer,
+  };
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container>
           <Navbar />
-          <Breadcrumbs title="Ecommerce" breadcrumbItem="Product Detail" />
-          {!isEmpty(productDetail) && (
-            <Row>
-              <Modal
-                size="lg"
-                isOpen={modal.modalStatus}
-                toggle={() => {
-                  tog_large();
-                }}
-              >
-                <ModalHeader
-                  toggle={() => {
-                    tog_large();
-                  }}
-                >
-                  <div className="modal-title mt-0 h5" id="myLargeModalLabel">
-                    {modal.modalHeading}
-                  </div>
-                </ModalHeader>
-                <div className="modal-body">
-                  <p>{modal.modalDescription}</p>
-                </div>
-              </Modal>
-
+          {loading && <Spinners />}
+          <Row>
+            {!loading && backendProductDes.id == params.id && (
               <Col>
                 <Card>
                   <CardBody>
@@ -138,7 +141,7 @@ const EcommerceProductDetail = (props) => {
                                 <TabPane tabId="1">
                                   <div>
                                     <img
-                                      src={productDetail.image_lg}
+                                      src={backendProductDes.image_lg}
                                       alt=""
                                       id="expandedImg1"
                                       className="img-fluid mx-auto d-block"
@@ -146,21 +149,14 @@ const EcommerceProductDetail = (props) => {
                                   </div>
                                 </TabPane>
                               </TabContent>
-
-                              {productDetail.completePack && (
-                                <div className="text-center">
-                                  <Button
-                                    type="button"
-                                    className="bg-primary w-100 mt-2"
-                                    onClick={() => {
-                                      onAddToCart();
-                                    }}
-                                  >
-                                    <i className="bx bx-cart me-2" /> Add to
-                                    cart
-                                  </Button>
-                                </div>
-                              )}
+                              {backendProductDes.sample_count &&
+                              backendProductDes.sample_count > 0 ? (
+                                <p className="text-warning mt-4">
+                                  Heey... their are already{" "}
+                                  {backendProductDes.sample_count} Sample /
+                                  Sample's in your cart
+                                </p>
+                              ) : null}
                             </Col>
                           </Row>
                         </div>
@@ -169,13 +165,15 @@ const EcommerceProductDetail = (props) => {
                       <Col xl="8">
                         <div className="mt-4 mt-xl-3">
                           <Link to="#" className="text-primary">
-                            {productDetail.category}
+                            {backendProductDes.category}
                           </Link>
-                          <h4 className="mt-1 mb-3">{productDetail.name}</h4>
+                          <h4 className="mt-1 mb-3">
+                            {backendProductDes.name}
+                          </h4>
 
                           <div className="text-muted float-start me-3">
                             <StarRatings
-                              rating={productDetail.rating}
+                              rating={backendProductDes.rating || 4}
                               starRatedColor="#F1B44C"
                               starEmptyColor="#74788d"
                               numberOfStars={5}
@@ -185,135 +183,39 @@ const EcommerceProductDetail = (props) => {
                             />
                           </div>
                           <p className="text-muted mb-4">
-                            ( {productDetail.reviews} Customers Review )
+                            ( {500} Customers Review )
                           </p>
 
-                          {!!productDetail.isOffer && (
-                            <h6 className="text-success text-uppercase">
-                              {productDetail.offer} % Off
+                          {!!backendProductDes.isOffer && (
+                            <h6 className="text-success ">
+                              {backendProductDes.offer} % Off on all Parameters
                             </h6>
                           )}
-                          <h5 className="mb-4">
-                            Price :{" "}
-                            {productDetail.isOffer ? (
-                              <>
-                                <span className="text-muted me-2">
-                                  <del>Rs. {productDetail.basePrice} </del>
-                                </span>{" "}
-                                <b className="text-success">
-                                  Rs.{" "}
-                                  {productDetail.basePrice -
-                                    ((productDetail.basePrice *
-                                      productDetail.offer) as number) /
-                                      100}{" "}
-                                  /-
-                                </b>
-                              </>
-                            ) : (
-                              <b className="text-success">
-                                Rs. {productDetail.basePrice} /-
-                              </b>
-                            )}
-                          </h5>
                           <p className="text-muted mb-4">
-                            {productDetail.description}
+                            {backendProductDes.description}
                           </p>
                         </div>
                       </Col>
 
-                      {!productDetail.completePack && (
-                        <Row className="mt-5">
-                          <Col sm={12} md={8}>
-                            <Select
-                              placeholder="Please select the tests listed below"
-                              value={selectedTests}
-                              isMulti={true}
-                              onChange={(e: any) => {
-                                // console.log("e", e);
-                                setBasket(e);
-                                selectingTestToCart(e.target);
-                              }}
-                              options={productDetail.params}
-                              className="select2-selection"
-                              id="hello"
-                            />
-                          </Col>
-                          <Col sm={12} md={4}>
-                            <Button
-                              type="button"
-                              className="bg-primary w-100"
-                              onClick={() => {
-                                onAddToCart();
-                              }}
-                            >
-                              <i className="bx bx-cart me-2" />
-                              Add to cart
-                            </Button>
-                          </Col>
-                        </Row>
+                      {listOfParams && (
+                        <SelectTable
+                          data={listOfParams || []}
+                          offerDetails={offerDetails || ({} as offerDetails)}
+                          toggleTest={handleTestTriggered}
+                        />
                       )}
 
-                      <Col xl="12">
-                        <div className="mt-5">
-                          <div className="table-responsive">
-                            <Table className="table mb-0 table-bordered">
-                              <thead>
-                                <tr>
-                                  <th
-                                    scope="row"
-                                    className={"text-capitalize text-primary"}
-                                  >
-                                    name
-                                  </th>
-                                  <th
-                                    scope="row"
-                                    className={"text-capitalize text-primary"}
-                                  >
-                                    Method
-                                  </th>
-                                  <th
-                                    scope="row"
-                                    className={"text-capitalize text-primary"}
-                                  >
-                                    NABL Accrediation
-                                  </th>
-                                  {productDetail.completePack ? null : (
-                                    <th
-                                      scope="row"
-                                      className={"text-capitalize text-primary"}
-                                    >
-                                      Price
-                                    </th>
-                                  )}
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {productDetail.params &&
-                                  productDetail.params[0].options.map(
-                                    (test: Tests, i: number) => (
-                                      <tr key={i}>
-                                        <th
-                                          scope="row"
-                                          className={"text-capitalize"}
-                                        >
-                                          {test.label}
-                                        </th>
-                                        <td>{test.method}</td>
-                                        <td>
-                                          {test.isNABL ? "NABL" : "Non-NABL"}
-                                        </td>
-
-                                        {productDetail.completePack ? null : (
-                                          <td>{test.price}</td>
-                                        )}
-                                      </tr>
-                                    )
-                                  )}
-                              </tbody>
-                            </Table>
-                          </div>
-                        </div>
-                      </Col>
+                      <div>
+                        <Button
+                          type="button"
+                          className="bg-primary "
+                          onClick={() => {
+                            onAddToCart();
+                          }}
+                        >
+                          <i className="bx bx-cart me-2" /> Add to cart
+                        </Button>
+                      </div>
 
                       <Col lg={12}>
                         <div className="mt-5">
@@ -325,8 +227,8 @@ const EcommerceProductDetail = (props) => {
 
                       <Col xl="10">
                         <dl className="mt-2">
-                          {productDetail.additionalInfo &&
-                            productDetail.additionalInfo.map((info, index) => (
+                          {JSON.parse(backendProductDes.features).map(
+                            (info, index) => (
                               <React.Fragment key={index}>
                                 <dt>
                                   <i
@@ -335,24 +237,25 @@ const EcommerceProductDetail = (props) => {
                                       "font-size-16 align-middle text-primary me-2"
                                     )}
                                   />
-                                  <span className="text-primary unbold">
-                                    {Object.keys(info)[0]}
+                                  <span className="text-primary unbold mb-2">
+                                    {info.short_feature}
                                   </span>
                                 </dt>
-                                <dd className="mb-2">
-                                  {" "}
-                                  {Object.values(info)[0]}
+                                <dd className="mb-2 ml-3">
+                                  {info.description}
                                 </dd>
                               </React.Fragment>
-                            ))}
+                            )
+                          )}
                         </dl>
                       </Col>
                     </Row>
                   </CardBody>
                 </Card>
               </Col>
-            </Row>
-          )}
+            )}
+          </Row>
+
           <ToastContainer />
           {/* <RecentProduct productDetail={productDetail || []} /> */}
         </Container>

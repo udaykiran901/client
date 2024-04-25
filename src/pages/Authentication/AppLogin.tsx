@@ -123,14 +123,6 @@ const AppLogin = (props: any) => {
                           </div>
 
                           <div className="mb-3">
-                            {/* <div className="float-end">
-                              <Link
-                                to="/auth-recoverpw-2"
-                                className="text-muted"
-                              >
-                                Forgot password?
-                              </Link>
-                            </div> */}
                             <Label className="form-label">Password</Label>
                             <div className="input-group auth-pass-inputgroup">
                               <Input

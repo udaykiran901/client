@@ -16,10 +16,13 @@ import {
   deleteCart as deleteCartApi,
   addToCart as addToCartAPI,
   onGettingProductNameId as onGettingProductNameIdAPI,
+  createOrderInServer as createOrderInServerAPI,
 } from "../../helpers/fakebackend_helper";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
+  CREATE_ORDER_IN_SERVER,
+  GET_PRODUCT_DETAILS,
   GET_PRODUCT_NAME_ID,
   ON_GET_MATERIALS_PARTIAL_DATA,
 } from "../../helpers/url_helper";
@@ -29,6 +32,7 @@ export const getProducts = createAsyncThunk(
   async () => {
     try {
       const response = await getProductsApi();
+
       return response.data;
     } catch (error) {
       return error;
@@ -37,10 +41,15 @@ export const getProducts = createAsyncThunk(
 );
 
 export const getProductDetail = createAsyncThunk(
-  "ecommerence/getProductDetail",
+  GET_PRODUCT_DETAILS,
   async (productId: any) => {
     try {
       const response = await getProductDetailApi(productId);
+
+      if (response.status === 404) {
+        toast.success("Product Not Found", { autoClose: 3000 });
+      }
+
       return response.data;
     } catch (error) {
       return error;
@@ -168,36 +177,36 @@ export const getShops = createAsyncThunk("ecommerence/getshops", async () => {
 export const getCart = createAsyncThunk("/ecommerce/getCart", async () => {
   try {
     const response = await getCartApi();
+
     return response.data;
   } catch (error) {
-    console.log(error);
     return error;
   }
 });
 
 export const deleteCart = createAsyncThunk(
   "/ecommerce/delete-cart",
-  async (cart_id: string) => {
+  async (productId: string) => {
     try {
-      const response = await deleteCartApi(cart_id);
-      toast.success("Item removed from your cart", { autoClose: 5000 });
-      return response;
+      const response = await deleteCartApi(productId);
+      toast.success("Sample removed from your cart", { autoClose: 5000 });
+      return response.data;
     } catch (error) {
       return error;
     }
   }
 );
 
-//mine
-// /addtocart
 export const addProductToCart = createAsyncThunk(
-  "/ecommerce/addtocart",
-  async (cart: any) => {
+  "ecommerce/addtocart",
+  async ({ data }: { data: any }) => {
     try {
-      const response = await addToCartAPI(cart);
+      const response = await addToCartAPI({ data });
       toast.success(response.data.message, { autoClose: 5000 });
+
       return response;
     } catch (error: any) {
+      console.log(error);
       toast.error(error.data.message, { autoClose: 5000 });
       return error;
     }
@@ -209,7 +218,19 @@ export const getProductsNameId = createAsyncThunk(
   async () => {
     try {
       const response = await onGettingProductNameIdAPI();
-      console.log(response);
+
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const createOrderOnServer = createAsyncThunk(
+  CREATE_ORDER_IN_SERVER,
+  async (data: any) => {
+    try {
+      const response = await createOrderInServerAPI(data);
       return response;
     } catch (error) {
       return error;

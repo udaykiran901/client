@@ -1,7 +1,26 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Card, CardBody, Col, Container, Row, Modal, ModalHeader, ModalBody, UncontrolledTooltip, Input, FormFeedback, Label, Form, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from "reactstrap";
+import {
+  Card,
+  CardBody,
+  Col,
+  Container,
+  Row,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  UncontrolledTooltip,
+  Input,
+  FormFeedback,
+  Label,
+  Form,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  Button,
+} from "reactstrap";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../../Components/Common/Breadcrumb";
@@ -20,12 +39,11 @@ import TableContainer from "../../../Components/Common/TableContainer";
 
 import { PatternFormat } from "react-number-format";
 
-
 //Import Flatepicker
 import "flatpickr/dist/themes/material_blue.css";
 import Flatpickr from "react-flatpickr";
 import moment from "moment";
-import { createSelector } from 'reselect';
+import { createSelector } from "reselect";
 import Spinners from "Components/Common/Spinner";
 import { ToastContainer } from "react-toastify";
 
@@ -39,13 +57,11 @@ const EcommerceCustomers = () => {
     (state: any) => state.ecommerce,
     (ecommerce) => ({
       customers: ecommerce.customers,
-      loading: ecommerce.loading
+      loading: ecommerce.loading,
     })
   );
 
   const { customers, loading }: any = useSelector(selectProperties);
-
-  const [isLoading, setLoading] = useState<boolean>(loading)
 
   const [modal, setModal] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -85,7 +101,6 @@ const EcommerceCustomers = () => {
       joiningDate: Yup.string().required("Please Enter Your Joining Date"),
     }),
     onSubmit: (values: any) => {
-
       if (isEdit) {
         const updateCustomer = {
           id: customer ? customer.id : 0,
@@ -109,7 +124,7 @@ const EcommerceCustomers = () => {
           address: values["address"],
           rating: values["rating"],
           walletBalance: values["walletBalance"],
-          joiningDate: values['joiningDate'],
+          joiningDate: values["joiningDate"],
         };
         // save new customer
         dispatch(onAddNewCustomer(newCustomer));
@@ -119,23 +134,26 @@ const EcommerceCustomers = () => {
     },
   });
 
-  const handleCustomerClick = useCallback((arg: any) => {
-    const customer = arg;
+  const handleCustomerClick = useCallback(
+    (arg: any) => {
+      const customer = arg;
 
-    setCustomer({
-      id: customer.id,
-      username: customer.username,
-      email: customer.email,
-      phone: customer.phone,
-      address: customer.address,
-      rating: customer.rating,
-      walletBalance: customer.walletBalance,
-      joiningDate: customer.joiningDate,
-    });
+      setCustomer({
+        id: customer.id,
+        username: customer.username,
+        email: customer.email,
+        phone: customer.phone,
+        address: customer.address,
+        rating: customer.rating,
+        walletBalance: customer.walletBalance,
+        joiningDate: customer.joiningDate,
+      });
 
-    setIsEdit(true);
-    toggle();
-  }, [toggle]);
+      setIsEdit(true);
+      toggle();
+    },
+    [toggle]
+  );
 
   // Customber Column
   const columns = useMemo(
@@ -180,8 +198,12 @@ const EcommerceCustomers = () => {
         enableColumnFilter: false,
         enableSorting: true,
         cell: (cellProps: any) => {
-          return <span className="badge bg-success font-size-12"><i className="mdi mdi-star me-1"></i> {cellProps.getValue()}</span>
-        }
+          return (
+            <span className="badge bg-success font-size-12">
+              <i className="mdi mdi-star me-1"></i> {cellProps.getValue()}
+            </span>
+          );
+        },
       },
       {
         header: "Wallet Balances",
@@ -202,16 +224,27 @@ const EcommerceCustomers = () => {
         cell: (cellProps: any) => {
           return (
             <UncontrolledDropdown>
-              <DropdownToggle tag="a" href="#" className="card-drop"> <i className="mdi mdi-dots-horizontal font-size-18"></i></DropdownToggle>
+              <DropdownToggle tag="a" href="#" className="card-drop">
+                {" "}
+                <i className="mdi mdi-dots-horizontal font-size-18"></i>
+              </DropdownToggle>
               <DropdownMenu className="dropdown-menu-end">
                 <DropdownItem
                   href="#"
                   onClick={() => {
                     const customerData = cellProps.row.original;
                     handleCustomerClick(customerData);
-                  }}>
-                  <i className="mdi mdi-pencil font-size-16 text-success me-1" id="edittooltip"></i> Edit
-                  <UncontrolledTooltip placement="top" target="edittooltip"> Edit </UncontrolledTooltip>
+                  }}
+                >
+                  <i
+                    className="mdi mdi-pencil font-size-16 text-success me-1"
+                    id="edittooltip"
+                  ></i>{" "}
+                  Edit
+                  <UncontrolledTooltip placement="top" target="edittooltip">
+                    {" "}
+                    Edit{" "}
+                  </UncontrolledTooltip>
                 </DropdownItem>
 
                 <DropdownItem
@@ -219,9 +252,17 @@ const EcommerceCustomers = () => {
                   onClick={() => {
                     const customerData = cellProps.row.original;
                     onClickDelete(customerData);
-                  }} >
-                  <i className="mdi mdi-trash-can font-size-16 text-danger me-1" id="deletetooltip" ></i>Delete
-                  <UncontrolledTooltip placement="top" target="deletetooltip"> Delete</UncontrolledTooltip>
+                  }}
+                >
+                  <i
+                    className="mdi mdi-trash-can font-size-16 text-danger me-1"
+                    id="deletetooltip"
+                  ></i>
+                  Delete
+                  <UncontrolledTooltip placement="top" target="deletetooltip">
+                    {" "}
+                    Delete
+                  </UncontrolledTooltip>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
@@ -267,31 +308,31 @@ const EcommerceCustomers = () => {
       <div className="page-content">
         <Container fluid>
           <Breadcrumbs title="Ecommerce" breadcrumbItem="Customers" />
-          {
-            isLoading ? <Spinners setLoading={setLoading} />
-              :
-              <Col xs="12">
-                <Card>
-                  <CardBody>
-                    <TableContainer
-                      columns={columns}
-                      data={customers}
-                      isGlobalFilter={true}
-                      isAddButton={true}
-                      isPagination={true}
-                      isCustomPageSize={true}
-                      handleUserClick={handleCustomerClicks}
-                      buttonClass="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2 addCustomers-modal"
-                      buttonName=" New Customers"
-                      paginationWrapper="dataTables_paginate paging_simple_numbers pagination-rounded"
-                      tableClass="align-middle table-nowrap dt-responsive nowrap w-100 dataTable no-footer dtr-inline"
-                      theadClass="table-light"
-                      pagination="pagination"
-                    />
-                  </CardBody>
-                </Card>
-              </Col>
-          }
+          {loading ? (
+            <Spinners />
+          ) : (
+            <Col xs="12">
+              <Card>
+                <CardBody>
+                  <TableContainer
+                    columns={columns}
+                    data={customers}
+                    isGlobalFilter={true}
+                    isAddButton={true}
+                    isPagination={true}
+                    isCustomPageSize={true}
+                    handleUserClick={handleCustomerClicks}
+                    buttonClass="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2 addCustomers-modal"
+                    buttonName=" New Customers"
+                    paginationWrapper="dataTables_paginate paging_simple_numbers pagination-rounded"
+                    tableClass="align-middle table-nowrap dt-responsive nowrap w-100 dataTable no-footer dtr-inline"
+                    theadClass="table-light"
+                    pagination="pagination"
+                  />
+                </CardBody>
+              </Card>
+            </Col>
+          )}
           <Modal isOpen={modal} toggle={toggle}>
             <ModalHeader toggle={toggle} tag="h4">
               {!!isEdit ? "Edit Customer" : "Add Customer"}
@@ -316,11 +357,18 @@ const EcommerceCustomers = () => {
                         value={validation.values.username || ""}
                         placeholder="Insert user name"
                         invalid={
-                          validation.touched.username && validation.errors.username ? true : false
+                          validation.touched.username &&
+                          validation.errors.username
+                            ? true
+                            : false
                         }
                       />
-                      {validation.touched.username && validation.errors.username ?
-                        (<FormFeedback type="invalid">{validation.errors.username}</FormFeedback>) : null}
+                      {validation.touched.username &&
+                      validation.errors.username ? (
+                        <FormFeedback type="invalid">
+                          {validation.errors.username}
+                        </FormFeedback>
+                      ) : null}
                     </div>
                     <div className="mb-3">
                       <Label>Email</Label>
@@ -332,11 +380,16 @@ const EcommerceCustomers = () => {
                         value={validation.values.email || ""}
                         placeholder="Insert user name"
                         invalid={
-                          validation.touched.email && validation.errors.email ? true : false
+                          validation.touched.email && validation.errors.email
+                            ? true
+                            : false
                         }
                       />
-                      {validation.touched.email && validation.errors.email ?
-                        (<FormFeedback type="invalid">{validation.errors.email}</FormFeedback>) : null}
+                      {validation.touched.email && validation.errors.email ? (
+                        <FormFeedback type="invalid">
+                          {validation.errors.email}
+                        </FormFeedback>
+                      ) : null}
                     </div>
                     <div className="mb-3">
                       <Label>Phone No</Label>
@@ -349,8 +402,11 @@ const EcommerceCustomers = () => {
                         onBlur={validation.handleBlur}
                         value={validation.values.phone || ""}
                       />
-                      {validation.touched.phone && validation.errors.phone ?
-                        (<span className="text-danger">{validation.errors.phone}</span>) : null}
+                      {validation.touched.phone && validation.errors.phone ? (
+                        <span className="text-danger">
+                          {validation.errors.phone}
+                        </span>
+                      ) : null}
                     </div>
                     <div className="mb-3">
                       <Label>Address</Label>
@@ -363,10 +419,19 @@ const EcommerceCustomers = () => {
                         value={validation.values.address || ""}
                         placeholder="Insert address"
                         invalid={
-                          validation.touched.address && validation.errors.address ? true : false}
+                          validation.touched.address &&
+                          validation.errors.address
+                            ? true
+                            : false
+                        }
                       />
-                      {validation.touched.address && validation.errors.address ?
-                        (<FormFeedback type="invalid">  {validation.errors.address} </FormFeedback>) : null}
+                      {validation.touched.address &&
+                      validation.errors.address ? (
+                        <FormFeedback type="invalid">
+                          {" "}
+                          {validation.errors.address}{" "}
+                        </FormFeedback>
+                      ) : null}
                     </div>
 
                     <div className="mb-3">
@@ -378,28 +443,43 @@ const EcommerceCustomers = () => {
                         onBlur={validation.handleBlur}
                         value={validation.values.rating || ""}
                         invalid={
-                          validation.touched.rating && validation.errors.rating ? true : false}
+                          validation.touched.rating && validation.errors.rating
+                            ? true
+                            : false
+                        }
                         placeholder="Insert rating"
                       />
-                      {validation.touched.rating && validation.errors.rating ?
-                        (<FormFeedback type="invalid">  {validation.errors.rating} </FormFeedback>) : null}
+                      {validation.touched.rating && validation.errors.rating ? (
+                        <FormFeedback type="invalid">
+                          {" "}
+                          {validation.errors.rating}{" "}
+                        </FormFeedback>
+                      ) : null}
                     </div>
 
                     <div className="mb-3">
-                      <Label>  Wallet Balance </Label>
+                      <Label> Wallet Balance </Label>
                       <Input
                         type="number"
                         name="walletBalance"
                         onChange={validation.handleChange}
                         onBlur={validation.handleBlur}
-                        value={validation.values.walletBalance || ''}
+                        value={validation.values.walletBalance || ""}
                         placeholder="Insert wallent balance"
                         invalid={
-                          validation.touched.walletBalance && validation.errors.walletBalance ? true : false
+                          validation.touched.walletBalance &&
+                          validation.errors.walletBalance
+                            ? true
+                            : false
                         }
                       />
-                      {validation.touched.walletBalance && validation.errors.walletBalance ?
-                        (<FormFeedback type="invalid"> {validation.errors.walletBalance} </FormFeedback>) : null}
+                      {validation.touched.walletBalance &&
+                      validation.errors.walletBalance ? (
+                        <FormFeedback type="invalid">
+                          {" "}
+                          {validation.errors.walletBalance}{" "}
+                        </FormFeedback>
+                      ) : null}
                     </div>
 
                     <div className="mb-3">
@@ -411,20 +491,36 @@ const EcommerceCustomers = () => {
                         placeholder="Select time"
                         options={{
                           mode: "single",
-                          dateFormat: 'd M, Y',
+                          dateFormat: "d M, Y",
                         }}
                         value={validation.values.joiningDate}
-                        onChange={(date: any) => validation.setFieldValue("joiningDate", moment(date[0]).format("DD MMM ,YYYY"))}
+                        onChange={(date: any) =>
+                          validation.setFieldValue(
+                            "joiningDate",
+                            moment(date[0]).format("DD MMM ,YYYY")
+                          )
+                        }
                       />
-                      {validation.touched.joiningDate && validation.errors.joiningDate ?
-                        (<span className="text-danger"> {validation.errors.joiningDate}  </span>) : null}
+                      {validation.touched.joiningDate &&
+                      validation.errors.joiningDate ? (
+                        <span className="text-danger">
+                          {" "}
+                          {validation.errors.joiningDate}{" "}
+                        </span>
+                      ) : null}
                     </div>
                   </Col>
                 </Row>
                 <Row>
                   <Col>
                     <div className="text-end">
-                      <Button type="submit" color="success" className="save-customer" >{!!isEdit ? "Update" : "Add"}</Button>
+                      <Button
+                        type="submit"
+                        color="success"
+                        className="save-customer"
+                      >
+                        {!!isEdit ? "Update" : "Add"}
+                      </Button>
                     </div>
                   </Col>
                 </Row>

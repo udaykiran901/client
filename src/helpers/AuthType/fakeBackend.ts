@@ -3,7 +3,7 @@ import MockAdapter from "axios-mock-adapter";
 import * as url from "../url_helper";
 import { accessToken, nodeApiToken } from "../jwt-token-access/accessToken";
 import {
-  productsData,
+  // productsData,
   // comments,
   // recentProducts,
   // productListvar,
@@ -212,22 +212,22 @@ const fakeBackend = () => {
   // });
 
   //Ecommerence product Detailes
-  mock.onGet(new RegExp(`${url.GET_PRODUCTS_DETAIL}/*`)).reply((config) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (productsData) {
-          // Passing fake JSON data as response
-          const { params } = config;
-          const product = productsData.find(
-            (product) => product.id.toString() === params.id.toString()
-          );
-          resolve([200, { ...product }]);
-        } else {
-          reject([400, "Cannot get product detail"]);
-        }
-      });
-    });
-  });
+  // mock.onGet(new RegExp(`${url.GET_PRODUCTS_DETAIL}/*`)).reply((config) => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       if (productsData) {
+  //         // Passing fake JSON data as response
+  //         const { params } = config;
+  //         const product = productsData.find(
+  //           (product) => product.id.toString() === params.id.toString()
+  //         );
+  //         resolve([200, { ...product }]);
+  //       } else {
+  //         reject([400, "Cannot get product detail"]);
+  //       }
+  //     });
+  //   });
+  // });
 
   mock.onPut(url.UPDATE_PROJECT).reply((project) => {
     return new Promise((resolve, reject) => {

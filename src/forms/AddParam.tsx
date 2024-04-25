@@ -94,7 +94,7 @@ const AddParam = () => {
       isNabl: Yup.string().required("This field is required"),
       price: Yup.string().required("This field is required"),
       discipline: Yup.string().required("This field is required"),
-      additional_info: Yup.string().required("This field is required"),
+      // additional_info: Yup.string().required("This field is required"),
     }),
 
     onSubmit: (value: any) => {

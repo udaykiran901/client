@@ -41,7 +41,7 @@ const CandidateList = () => {
   );
   const { jobListCandidate, loading } = useSelector(selectProperties);
   const [listData, setListData] = useState<any>();
-  const [isLoading, setLoading] = useState<boolean>(loading);
+  // const [isLoading, setLoading] = useState<boolean>(loading);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const toggle = () => setIsOpen(!isOpen);
 
@@ -256,11 +256,7 @@ const CandidateList = () => {
               </Card>
             </Col>
           </Row>
-          {isLoading ? (
-            <Spinners setLoading={setLoading} />
-          ) : (
-            <List candidateDate={listData} />
-          )}
+          {loading ? <Spinners /> : <List candidateDate={listData} />}
         </Container>
       </div>
     </React.Fragment>

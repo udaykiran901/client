@@ -1,4 +1,5 @@
 import { ModalType } from "slices/e-commerence/reducer";
+import { boolean } from "yup";
 export interface EcoAction {
   ecommerce: {
     products?: Product[];
@@ -7,11 +8,13 @@ export interface EcoAction {
     customers?: ProductCustomer[];
     shops?: EComShop[];
     productComments?: any[];
-    cart?: cart[];
+    cart?: CartProduct[];
     loading?: boolean;
     modal: ModalType;
     productPartialInfo: ProductPartialInfo[];
     productNameId: ProductNameId[];
+    backendParams: BackendParams[];
+    backendProductDes: BackendProductDes;
   };
 }
 
@@ -45,6 +48,37 @@ interface KeyValue {
   [key: string]: string;
 }
 
+export interface BackendParams {
+  paramId: string;
+  price: number;
+  common_req: boolean;
+  requirement: string;
+  isNabl: boolean;
+  discipline: string;
+  params: string;
+  selected?: boolean;
+}
+
+export interface BackendProductDes {
+  id: number;
+  name: string;
+  category: string;
+  base_price: number;
+  isOffer: boolean;
+  offer: number;
+  prefix: string;
+  complete_pack: boolean;
+  description: string;
+  no_of_days: number;
+  interim_report: boolean;
+  interim_report_days: number;
+  image: string;
+  image_lg: string;
+  features: string;
+  rating: number | null;
+  sample_count: number;
+}
+
 export interface Product {
   id: number;
   image: string;
@@ -61,7 +95,7 @@ export interface Product {
   offer: number;
   reviews: number;
 
-  params: Params[]; //test specifications (IS Code etc)
+  params: Params[];
 
   recentProducts?: RecentProducts[];
   comments?: Comment[];
@@ -70,8 +104,8 @@ export interface Product {
 }
 
 export interface Tests {
-  value: string; //id of the param
-  label: string; //name of the parameter
+  value: string;
+  label: string;
   price: number;
   method: string;
   isNABL: Boolean;
@@ -86,11 +120,6 @@ export interface Feature {
   icon: string;
   type: string;
   value: string;
-}
-
-export interface ColorOption {
-  image: string;
-  color: string;
 }
 
 export interface RecentProducts {
@@ -144,13 +173,40 @@ export interface EComShop {
   profileLink: string;
 }
 
-export interface cart {
-  id: number;
+export interface offerDetails {
+  isOffer: boolean;
+  offerPercentage: number;
+}
+
+//cart
+
+export interface CartProductParameter {
+  param_id: string;
+  is_nabl: boolean;
+  common_req: boolean;
+  price: number;
+  subgroup: number;
+  params: TestParams[];
+  available: boolean;
+  additional_info: string;
+  discipline: string;
+  requirements: string;
+}
+
+export interface TestParams {
+  test_id: string;
+  testName: string;
+  method: string;
+  requirement: string;
+}
+
+export interface CartProduct {
+  sampleId: string;
+  productId: number;
+  productName: string;
+  productCategory: string;
   img: string;
-  name: string;
-  category: string;
-  basePrice: number;
   isOffer: boolean;
   offer: number;
-  cart_id: string;
+  parameters: CartProductParameter[];
 }

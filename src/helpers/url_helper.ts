@@ -54,10 +54,11 @@ export const ECOMMERCE_USER_REGISTER = "/ecommerce/user/register";
 export const ECOMMERCE_USER_LOGIN = "/ecommerce/user/login";
 export const ECOMMERCE_ADD_MATERIAL_TO_CART = "/ecommerce/addtocart";
 export const ON_GET_MATERIALS_PARTIAL_DATA = "/ecommerce/get-partial-data";
-
+export const GET_PRODUCT_DETAILS = "/ecommerce/get-product-details";
 //cart
 export const GET_CART = "/ecommerce/getCart";
 export const DELETE_CART = "/ecommerce/delete-cart";
+export const CREATE_ORDER_IN_SERVER = "/ecommerce/cart/create-order-on-server";
 
 //BD Module
 export const REQUEST_CALLBACK = "/bd/on-request-callback";

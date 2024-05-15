@@ -238,7 +238,6 @@ const AddEmp = (props: any) => {
                 <CardBody>
                   <Row>
                     <Col lg={6}>
-                      {" "}
                       <h4 className="card-title mb-4">Employee Form</h4>
                     </Col>
                     <Col className="text-right">

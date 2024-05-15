@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Cookies from "js-cookie";
 
 //Import Components
@@ -27,9 +27,6 @@ import {
   ModalBody,
   InputGroup,
   Form,
-  FormGroup,
-  FormFeedback,
-  Label,
 } from "reactstrap";
 import { useEffect } from "react";
 import { KDM_ECOMMERCE_USER_JWT_TOKEN } from "common/tokens";
@@ -38,23 +35,21 @@ import { onSubscribe } from "slices/thunk";
 import { toggleSubscribeModal } from "slices/BD/reducer";
 import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
+import Spinners from "Components/Common/Spinner";
 
 const Welcome = () => {
-  //meta title
-  document.title = "Home | KDM Engineers Group";
-
-  // const [subScribeModal, setSubScribeModal] = useState<boolean>(false);
-  // const [gmail, setGmail] = useState<string>("");
+  document.title = "KDM Engineers Group";
   const dispatch: any = useDispatch();
 
   const bdModuleState = createSelector(
-    (state: any) => state.bdModule,
-    (bdModule) => ({
-      showSubscribeModal: bdModule.showSubscribeModal,
+    (state: any) => state.bd,
+    (bd) => ({
+      showSubscribeModal: bd.showSubscribeModal,
+      loading: bd.loading,
     })
   );
 
-  const { showSubscribeModal } = useSelector(bdModuleState);
+  const { showSubscribeModal, loading } = useSelector(bdModuleState);
 
   useEffect(() => {
     setTimeout(() => {
@@ -62,12 +57,8 @@ const Welcome = () => {
       if (!token) {
         dispatch(toggleSubscribeModal());
       }
-    }, 2000);
-  }, []);
-
-  // const handleOnSubscribe = () => {
-  //   console.log(gmail);
-  // };
+    }, 3000);
+  }, [dispatch]);
 
   const validation: any = useFormik({
     initialValues: {
@@ -173,8 +164,17 @@ const Welcome = () => {
                       }
                     />
 
-                    <Button color="primary" type="submit" id="button-addon2">
-                      <i className="bx bxs-paper-plane"></i>
+                    <Button
+                      disabled={loading}
+                      color="primary"
+                      type="submit"
+                      id="button-addon2"
+                    >
+                      {loading ? (
+                        <i className="bx bx-loader bx-spin "></i>
+                      ) : (
+                        <i className="bx bxs-paper-plane"></i>
+                      )}
                     </Button>
                   </InputGroup>
                 </Form>

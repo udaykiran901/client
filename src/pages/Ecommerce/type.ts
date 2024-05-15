@@ -1,5 +1,3 @@
-import { ModalType } from "slices/e-commerence/reducer";
-import { boolean } from "yup";
 export interface EcoAction {
   ecommerce: {
     products?: Product[];
@@ -10,11 +8,12 @@ export interface EcoAction {
     productComments?: any[];
     cart?: CartProduct[];
     loading?: boolean;
-    modal: ModalType;
+
     productPartialInfo: ProductPartialInfo[];
     productNameId: ProductNameId[];
     backendParams: BackendParams[];
     backendProductDes: BackendProductDes;
+    myOrders: MyOrder[];
   };
 }
 
@@ -209,4 +208,36 @@ export interface CartProduct {
   isOffer: boolean;
   offer: number;
   parameters: CartProductParameter[];
+}
+
+//My orders
+export interface MySelectedParam {
+  test_id: string;
+  testName: string;
+  method: string;
+  requirement: string;
+}
+
+export interface MyParam {
+  param_id: string | number;
+  orderedPrice: number;
+  selectedParams: MySelectedParam[];
+}
+
+export interface MySamples {
+  sample_id: string;
+  product_id: number;
+  isOffer: boolean;
+  offer: number;
+  chemicalParams: MyParam[];
+  physicalParams: MyParam[];
+  name: string;
+  image: string;
+}
+
+export interface MyOrder {
+  placedOn: string;
+  order_id: string;
+  due_date: string | null;
+  samplesList: MySamples[];
 }

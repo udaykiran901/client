@@ -15,7 +15,16 @@ const RoadMap = () => {
             <Col lg="12">
               <div className="text-center mb-5">
                 <div className="small-title">Timeline</div>
-                <h4>Our Roadmap</h4>
+
+                <p>
+                  Embark on a journey through our rich timeline, where each
+                  milestone marks a significant chapter in our commitment to
+                  excellence. From our humble beginnings to becoming a
+                  trailblazer in [industry/sector], every step reflects our
+                  unwavering dedication to innovation and quality. Witness the
+                  evolution of our company as we continue to redefine boundaries
+                  and shape a brighter tomorrow.
+                </p>
               </div>
             </Col>
           </Row>

@@ -28,6 +28,7 @@ import Cookies from "js-cookie";
 
 const AppLogin = (props: any) => {
   const [passwordShow, setPasswordShow] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   document.title = "Employee Login | KDM Engineers Group";
   const dispatch: any = useDispatch();
@@ -44,7 +45,7 @@ const AppLogin = (props: any) => {
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: async (values: any) => {
-      dispatch(employeeLogin(values, props.router.navigate));
+      dispatch(employeeLogin(values, props.router.navigate, setLoading));
     },
   });
 
@@ -158,10 +159,11 @@ const AppLogin = (props: any) => {
 
                           <div className="mt-3 d-grid z-0">
                             <button
+                              disabled={loading}
                               className="btn btn-primary btn-block z-0 "
                               type="submit"
                             >
-                              Log In
+                              {loading ? "Wait..." : "Log In"}
                             </button>
                           </div>
                         </Form>

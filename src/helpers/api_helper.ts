@@ -7,7 +7,7 @@ axios.defaults.baseURL = "http://localhost:8081";
 
 // content type
 axios.defaults.headers.post["Content-Type"] = "application/json";
-axios.defaults.headers.post["Content-Type"] = "multipart/form-data";
+// axios.defaults.headers.post["Content-Type"] = "multipart/form-data";
 
 // intercepting to capture errors
 axios.interceptors.response.use(
@@ -103,7 +103,6 @@ class APIClient {
       ? "multipart/form-data"
       : "application/json";
     axios.defaults.headers.post["Content-Type"] = contentType;
-    console.log(data);
 
     const res = axios.post(url, data);
     return res;
@@ -112,10 +111,20 @@ class APIClient {
    * Updates data
    */
   update = (url: any, data: any) => {
+    const filesIncluded = containsFiles(data);
+    const contentType = filesIncluded
+      ? "multipart/form-data"
+      : "application/json";
+    axios.defaults.headers.post["Content-Type"] = contentType;
     return axios.patch(url, data);
   };
 
   put = (url: any, data: any) => {
+    const filesIncluded = containsFiles(data);
+    const contentType = filesIncluded
+      ? "multipart/form-data"
+      : "application/json";
+    axios.defaults.headers.post["Content-Type"] = contentType;
     return axios.put(url, data);
   };
   /**

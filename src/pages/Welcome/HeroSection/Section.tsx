@@ -75,7 +75,6 @@ const Section = () => {
   }
 
   const validation: any = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
@@ -272,8 +271,7 @@ const Section = () => {
                 </p>
 
                 <div className="d-flex flex-wrap gap-2 mt-4">
-                  <a href="#services" className="btn btn-success">
-                    {" "}
+                  <a href="#services" className="btn btn-primary ">
                     Get Started
                   </a>
 
@@ -286,7 +284,7 @@ const Section = () => {
                     onClick={() => {
                       tog_standard();
                     }}
-                    className="btn btn-primary "
+                    className="btn btn-success"
                     data-dismiss="modal"
                   >
                     Request a Phone call

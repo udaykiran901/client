@@ -23,7 +23,7 @@ const rootReducer = combineReducers({
   ForgetPassword: ForgotPasswordReducer,
   Account: AccountReducer,
   ecommerce: EcommerenceReducer,
-  bdModule: BDslice,
+  bd: BDslice,
   hrAndAdmin: HRandAdminReducer,
   EmployeeSlice: EmployeeSlice,
   CurrentUserSlice: CurrentUserSlice,

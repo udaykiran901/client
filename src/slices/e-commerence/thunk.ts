@@ -17,11 +17,16 @@ import {
   addToCart as addToCartAPI,
   onGettingProductNameId as onGettingProductNameIdAPI,
   createOrderInServer as createOrderInServerAPI,
+  paymentSuccessfullSaveOrder as paymentSuccessfullSaveOrderAPI,
+  getMyOrdersPartialData as getMyOrdersPartialDataAPI,
+  onCompleteRegistration as completeRegistrationAPI,
 } from "../../helpers/fakebackend_helper";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
+  COMPLETE_REGISTRATION,
   CREATE_ORDER_IN_SERVER,
+  GET_MY_ORDERS_PARTIAL,
   GET_PRODUCT_DETAILS,
   GET_PRODUCT_NAME_ID,
   ON_GET_MATERIALS_PARTIAL_DATA,
@@ -203,7 +208,7 @@ export const addProductToCart = createAsyncThunk(
     try {
       const response = await addToCartAPI({ data });
       toast.success(response.data.message, { autoClose: 5000 });
-
+      console.log(response);
       return response;
     } catch (error: any) {
       console.log(error);
@@ -231,6 +236,44 @@ export const createOrderOnServer = createAsyncThunk(
   async (data: any) => {
     try {
       const response = await createOrderInServerAPI(data);
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const paymentSuccessfull = createAsyncThunk(
+  CREATE_ORDER_IN_SERVER,
+  async (data: any) => {
+    try {
+      const response: any = await paymentSuccessfullSaveOrderAPI(data);
+      toast.success(response.data.message, { autoClose: 5000 });
+      return response;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const getMyOrdersPartial = createAsyncThunk(
+  GET_MY_ORDERS_PARTIAL,
+  async () => {
+    try {
+      const response = await getMyOrdersPartialDataAPI();
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const completeRegistration = createAsyncThunk(
+  COMPLETE_REGISTRATION,
+  async (data: any) => {
+    try {
+      const response: any = await completeRegistrationAPI(data);
+      toast.success(response.data.message, { autoClose: 5000 });
       return response;
     } catch (error) {
       return error;

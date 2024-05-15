@@ -71,7 +71,7 @@ const EcommerceProductDetail = (props) => {
         "Please select at least one parameter before adding to cart",
         {
           position: "top-center",
-          autoClose: false,
+          // autoClose: true,
         }
       );
       return;

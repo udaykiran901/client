@@ -1,6 +1,6 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useMemo } from "react";
 
-import { Badge, Button, Card, CardBody, CardTitle } from "reactstrap";
+import { Badge, Card, CardBody } from "reactstrap";
 // import EcommerenceOrdersModal from "../Ecommerce/EcommerceOrders/EcommerceOrdersModal";
 
 import TableContainer from "Components/Common/TableContainer";
@@ -76,10 +76,21 @@ const SelectTable: React.FC<TableProps> = ({
           return (
             <div>
               {cellProps.row.original.params.map((eachParam) => (
-                <p key={eachParam.test_id}>
+                <div className="d-flex">
                   <i className="mdi mdi-circle-medium align-middle text-primary me-1" />
-                  {eachParam.testName}
-                </p>
+                  <p
+                    key={eachParam.test_id}
+                    className="address-column"
+                    style={{
+                      maxWidth: "350px",
+                      minWidth: "200px",
+                      whiteSpace: "normal",
+                      wordBreak: "break-word",
+                    }}
+                  >
+                    {eachParam.testName}
+                  </p>
+                </div>
               ))}
             </div>
           );

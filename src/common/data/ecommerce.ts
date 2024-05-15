@@ -1,10 +1,10 @@
-import { Discount, Product, EComShop } from "pages/Ecommerce/type";
+import { Discount, EComShop } from "pages/Ecommerce/type";
 
 // import product3 from "../../assets/images/product/img-3.png";
-import product4 from "../../assets/images/product/img-4.png";
+// import product4 from "../../assets/images/product/img-4.png";
 // import product5 from "../../assets/images/product/img-5.png";
-import product6 from "../../assets/images/product/img-6.png";
-import product7 from "../../assets/images/product/img-7.png";
+// import product6 from "../../assets/images/product/img-6.png";
+// import product7 from "../../assets/images/product/img-7.png";
 
 // import soil from "../../assets/images/materials/Soil.png";
 // import soil_lg from "../../assets/images/materials/soil-lg.png";

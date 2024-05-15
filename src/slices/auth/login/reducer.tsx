@@ -35,6 +35,7 @@ const loginSlice = createSlice({
     },
   },
 });
+
 export const { loginSuccess, apiError, resetLoginFlag, logoutUserSuccess } =
   loginSlice.actions;
 export default loginSlice.reducer;

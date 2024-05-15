@@ -46,9 +46,8 @@ import Navbar from "pages/Welcome/Navbar/Navbar";
 const EcommerceProducts = (props: any) => {
   //meta title
   document.title = "Materials | KDM Engineers Group";
-
+  const [key, setKey] = useState<string>("");
   const dispatch: any = useDispatch();
-
   const selectProperties = createSelector(
     (state: EcoAction) => state.ecommerce,
     (ecommerce) => ({
@@ -58,36 +57,33 @@ const EcommerceProducts = (props: any) => {
   );
 
   const { productPartialInfo, loading } = useSelector(selectProperties);
-  console.log(loading);
-  console.log("the above is in  component of");
-
   const { navigate } = props.router;
-  const [productList, setProductList] = useState<ProductPartialInfo[]>();
+  // const [productList, setProductList] = useState<ProductPartialInfo[]>();
 
-  useEffect(() => {
-    setProductList(productPartialInfo);
-  }, [productPartialInfo]);
+  // useEffect(() => {
+  //   setProductList(productPartialInfo);
+  // }, [productPartialInfo]);
 
   useEffect(() => {
     dispatch(onGetProducts());
   }, [dispatch]);
 
   // search
-  const handleSearch = (ele: any) => {
-    const query = ele.value.toLowerCase();
-    handleSearchData({
-      setState: setProductList,
-      data: productList,
-      item: query,
-    });
-  };
+  // const handleSearch = (ele: any) => {
+  //   const query = ele.value.toLowerCase();
+  // console.log(ele.value);
+  // handleSearchData({
+  //   setState: setProductList,
+  //   data: productList,
+  //   item: query,
+  // });
+  // };
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Navbar />
         <Container>
-          {/* <Breadcrumbs title="Ecommerce" breadcrumbItem="Products" /> */}
           <Row>
             <Col lg={12}>
               <Row className="mb-3">
@@ -97,14 +93,15 @@ const EcommerceProducts = (props: any) => {
                   </div>
                 </Col>
                 <Col lg={8} sm={6}>
-                  <Form className="mt-4 mt-sm-0 float-sm-end d-sm-flex align-items-center shadow">
-                    <div className="search-box me-2">
+                  <Form className="mt-4 mt-sm-0 shadow ">
+                    <div className="search-box">
                       <div className="position-relative">
                         <Input
+                          readOnly={loading}
                           type="text"
                           className="border-0"
-                          placeholder="Search here"
-                          onChange={(e: any) => handleSearch(e.target)}
+                          placeholder="Search here.."
+                          onChange={(e: any) => setKey(e.target.value)}
                         />
                         <i className="bx bx-search-alt search-icon" />
                       </div>
@@ -118,8 +115,13 @@ const EcommerceProducts = (props: any) => {
               <>
                 <Row>
                   {!isEmpty(productPartialInfo) &&
-                    (productPartialInfo || []).map(
-                      (product: ProductPartialInfo, key: number) => (
+                    (productPartialInfo || [])
+                      .filter((eachProduct) =>
+                        eachProduct.name
+                          .toLowerCase()
+                          .includes(key.toLowerCase())
+                      )
+                      .map((product: ProductPartialInfo, key: number) => (
                         <Col className="mb-3" xl={4} sm={6} key={"_col_" + key}>
                           <div
                             className="shadow-lg  h-100"
@@ -217,8 +219,7 @@ const EcommerceProducts = (props: any) => {
                             </div>
                           </div>
                         </Col>
-                      )
-                    )}
+                      ))}
                 </Row>
                 {/* <Row>
                     <Col lg={12}>

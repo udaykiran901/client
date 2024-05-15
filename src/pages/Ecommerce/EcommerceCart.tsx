@@ -1,27 +1,17 @@
 import React, { useEffect } from "react";
 
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  CardBody,
-  Table,
-  // Input,
-  // CardTitle,
-} from "reactstrap";
+import { Container, Row, Col, Card, CardBody, Table } from "reactstrap";
 import { Link } from "react-router-dom";
 import Navbar from "pages/Welcome/Navbar/Navbar";
 
-//Import Breadcrumb
-// import Breadcrumbs from "../../Components/Common/Breadcrumb";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
+import logo from "../../assets/images/logo-dark.png";
 
 import {
-  createOrderOnServer,
   deleteCart as onDeleteCart,
   getCart as onGetCart,
+  paymentSuccessfull,
 } from "slices/thunk";
 import {
   CartProduct,
@@ -39,7 +29,6 @@ const EcommerceCart = () => {
     (state: EcoAction) => state.ecommerce,
     (ecommerce) => ({
       cart: ecommerce.cart,
-      modal: ecommerce.modal,
       loading: ecommerce.loading,
     })
   );
@@ -47,18 +36,15 @@ const EcommerceCart = () => {
   const { cart, loading } = useSelector(selectProperties);
 
   const dispatch = useDispatch<any>();
-  // const [dic, setDic] = useState<number>(0);
-  // const [tax, setTax] = useState<number>(0);
-  // const [charge, setCharge] = useState<number>(0);
 
-  // const [total, setTotal] = useState<number>(0);
   let sum = 0;
 
-  const assigned = (cart || [])?.map((item: any) => item.basePrice);
-  let subTotal = 0;
-  for (let i = 0; i < assigned.length; i++) {
-    subTotal += Math.round(assigned[i]);
-  }
+  // const assigned = (cart || [])?.map((item: any) => item.basePrice);
+
+  // let subTotal = 0;
+  // for (let i = 0; i < assigned.length; i++) {
+  //   subTotal += Math.round(assigned[i]);
+  // }
 
   const total = (cart || []).reduce((accum, eachSample) => {
     return (
@@ -82,23 +68,8 @@ const EcommerceCart = () => {
     );
   }, 0);
 
-  // const finalPrice = total - discountAmount;
   const shippingCharges = 200;
   const taxAmount = discountAmount * (18 / 100);
-
-  // const totalAmountNeedsToPay = finalPrice + shippingCharges + taxAmount;
-
-  // useEffect(() => {
-  //   let dic = 0.15 * subTotal;
-  //   let tax = 0.125 * subTotal;
-  //   if (subTotal !== 0) {
-  //     setCharge(65);
-  //   } else {
-  //     setCharge(0);
-  //   }
-  //   setDic(dic);
-  //   setTax(tax);
-  // }, [subTotal]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -128,11 +99,70 @@ const EcommerceCart = () => {
     return offerPrice;
   };
 
-  const onCartCheckout = (amount: number) => {
-    const data: any = {
-      amount,
+  const onCartCheckout = async (amount: number) => {
+    console.log(amount);
+    const response = await fetch(
+      "http://localhost:8081/ecommerce/cart/create-order-on-server",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          amount: amount * 100,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const order = await response.json();
+
+    console.log("This is order");
+    console.log(order);
+
+    var options = {
+      key: "rzp_test_gHKvCPTaMlouR1",
+      amount: amount,
+      currency: "INR",
+      receipt: order.receipt,
+      name: "KDM Engineers Group",
+      description: "Testing Transaction",
+      image: logo,
+      order_id: order.id,
+      handler: async function (response) {
+        const paymentInfo = {
+          ...response,
+        };
+        console.log("Payment succcessfull ");
+        dispatch(paymentSuccessfull(paymentInfo));
+        //Heey...pav validate your payment here
+      },
+      prefill: {
+        name: "Pavan Marapalli",
+        email: "webdevmatrix@example.com",
+        contact: "8179769162",
+      },
+      notes: {
+        address: "Razorpay Corporate Office",
+      },
+      theme: {
+        color: "#3399cc",
+      },
     };
-    dispatch(createOrderOnServer(data));
+    var rzp1 = new (window as any).Razorpay(options);
+    console.log(rzp1);
+    rzp1.on("payment.failed", function (response: any) {
+      console.log("heey... payment failed");
+      console.log(response);
+
+      alert(response.error.description);
+      alert(response.error.code);
+      alert(response.error.description);
+      alert(response.error.source);
+      alert(response.error.step);
+      alert(response.error.reason);
+      alert(response.error.metadata.order_id);
+      alert(response.error.metadata.payment_id);
+    });
+    rzp1.open();
   };
 
   return (
@@ -179,7 +209,13 @@ const EcommerceCart = () => {
                                     className="avatar-md"
                                   />
                                 </td>
-                                <td>
+                                <td
+                                  style={{
+                                    maxWidth: "350px",
+                                    whiteSpace: "normal",
+                                    wordBreak: "break-word",
+                                  }}
+                                >
                                   <h5 className="font-size-14 text-truncate mb-3">
                                     <Link
                                       to={
@@ -201,7 +237,7 @@ const EcommerceCart = () => {
                                         <div key={index} className="mt-2">
                                           {eachParam.params.map(
                                             (eachTest: TestParams) => (
-                                              <p key={eachTest.test_id}>
+                                              <div className="d-flex">
                                                 <i
                                                   className={`mdi mdi-circle-medium align-middle text-${
                                                     index % 2 !== 0
@@ -209,8 +245,10 @@ const EcommerceCart = () => {
                                                       : "warning"
                                                   } me-1`}
                                                 />
-                                                {eachTest.testName}
-                                              </p>
+                                                <p key={eachTest.test_id}>
+                                                  {eachTest.testName}
+                                                </p>
+                                              </div>
                                             )
                                           )}
                                           <hr />
@@ -394,8 +432,9 @@ const EcommerceCart = () => {
                         <tr>
                           <th>Total :</th>
                           <th>
-                            {" "}
-                            {discountAmount + shippingCharges + taxAmount}
+                            {Math.floor(
+                              discountAmount + shippingCharges + taxAmount
+                            )}
                           </th>
                         </tr>
                         <tr>
@@ -405,13 +444,16 @@ const EcommerceCart = () => {
                                 <button
                                   className="btn btn-primary"
                                   type="button"
-                                  onClick={() =>
+                                  onClick={(e) => {
+                                    e.preventDefault();
                                     onCartCheckout(
-                                      discountAmount +
-                                        shippingCharges +
-                                        taxAmount
-                                    )
-                                  }
+                                      Math.floor(
+                                        discountAmount +
+                                          shippingCharges +
+                                          taxAmount
+                                      )
+                                    );
+                                  }}
                                 >
                                   <i className="mdi mdi-cart-arrow-right me-1" />{" "}
                                   Checkout

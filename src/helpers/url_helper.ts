@@ -59,16 +59,31 @@ export const GET_PRODUCT_DETAILS = "/ecommerce/get-product-details";
 export const GET_CART = "/ecommerce/getCart";
 export const DELETE_CART = "/ecommerce/delete-cart";
 export const CREATE_ORDER_IN_SERVER = "/ecommerce/cart/create-order-on-server";
+export const PAYMENT_SUCCESS_SAVE_ORDER = "/ecommerce/create-order";
+export const GET_MY_ORDERS_PARTIAL = "/ecommerce/get-my-orders";
 
 //BD Module
 export const REQUEST_CALLBACK = "/bd/on-request-callback";
 export const ON_SUBSCRIBE = "/bd/subscribe";
-// export const ON_ADDING_NEW_PRODUCT = "/bd/adding-new-product";
 export const ON_ADDING_NEW_PRODUCT = "/bd/adding-new-product";
 export const GET_PRODUCT_NAME_ID = "/bd/name-id";
 export const ADD_PARAM = "/bd/add-param";
+export const GET_REQUEST_CALLBACKS = "/bd/get-request-callbacks";
+export const UPLOAD_CUSTOMER_REQUEST_AUDIO =
+  "/bd/upload-customer-request-audio";
+export const GET_ALL_ECOMMERCE_ORDERS = "/bd/get-ecommerce-orders";
+export const COMPLETE_REGISTRATION =
+  "/bd/complete-ecommerce-order-registration";
 
-//HR and Admin
+export const GET_CUSTOMERS_LIST = "/bd/get-customers-list";
+export const GET_SUBSCRIBERS_LIST = "/bd/get-subscribers-list";
+export const GET_SUBSCRIBERS_GRAPH = "/bd/get-subscribers-graph";
+
+export const REGISTER_CUSTOMER = "/bd/reg-customer";
+export const GET_SUBSCRIBERS_GRAPH_LAST_30_DAYS =
+  "/bd/get-subscribers-graph-last30days";
+
+// HR and Admin
 export const GET_ROLES = "/hr-admin/get-roles";
 export const GET_EMPLOYEES = "/hr-admin/get-employees";
 export const GET_BRANCHES = "/hr-admin/get-branch";
@@ -76,7 +91,7 @@ export const GET_DEPARTMENTS = "/hr-admin/get-departments";
 export const GET_ACCESS_KEYS = "/hr-admin/get-accesskeys";
 export const REGISTER_NEW_EMPLOYEE = "/hr-admin/register-employee";
 
-//jobs
+// jobs
 
 export const GET_JOB_LIST = "/jobs";
 export const DELETE_JOB_LIST = "/delete/job";

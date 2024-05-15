@@ -151,6 +151,13 @@ export const createOrderInServer = (data: any) => {
   api.create(url.CREATE_ORDER_IN_SERVER, data);
 };
 
+export const paymentSuccessfullSaveOrder = (data: any) => {
+  api.create(url.PAYMENT_SUCCESS_SAVE_ORDER, data);
+};
+
+export const getMyOrdersPartialData = () =>
+  api.get(url.GET_MY_ORDERS_PARTIAL, null);
+
 //BD Module
 
 export const requestCallback = (data: any) =>
@@ -167,7 +174,30 @@ export const onGettingProductNameId = () => {
   api.get(url.GET_PRODUCT_NAME_ID, null);
 };
 
+export const uploadAudio = (data: any) =>
+  api.create(url.UPLOAD_CUSTOMER_REQUEST_AUDIO, data);
+
+export const onRegisteringCustomer = (data: any) =>
+  api.create(url.REGISTER_CUSTOMER, data);
+
 export const addingParameterBH = (data: any) => api.create(url.ADD_PARAM, data);
+
+export const onCompleteRegistration = (data: any) =>
+  api.create(url.COMPLETE_REGISTRATION, data);
+
+export const getRequestCallbacks = () =>
+  api.get(url.GET_REQUEST_CALLBACKS, null);
+
+export const ongetAllOrders = () => api.get(url.GET_ALL_ECOMMERCE_ORDERS, null);
+
+export const fetchCustomersList = () => api.get(url.GET_CUSTOMERS_LIST, null);
+
+export const fetchSubscribers = () => api.get(url.GET_SUBSCRIBERS_LIST, null);
+export const fetchSubscribersGraph = () =>
+  api.get(url.GET_SUBSCRIBERS_GRAPH, null);
+
+export const fetchSubscribersGraphLast30Days = () =>
+  api.get(url.GET_SUBSCRIBERS_GRAPH_LAST_30_DAYS, null);
 
 // HR and Admin
 export const getRoles = () => api.get(url.GET_ROLES, null);

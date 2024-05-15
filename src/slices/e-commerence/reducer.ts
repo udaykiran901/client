@@ -7,6 +7,7 @@ import {
   deleteCart,
   addProductToCart,
   createOrderOnServer,
+  getMyOrdersPartial,
 } from "./thunk";
 
 import {
@@ -18,16 +19,8 @@ import {
   ProductPartialInfo,
   BackendProductDes,
   CartProduct,
+  MyOrder,
 } from "pages/Ecommerce/type";
-
-export interface ModalType {
-  isSuccessModal: boolean;
-  modalStatus: boolean;
-  modalHeading: string;
-  modalDescription: string;
-}
-
-export interface BackendProductInfo {}
 
 interface InitialState {
   products?: Product[];
@@ -38,28 +31,13 @@ interface InitialState {
   cart?: CartProduct[];
   error: object;
   loading?: boolean;
-  modal: ModalType;
+
   productPartialInfo: ProductPartialInfo[];
   // productNameId: ProductNameId[];
   backendParams: BackendParams[];
   backendProductDes: BackendProductDes;
+  myOrders: MyOrder[];
 }
-
-export const loginWarningModal: ModalType = {
-  isSuccessModal: false,
-  modalStatus: true,
-  modalHeading: "Login Required",
-  modalDescription:
-    "To access this feature, please log in to your account. If you don't have an account yet, you can create a free account with KDM Engineers Group.",
-};
-
-export const addToCartWarningModal: ModalType = {
-  isSuccessModal: false,
-  modalStatus: true,
-  modalHeading: "No Product Selected",
-  modalDescription:
-    "To add a product to your cart, please select at least one product. Browse our collection and choose the items you'd like to purchase.",
-};
 
 export const initialState: InitialState = {
   products: [],
@@ -70,39 +48,18 @@ export const initialState: InitialState = {
   cart: [],
   error: {},
   loading: false,
-  modal: {} as ModalType,
+
   productPartialInfo: [],
 
   backendParams: [],
   backendProductDes: {} as BackendProductDes,
+  myOrders: [],
 };
 
 const EcommerceSlice = createSlice({
   name: "EcommerceSlice",
   initialState,
-  reducers: {
-    showModal(state, action) {
-      const { isSuccessModal, modalStatus, modalHeading, modalDescription } =
-        action.payload;
-
-      return {
-        ...state,
-        modal: {
-          ...state.modal,
-          isSuccessModal,
-          modalStatus,
-          modalHeading,
-          modalDescription,
-        },
-      };
-    },
-    closeModal(state) {
-      state.modal.isSuccessModal = false;
-      state.modal.modalStatus = false;
-      state.modal.modalHeading = "";
-      state.modal.modalDescription = "";
-    },
-  },
+  reducers: {},
 
   extraReducers: (builder) => {
     builder.addCase(getProducts.fulfilled, (state: any, action: any) => {
@@ -163,7 +120,7 @@ const EcommerceSlice = createSlice({
     });
 
     builder.addCase(createOrderOnServer.fulfilled, (state, action) => {
-      console.log("createOrderOnServer is fullfilled");
+      state.cart = [];
     });
 
     //cart
@@ -175,6 +132,14 @@ const EcommerceSlice = createSlice({
 
     builder.addCase(deleteCart.rejected, (state: any, action: any) => {
       state.error = action.payload.error || null;
+    });
+
+    builder.addCase(getMyOrdersPartial.fulfilled, (state, action) => {
+      state.myOrders = action.payload.data;
+    });
+
+    builder.addCase(getMyOrdersPartial.rejected, (state, action) => {
+      console.log("Api Rejected");
     });
 
     builder.addMatcher(
@@ -198,7 +163,5 @@ const EcommerceSlice = createSlice({
     );
   },
 });
-
-export const { showModal, closeModal } = EcommerceSlice.actions;
 
 export default EcommerceSlice.reducer;

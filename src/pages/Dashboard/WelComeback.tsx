@@ -8,7 +8,7 @@ import profileImg from "../../assets/images/profile-img.png";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { Link } from "react-router-dom";
-import avatar1 from "../../assets/images/users/avatar-1.jpg";
+// import avatar1 from "../../assets/images/users/avatar-1.jpg";
 
 const WelComeback: React.FC = () => {
   const selectedProperties = createSelector(

@@ -32,13 +32,29 @@ import JobCategories from "pages/JobPages/JobCategories";
 import CandidateList from "pages/JobPages/CandidateList";
 import CandidateOverview from "pages/JobPages/CandidateOverview";
 import AddParam from "forms/AddParam";
+import MyOrders from "pages/Ecommerce/MyOrders";
+import CallBacksList from "pages/BD/CallBacksList";
+import OrdersList from "pages/BD/OrdersList";
+import CustomersList from "pages/BD/CustomersList";
+import SubscribersList from "pages/BD/SubscribersList";
 
 const BDRoutes = [
   { path: "/bd/product", component: <UserLoginForm /> },
-  { path: "/bd/customer", component: <UserLoginForm /> },
   { path: "/bd/orders-list", component: <UserLoginForm /> },
   { path: "/bd/add-product", component: <AddProduct /> },
   { path: "/bd/add-param", component: <AddParam /> },
+  { path: "/bd/call-backs", component: <CallBacksList /> },
+  { path: "/bd/orders", component: <OrdersList /> },
+  { path: "/bd/subscribers", component: <SubscribersList /> },
+
+  {
+    path: "/bd/ecommerce-product-detail/:id?",
+    component: <EcommerceProductDetail />,
+  },
+  {
+    path: "/bd/customer",
+    component: <CustomersList />,
+  },
 ];
 
 const HRandAdminRoutes = [
@@ -66,6 +82,7 @@ const publicRoutes = [
   { path: "/ecommerce-cart", component: <EcommerceCart /> },
   { path: "/ecommerce-checkout", component: <EcommerceCheckout /> },
   { path: "/app", component: <AppLogin /> },
+  { path: "/myorders", component: <MyOrders /> },
 
   //jobs
   { path: "/job-apply", component: <ApplyJobs /> },

@@ -8,6 +8,8 @@ import {
   addProductToCart,
   createOrderOnServer,
   getMyOrdersPartial,
+  paymentSuccessfull,
+  completeRegistration,
 } from "./thunk";
 
 import {
@@ -37,6 +39,7 @@ interface InitialState {
   backendParams: BackendParams[];
   backendProductDes: BackendProductDes;
   myOrders: MyOrder[];
+  addToCartLoading: boolean;
 }
 
 export const initialState: InitialState = {
@@ -48,12 +51,11 @@ export const initialState: InitialState = {
   cart: [],
   error: {},
   loading: false,
-
   productPartialInfo: [],
-
   backendParams: [],
   backendProductDes: {} as BackendProductDes,
   myOrders: [],
+  addToCartLoading: false,
 };
 
 const EcommerceSlice = createSlice({
@@ -101,6 +103,11 @@ const EcommerceSlice = createSlice({
       state.error = action.payload ? action.payload?.error : null;
     });
 
+    builder.addCase(addProductToCart.pending, (state, action) => {
+      state.addToCartLoading = true;
+      state.loading = false;
+    });
+
     builder.addCase(addProductToCart.fulfilled, (state, action) => {
       state.backendProductDes = {
         ...state.backendProductDes,
@@ -112,15 +119,21 @@ const EcommerceSlice = createSlice({
       });
 
       state.backendParams = updatedParams;
+      state.addToCartLoading = false;
     });
 
     builder.addCase(addProductToCart.rejected, (state: any, action: any) => {
-      console.log("rejected");
       state.error = action.payload ? action.payload?.message : null;
+      state.addToCartLoading = false;
     });
 
     builder.addCase(createOrderOnServer.fulfilled, (state, action) => {
+      console.log("createOrderOnServer this success");
+    });
+
+    builder.addCase(paymentSuccessfull.fulfilled, (state, action) => {
       state.cart = [];
+      console.log("paymentSuccessfull this success");
     });
 
     //cart

@@ -4,22 +4,24 @@ import { Row, Col } from "reactstrap";
 //Import Images
 import logolight from "../../../assets/images/logo-light.png";
 
+import applogo from "../../../assets/images/KDM_app_logo.png";
 const FooterLink = () => {
   return (
     <React.Fragment>
       <Row>
         <Col lg="6">
           <div className="mb-4">
-            <img src={logolight} alt="" height="20" />
+            <img src={logolight} alt="" height="40" />
           </div>
 
           <p className="mb-2">
-            {new Date().getFullYear()} © Skote. Design & Develop by Themesbrand
+            {new Date().getFullYear()} © KDM Engineers Group. Design & Developed
+            by <span className="text-success">Team IT</span>
           </p>
-          <p>
-            It will be as simple as occidental in fact, it will be to an english
-            person, it will seem like simplified English, as a skeptical
-          </p>
+          <i>
+            Delivering Complete Civil Engineering Solutions with Innovation and
+            Excellence
+          </i>
         </Col>
       </Row>
     </React.Fragment>

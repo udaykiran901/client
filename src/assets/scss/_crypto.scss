@@ -19,6 +19,7 @@
       top: 50%;
       transform: translateY(-50%);
       background-color: $primary;
+      // background-color: red;
       color: $white;
       z-index: 9;
       right: -34px;
@@ -70,11 +71,12 @@
   margin-bottom: 0px;
   transition: all 0.5s ease-in-out;
   border-bottom: 1px solid rgba($white, 0.1);
-  //   background-color: #f70309;
+
   color: #000;
 
   @media (max-width: 991.98px) {
     background-color: var(--#{$prefix}topnav-bg);
+    // background-color: red !important;
   }
 
   .navbar-logo {
@@ -126,6 +128,7 @@
 
   &.nav-sticky {
     background-color: $topnav-bg;
+    // background-color: red !important;
     box-shadow: $box-shadow;
     .navbar-logo {
       line-height: 60px;

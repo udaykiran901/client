@@ -25,19 +25,22 @@ const OurServices = () => {
 
           <Row>
             {ourservices.map((blog, key) => (
-              <Col xl="4" sm="6" key={key}>
+              <Col xl="4" sm="6" key={key} className="mt-3">
                 <div className="blog-box h-100 mb-4 mb-xl-0 shadow-lg">
-                  <div className="position-relative ">
-                    <img
-                      src={blog.imgUrl}
-                      alt=""
-                      className="rounded img-fluid mx-auto d-block"
-                    />
-                    <Badge color="success" className="blog-badge font-size-11">
-                      {blog.tag}
-                    </Badge>
-                  </div>
                   <Link to={blog.linkTo}>
+                    <div className="position-relative ">
+                      <img
+                        src={blog.imgUrl}
+                        alt=""
+                        className="rounded img-fluid mx-auto d-block"
+                      />
+                      <Badge
+                        color="success"
+                        className="blog-badge font-size-11"
+                      >
+                        {blog.tag}
+                      </Badge>
+                    </div>
                     <div className="mt-4 text-muted p-2">
                       <p className="mb-2">
                         <i className="bx bx-calendar me-1 ms-1" /> {blog.date}

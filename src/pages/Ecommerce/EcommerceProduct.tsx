@@ -68,6 +68,10 @@ const EcommerceProducts = (props: any) => {
     dispatch(onGetProducts());
   }, [dispatch]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [dispatch]);
+
   // search
   // const handleSearch = (ele: any) => {
   //   const query = ele.value.toLowerCase();
@@ -122,7 +126,12 @@ const EcommerceProducts = (props: any) => {
                           .includes(key.toLowerCase())
                       )
                       .map((product: ProductPartialInfo, key: number) => (
-                        <Col className="mb-3" xl={4} sm={6} key={"_col_" + key}>
+                        <Col
+                          className="mb-3 product-item"
+                          xl={4}
+                          sm={6}
+                          key={"_col_" + key}
+                        >
                           <div
                             className="shadow-lg  h-100"
                             onClick={() =>
@@ -148,7 +157,7 @@ const EcommerceProducts = (props: any) => {
                                   className="d-block w-100 div-h-200"
                                 />
                               </div>
-                              <div className="mt-4 p-2 ">
+                              <div className="mt-4 p-2">
                                 <h5>
                                   <Link
                                     to={

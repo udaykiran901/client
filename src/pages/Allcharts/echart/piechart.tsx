@@ -2,8 +2,9 @@ import React from "react";
 import ReactEcharts from "echarts-for-react";
 import getChartColorsArray from "../../../Components/Common/ChartDynamicColor";
 
-const Pie = ({dataColors}:any) => {
+const Pie = ({ dataColors, data }: any) => {
   const PieEChartColors = getChartColorsArray(dataColors);
+
   const options = {
     toolbox: {
       show: false,
@@ -15,7 +16,7 @@ const Pie = ({dataColors}:any) => {
     legend: {
       orient: "vertical",
       left: "left",
-      data: ["Laptop", "Tablet", "Mobile", "Others", "Desktop"],
+      data: ["CHEMICAL", "PHYSICAL"],
       textStyle: {
         color: ["#8791af"],
       },
@@ -23,17 +24,11 @@ const Pie = ({dataColors}:any) => {
     color: PieEChartColors,
     series: [
       {
-        name: "Total sales",
+        name: "Total Params",
         type: "pie",
-        radius: "55%",
+        radius: "60%",
         center: ["50%", "60%"],
-        data: [
-          { value: 335, name: "Laptop" },
-          { value: 310, name: "Tablet" },
-          { value: 234, name: "Mobile" },
-          { value: 135, name: "Others" },
-          { value: 1548, name: "Desktop" },
-        ],
+        data: [...data],
         itemStyle: {
           emphasis: {
             shadowBlur: 10,
@@ -46,7 +41,8 @@ const Pie = ({dataColors}:any) => {
   };
   return (
     <React.Fragment>
-      <ReactEcharts style={{ height: "350px" }} option={options} />
+      <p>Discipline Wise Statistics</p>
+      <ReactEcharts style={{ height: "400px" }} option={options} />
     </React.Fragment>
   );
 };

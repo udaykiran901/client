@@ -223,6 +223,10 @@ const EmpList = () => {
     navigate("/hr/add-emp");
   };
 
+  console.log("Showing employees list");
+
+  console.log(employees);
+
   return (
     <React.Fragment>
       <DeleteModal

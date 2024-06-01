@@ -16,6 +16,8 @@ const Last30SubscribersGraph = ({
   const values = data.map((each) => each.count);
   const labels = data.map((each) => each.label);
 
+  console.log(data, values, labels);
+
   const series = [{ name: "Total", data: values }];
   const options: any = {
     chart: {

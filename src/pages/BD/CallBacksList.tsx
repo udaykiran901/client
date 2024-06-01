@@ -34,6 +34,14 @@ export const getDateAndTime = (dateStr: string) => {
   return ` ${day}-${month}-${year}  ${hours}:${minutes}:${seconds}  ${amOrPm}`;
 };
 
+export const getOnlyDate = (dateStr: string) => {
+  const date = new Date(dateStr);
+  const year = date.getFullYear();
+  const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  const day = ("0" + date.getDate()).slice(-2);
+  return ` ${day}-${month}-${year} `;
+};
+
 const CallBacksList = () => {
   document.title = "Call Back Requests | KDM Engineers Group";
 
@@ -81,9 +89,7 @@ const CallBacksList = () => {
         enableSorting: true,
         cell: (cellProps: any) => {
           return (
-            <>
-              <p className="text-muted mb-0">{cellProps.row.original.name}</p>
-            </>
+            <p className="text-muted mb-0">{cellProps.row.original.name}</p>
           );
         },
       },
@@ -94,9 +100,7 @@ const CallBacksList = () => {
         enableSorting: true,
         cell: (cellProps: any) => {
           return (
-            <>
-              <p className="text-muted mb-0">{cellProps.row.original.mobile}</p>
-            </>
+            <p className="text-muted mb-0">{cellProps.row.original.mobile}</p>
           );
         },
       },
@@ -108,11 +112,9 @@ const CallBacksList = () => {
         enableSorting: true,
         cell: (cellProps: any) => {
           return (
-            <>
-              <p className="text-muted mb-0">
-                {cellProps.row.original.whatsapp_consent ? "Yes" : "No"}
-              </p>
-            </>
+            <p className="text-muted mb-0">
+              {cellProps.row.original.whatsapp_consent ? "Yes" : "No"}
+            </p>
           );
         },
       },
@@ -124,11 +126,9 @@ const CallBacksList = () => {
         enableSorting: true,
         cell: (cellProps: any) => {
           return (
-            <>
-              <p className="text-muted mb-0">
-                {getDateAndTime(cellProps.row.original.requested_at)}
-              </p>
-            </>
+            <p className="text-muted mb-0">
+              {getDateAndTime(cellProps.row.original.requested_at)}
+            </p>
           );
         },
       },
@@ -155,7 +155,6 @@ const CallBacksList = () => {
         enableColumnFilter: false,
         enableSorting: true,
         cell: (cellProps: any) => {
-          console.log(cellProps.row.original.request_id);
           return (
             <div style={{ width: "250px", textAlign: "center" }}>
               <input

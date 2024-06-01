@@ -37,6 +37,11 @@ import CallBacksList from "pages/BD/CallBacksList";
 import OrdersList from "pages/BD/OrdersList";
 import CustomersList from "pages/BD/CustomersList";
 import SubscribersList from "pages/BD/SubscribersList";
+import SampleMaterials from "pages/BD/SampleMaterials";
+import OnlineUsers from "pages/BD/OnlineUsers";
+import EntitysCount from "pages/BD/EntitysCount";
+import OrderInfo from "forms/OrderInfo";
+import OfflineOrders from "pages/BD/OfflineOrders";
 
 const BDRoutes = [
   { path: "/bd/product", component: <UserLoginForm /> },
@@ -46,7 +51,9 @@ const BDRoutes = [
   { path: "/bd/call-backs", component: <CallBacksList /> },
   { path: "/bd/orders", component: <OrdersList /> },
   { path: "/bd/subscribers", component: <SubscribersList /> },
-
+  { path: "/bd/samples-statistics", component: <SampleMaterials /> },
+  { path: "/bd/users", component: <OnlineUsers /> },
+  { path: "/bd/orders/:id", component: <OrderInfo /> },
   {
     path: "/bd/ecommerce-product-detail/:id?",
     component: <EcommerceProductDetail />,
@@ -54,6 +61,14 @@ const BDRoutes = [
   {
     path: "/bd/customer",
     component: <CustomersList />,
+  },
+  {
+    path: "/bd/all-entities",
+    component: <EntitysCount />,
+  },
+  {
+    path: "/bd/offline-orders",
+    component: <OfflineOrders />,
   },
 ];
 
@@ -78,7 +93,6 @@ const publicRoutes = [
     exact: true,
     component: <EcommerenceProducts />,
   },
-
   { path: "/ecommerce-cart", component: <EcommerceCart /> },
   { path: "/ecommerce-checkout", component: <EcommerceCheckout /> },
   { path: "/app", component: <AppLogin /> },

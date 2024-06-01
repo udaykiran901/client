@@ -14,7 +14,40 @@ export interface EcoActionBD {
     subscribers: [];
     subscribersGraph: [];
     subscribersLast30Records: [];
+    showCallbackForm: false;
+    showOrderAdditionalInfoModal: false;
+    step2loader: false;
+    customersLast30Recs: [];
+    customersMonthlyRec: [];
+    ordersDaily: [];
+    ordersMonthly: [];
+    samplesGraph: [];
+    disciplineGraph: [];
+    siteUsers: [];
+    onlineUsersDaily: [];
+    onlineUsersMonthly: [];
+    onlineUsers: [];
+    top10OrderdAccounts: [];
+    dailyCountAllEntities: [];
+    MonthlyAllEntities: [];
+    orderInfo: {};
+    branches: [];
   };
+}
+
+export interface Branch {
+  branch_id: string;
+  branch: string;
+  address: string;
+}
+
+export interface DailyGraphAllTntities {
+  label: string;
+  orders: number;
+  subscribers: number;
+  callBacks: number;
+  users: number;
+  customers: number;
 }
 
 export interface CallBacks {
@@ -77,21 +110,23 @@ export interface OrderCustomerInfo {
 export interface Orders {
   placedOn: string;
   order_id: string;
-  samplesList: OrderSamples[];
-  samples_received: boolean;
-  driver_assigned: boolean;
-  proforma_issued: boolean;
-  project_name: string;
-  subject: string;
-  parent_ref: string;
-  nhai_hq_letter: string;
-  additional_info: string;
-  letter: string;
-  due_date: string;
-  razorpay_order_id: string;
-  razorpay_payment_id: string;
-  customerData: OrderCustomerInfo;
-  samples_collection_address: string;
+  samplesList?: OrderSamples[];
+  samples_received?: boolean;
+  driver_assigned?: boolean;
+  proforma_issued?: boolean;
+  project_name?: string;
+  subject?: string;
+  parent_ref?: string;
+  nhai_hq_letter?: string;
+  additional_info?: string;
+  letter?: string;
+  due_date?: string;
+  razorpay_order_id?: string;
+  razorpay_payment_id?: string;
+  customerData?: OrderCustomerInfo;
+  samples_collection_address?: string;
+  registration_done: boolean;
+  lab: string;
 }
 
 export interface Customer {
@@ -114,4 +149,17 @@ export interface Subscriber {
 export interface CountGraph {
   label: string;
   count: number;
+}
+
+export interface SamplesGraph {
+  name: string;
+  image: string;
+  count: number;
+}
+
+export interface SiteUser {
+  id: string;
+  email: string;
+  mobile: string;
+  registeredDate: string;
 }

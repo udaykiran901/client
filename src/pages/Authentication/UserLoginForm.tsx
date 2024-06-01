@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import {
   Row,
   Col,
-  CardBody,
   Card,
   Container,
   Form,
@@ -45,10 +44,11 @@ const UserLoginForm = (props: any) => {
     (state: any) => state.Login,
     (login) => ({
       error: login.error,
+      loading: login.loading,
     })
   );
 
-  const { error } = useSelector(selectProperties);
+  const { error, loading } = useSelector(selectProperties);
 
   // Form validation
   const validation: any = useFormik({
@@ -88,119 +88,130 @@ const UserLoginForm = (props: any) => {
 
   return (
     <React.Fragment>
-      <div className="account-pages  pt-sm-5">
-        <Container>
-          <Row className="justify-content-center">
-            <Col md={8} lg={6} xl={5}>
-              <Card className="overflow-hidden">
-                <div className="bg-primary-subtle">
-                  <Row>
-                    <Col className="col-7">
-                      <div className="text-primary p-4">
-                        <h5 className="text-primary">Welcome Back !</h5>
-                        <p>Sign in to continue to KDM Engineers.</p>
-                      </div>
-                    </Col>
-                    <Col className="col-5 align-self-end">
-                      <img src={profile} alt="" className="img-fluid" />
-                    </Col>
-                  </Row>
-                </div>
-                <CardBody className="pt-0">
-                  <div className="auth-logo">
-                    <Link to="/" className="auth-logo-light">
-                      <div className="avatar-md profile-user-wid mb-4">
-                        <span className="avatar-title rounded-circle bg-light">
-                          <img
-                            src={logo}
-                            alt=""
-                            className="rounded-circle"
-                            height="34"
-                          />
-                        </span>
-                      </div>
-                    </Link>
-                    <Link to="/" className="auth-logo-dark">
-                      <div className="avatar-md profile-user-wid mb-4">
-                        <span className="avatar-title rounded-circle bg-light">
-                          <img
-                            src={logo}
-                            alt="app-logo"
-                            className="rounded-circle"
-                            height="40"
-                          />
-                        </span>
-                      </div>
-                    </Link>
+      <div className="background-banner">
+        <div className="account-pages  pt-sm-5">
+          <Container>
+            <Row className="justify-content-center">
+              <Col md={8} lg={6} xl={5}>
+                <Card className="overflow-hidden  transparent-bg">
+                  <div className="bg-primary-subtle">
+                    <Row style={{ backgroundColor: "rgb(85, 110, 230)" }}>
+                      <Col className="col-7">
+                        <div className="text-primary p-4">
+                          <h5 className="text-primary text-white">
+                            Welcome Back !
+                          </h5>
+                          <p className="text-white">
+                            Sign in to continue to KDM Engineers.
+                          </p>
+                        </div>
+                      </Col>
+                      <Col className="col-5 align-self-end">
+                        <img src={profile} alt="" className="img-fluid" />
+                      </Col>
+                    </Row>
                   </div>
-                  <div className="p-2">
-                    <Form
-                      className="form-horizontal"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        validation.handleSubmit();
-                        return false;
-                      }}
-                    >
-                      <div className="mb-3">
-                        {error ? <Alert color="danger">{error}</Alert> : null}
-                        <Label className="form-label">Email</Label>
-                        <Input
-                          name="email"
-                          className="form-control"
-                          placeholder="Enter email"
-                          type="text"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
-                          value={validation.values.email || ""}
-                          invalid={
-                            validation.touched.email && validation.errors.email
-                              ? true
-                              : false
-                          }
-                        />
-                        {validation.touched.email && validation.errors.email ? (
-                          <FormFeedback type="invalid">
-                            {validation.errors.email}
-                          </FormFeedback>
-                        ) : null}
-                      </div>
-
-                      <div className="mb-3">
-                        <Label className="form-label">Password</Label>
-                        <div className="input-group auth-pass-inputgroup">
+                  <div className="pt-0 p-3 ">
+                    <div className="auth-logo">
+                      <Link to="/" className="auth-logo-light">
+                        <div className="avatar-md profile-user-wid mb-4">
+                          <span className="avatar-title rounded-circle bg-light">
+                            <img
+                              src={logo}
+                              alt=""
+                              className="rounded-circle"
+                              height="34"
+                            />
+                          </span>
+                        </div>
+                      </Link>
+                      <Link to="/" className="auth-logo-dark">
+                        <div className="avatar-md profile-user-wid mb-4">
+                          <span className="avatar-title rounded-circle bg-light">
+                            <img
+                              src={logo}
+                              alt="app-logo"
+                              className="rounded-circle"
+                              height="40"
+                            />
+                          </span>
+                        </div>
+                      </Link>
+                    </div>
+                    <div className="p-2">
+                      <Form
+                        className="form-horizontal"
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          validation.handleSubmit();
+                          return false;
+                        }}
+                      >
+                        <div className="mb-3">
+                          {!loading && error ? (
+                            <Alert color="danger">{error}</Alert>
+                          ) : null}
+                          <Label className="form-label text-white">Email</Label>
                           <Input
-                            name="password"
-                            value={validation.values.password || ""}
-                            type={show ? "text" : "password"}
-                            placeholder="Enter Password"
+                            name="email"
+                            className="form-control"
+                            placeholder="Enter email"
+                            type="text"
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
+                            value={validation.values.email || ""}
                             invalid={
-                              validation.touched.password &&
-                              validation.errors.password
+                              validation.touched.email &&
+                              validation.errors.email
                                 ? true
                                 : false
                             }
                           />
-                          <button
-                            onClick={() => setShow(!show)}
-                            className="btn btn-light "
-                            type="button"
-                            id="password-addon"
-                          >
-                            <i className="mdi mdi-eye-outline"></i>
-                          </button>
+                          {validation.touched.email &&
+                          validation.errors.email ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.email}
+                            </FormFeedback>
+                          ) : null}
                         </div>
-                        {validation.touched.password &&
-                        validation.errors.password ? (
-                          <FormFeedback type="invalid">
-                            {validation.errors.password}
-                          </FormFeedback>
-                        ) : null}
-                      </div>
 
-                      <div className="form-check">
+                        <div className="mb-3">
+                          <Label className="form-label text-white">
+                            Password
+                          </Label>
+                          <div className="input-group auth-pass-inputgroup">
+                            <Input
+                              name="password"
+                              value={validation.values.password || ""}
+                              type={show ? "text" : "password"}
+                              placeholder="Enter Password"
+                              onChange={validation.handleChange}
+                              onBlur={validation.handleBlur}
+                              invalid={
+                                validation.touched.password &&
+                                validation.errors.password
+                                  ? true
+                                  : false
+                              }
+                            />
+                            <button
+                              onClick={() => setShow(!show)}
+                              className="btn btn-light p-2"
+                              type="button"
+                              id="password-addon"
+                            >
+                              <i className="mdi mdi-eye-outline"></i>
+                            </button>
+                          </div>
+                          {validation.touched.password &&
+                          validation.errors.password ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.password}
+                            </FormFeedback>
+                          ) : null}
+                        </div>
+
+                        {/* <div className="form-check">
                         <input
                           type="checkbox"
                           className="form-check-input"
@@ -212,79 +223,92 @@ const UserLoginForm = (props: any) => {
                         >
                           Remember me
                         </label>
-                      </div>
+                      </div> */}
 
-                      <div className="mt-3 d-grid">
-                        <button
-                          className="btn btn-primary btn-block "
-                          type="submit"
-                        >
-                          Log In
-                        </button>
-                      </div>
+                        <div className="mt-3 d-grid">
+                          <button
+                            className="btn btn-primary btn-block "
+                            type="submit"
+                          >
+                            {loading ? (
+                              <>
+                                {" "}
+                                <i className="bx bx-loader bx-spin "></i> Please
+                                Wait...{" "}
+                              </>
+                            ) : (
+                              "Log In"
+                            )}
+                          </button>
+                        </div>
 
-                      <div className="mt-4 text-center">
-                        <h5 className="font-size-14 mb-3">Sign in with</h5>
+                        <div className="mt-4 text-center">
+                          <h5 className="font-size-14 mb-3 text-white">
+                            Sign in with
+                          </h5>
 
-                        <ul className="list-inline">
-                          <li className="list-inline-item">
-                            <Link
-                              to="#"
-                              className="social-list-item bg-primary text-white border-primary"
-                              onClick={(e: any) => {
-                                e.preventDefault();
-                                socialResponse("facebook");
-                              }}
-                            >
-                              <i className="mdi mdi-facebook" />
-                            </Link>
-                          </li>{" "}
-                          <li className="list-inline-item">
-                            <Link
-                              to="#"
-                              className="social-list-item bg-info text-white border-info"
-                            >
-                              <i className="mdi mdi-twitter" />
-                            </Link>
-                          </li>{" "}
-                          <li className="list-inline-item">
-                            <Link
-                              to="#"
-                              className="social-list-item bg-danger text-white border-danger"
-                              onClick={(e: any) => {
-                                e.preventDefault();
-                                socialResponse("google");
-                              }}
-                            >
-                              <i className="mdi mdi-google" />
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
+                          <ul className="list-inline">
+                            <li className="list-inline-item">
+                              <Link
+                                to="#"
+                                className="social-list-item bg-primary text-white border-primary"
+                                onClick={(e: any) => {
+                                  e.preventDefault();
+                                  socialResponse("facebook");
+                                }}
+                              >
+                                <i className="mdi mdi-facebook" />
+                              </Link>
+                            </li>{" "}
+                            <li className="list-inline-item">
+                              <Link
+                                to="#"
+                                className="social-list-item bg-info text-white border-info"
+                              >
+                                <i className="mdi mdi-twitter" />
+                              </Link>
+                            </li>{" "}
+                            <li className="list-inline-item">
+                              <Link
+                                to="#"
+                                className="social-list-item bg-danger text-white border-danger"
+                                onClick={(e: any) => {
+                                  e.preventDefault();
+                                  socialResponse("google");
+                                }}
+                              >
+                                <i className="mdi mdi-google" />
+                              </Link>
+                            </li>
+                          </ul>
+                        </div>
 
-                      <div className="mt-4 text-center">
-                        <Link to="/forgot-password" className="text-muted">
-                          <i className="mdi mdi-lock me-1" /> Forgot your
-                          password?
-                        </Link>
-                      </div>
-                      <p className="text-center">
-                        Don&apos;t have an account ?{" "}
-                        <Link
-                          to="/ecommerce/register"
-                          className="fw-medium text-primary"
-                        >
-                          {" "}
-                          Signup now{" "}
-                        </Link>{" "}
-                      </p>
-                    </Form>
+                        <div className="mt-4 text-center">
+                          <Link to="/forgot-password" className="text-muted ">
+                            <i className="mdi mdi-lock me-1" />{" "}
+                            <span className="text-white">
+                              Forgot your password?
+                            </span>
+                          </Link>
+                        </div>
+                        <p className="text-center text-white">
+                          Don&apos;t have an account ?{" "}
+                          <Link
+                            to="/ecommerce/register"
+                            className="fw-medium text-primary"
+                          >
+                            {" "}
+                            Signup now{" "}
+                          </Link>{" "}
+                        </p>
+                      </Form>
+                    </div>
                   </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
       </div>
     </React.Fragment>
   );

@@ -149,25 +149,25 @@ const HRandAdmin = createSlice({
     //   console.log("hello world");
     // });
 
-    // builder.addMatcher(
-    //   (action) => action.type.endsWith("/pending"),
-    //   (state, action) => {
-    //     state.loading = true;
-    //   }
-    // );
+    builder.addMatcher(
+      (action) => action.type.endsWith("/pending"),
+      (state, action) => {
+        state.loading = true;
+      }
+    );
 
-    // builder.addMatcher(
-    //   (action) => action.type.endsWith("/fulfilled"),
-    //   (state, action) => {
-    //     state.loading = false;
-    //   }
-    // );
-    // builder.addMatcher(
-    //   (action) => action.type.endsWith("/rejected"),
-    //   (state, action) => {
-    //     state.loading = false;
-    //   }
-    // );
+    builder.addMatcher(
+      (action) => action.type.endsWith("/fulfilled"),
+      (state, action) => {
+        state.loading = false;
+      }
+    );
+    builder.addMatcher(
+      (action) => action.type.endsWith("/rejected"),
+      (state, action) => {
+        state.loading = false;
+      }
+    );
   },
 });
 

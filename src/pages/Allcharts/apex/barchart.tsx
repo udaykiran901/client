@@ -1,15 +1,18 @@
-import React from "react"
-import ReactApexChart from "react-apexcharts"
+import React from "react";
+import ReactApexChart from "react-apexcharts";
 import getChartColorsArray from "../../../Components/Common/ChartDynamicColor";
 
-const barchart = ({dataColors}:any) => {
+const barchart = ({ dataColors, data }: any) => {
   const spineareaChartColors = getChartColorsArray(dataColors);
+  const samplesGraph = data;
+  const values = samplesGraph.map((eachCount: any) => eachCount.count);
+  const labels = samplesGraph.map((eachLabel: any) => eachLabel.name);
 
   const series = [
     {
-      data: [380, 430, 450, 475, 550, 584, 780, 1100, 1220, 1365],
+      data: values,
     },
-  ]
+  ];
   const options = {
     chart: {
       toolbar: {
@@ -30,24 +33,20 @@ const barchart = ({dataColors}:any) => {
       borderColor: "#f1f1f1",
     },
     xaxis: {
-      categories: [
-        "South Korea",
-        "Canada",
-        "United Kingdom",
-        "Netherlands",
-        "Italy",
-        "France",
-        "Japan",
-        "United States",
-        "China",
-        "Germany",
-      ],
+      categories: labels,
     },
-  }
+  };
 
   return (
-    <ReactApexChart options={options} series={series} type="bar" height="350" />
-  )
-}
+    <React.Fragment>
+      <ReactApexChart
+        options={options}
+        series={series}
+        type="bar"
+        height="400"
+      />
+    </React.Fragment>
+  );
+};
 
-export default barchart
+export default barchart;

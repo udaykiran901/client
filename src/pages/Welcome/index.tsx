@@ -35,7 +35,6 @@ import { onSubscribe } from "slices/thunk";
 import { toggleSubscribeModal } from "slices/BD/reducer";
 import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
-import Spinners from "Components/Common/Spinner";
 
 const Welcome = () => {
   document.title = "KDM Engineers Group";
@@ -57,7 +56,7 @@ const Welcome = () => {
       if (!token) {
         dispatch(toggleSubscribeModal());
       }
-    }, 3000);
+    }, 2000);
   }, [dispatch]);
 
   const validation: any = useFormik({

@@ -44,10 +44,11 @@ const EcommerceProductDetail = (props) => {
       backendParams: ecommerce.backendParams,
       backendProductDes: ecommerce.backendProductDes,
       loading: ecommerce.loading,
+      addToCartLoading: ecommerce.addToCartLoading,
     })
   );
 
-  const { backendParams, backendProductDes, loading } =
+  const { backendParams, backendProductDes, loading, addToCartLoading } =
     useSelector(selectProperties);
 
   const params = props.router.params;
@@ -128,7 +129,7 @@ const EcommerceProductDetail = (props) => {
           <Navbar />
           {loading && <Spinners />}
           <Row>
-            {!loading && backendProductDes.id == params.id && (
+            {backendProductDes && backendProductDes.id == params.id && (
               <Col>
                 <Card>
                   <CardBody>
@@ -207,13 +208,22 @@ const EcommerceProductDetail = (props) => {
 
                       <div>
                         <Button
+                          disabled={addToCartLoading}
                           type="button"
-                          className="bg-primary "
+                          className="btn btn-primary"
                           onClick={() => {
                             onAddToCart();
                           }}
                         >
-                          <i className="bx bx-cart me-2" /> Add to cart
+                          {addToCartLoading ? (
+                            <>
+                              <i className="bx bx-loader bx-spin"></i> Adding
+                            </>
+                          ) : (
+                            <>
+                              <i className="bx bx-cart me-2" /> Add to cart
+                            </>
+                          )}
                         </Button>
                       </div>
 
@@ -228,7 +238,7 @@ const EcommerceProductDetail = (props) => {
                       <Col xl="10">
                         <dl className="mt-2">
                           {JSON.parse(backendProductDes.features).map(
-                            (info, index) => (
+                            (info, index: number) => (
                               <React.Fragment key={index}>
                                 <dt>
                                   <i

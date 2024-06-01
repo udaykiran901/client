@@ -62,7 +62,10 @@ const AppLogin = (props: any) => {
             <CarouselPage />
 
             <Col xl={4}>
-              <div className="auth-full-page-content p-md-5 p-4">
+              <div
+                className="auth-full-page-content p-md-5 p-4 shadow-lg"
+                style={{ backgroundColor: "white" }}
+              >
                 <div className="w-100">
                   <div className="d-flex flex-column h-100">
                     <div className="mb-4 mb-md-5">
@@ -70,13 +73,13 @@ const AppLogin = (props: any) => {
                         <img
                           src={logodark}
                           alt=""
-                          height="18"
+                          height="36"
                           className="auth-logo-dark"
                         />
                         <img
                           src={logolight}
                           alt=""
-                          height="18"
+                          height="36"
                           className="auth-logo-light"
                         />
                       </Link>
@@ -163,7 +166,15 @@ const AppLogin = (props: any) => {
                               className="btn btn-primary btn-block z-0 "
                               type="submit"
                             >
-                              {loading ? "Wait..." : "Log In"}
+                              {loading ? (
+                                <>
+                                  <i className="bx bx-loader bx-spin "></i>
+                                  {"  "}
+                                  Please Wait
+                                </>
+                              ) : (
+                                "Log In"
+                              )}
                             </button>
                           </div>
                         </Form>

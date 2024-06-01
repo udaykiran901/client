@@ -2,10 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const initialState = {
   user: "",
-  error: "", // for error msg
+  error: "",
   loading: false,
   isUserLogout: false,
-  errorMsg: false, // for error
+  errorMsg: false,
   userEmail: null,
   userMobile: null,
 };
@@ -33,9 +33,24 @@ const loginSlice = createSlice({
     logoutUserSuccess(state, action) {
       state.isUserLogout = true;
     },
+
+    setLoading(state) {
+      state.loading = true;
+    },
+
+    stopLoading(state) {
+      state.loading = false;
+    },
   },
 });
 
-export const { loginSuccess, apiError, resetLoginFlag, logoutUserSuccess } =
-  loginSlice.actions;
+export const {
+  loginSuccess,
+  apiError,
+  resetLoginFlag,
+  logoutUserSuccess,
+  setLoading,
+  stopLoading,
+} = loginSlice.actions;
+
 export default loginSlice.reducer;

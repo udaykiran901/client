@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Container, Row, Col, Card, CardBody, Table } from "reactstrap";
 import { Link } from "react-router-dom";
@@ -21,9 +21,11 @@ import {
 } from "./type";
 import { ToastContainer } from "react-toastify";
 import Spinners from "Components/Common/Spinner";
+import { url } from "../../helpers/api_helper";
 
 const EcommerceCart = () => {
   document.title = "Cart | KDM Engineers Group";
+  const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
 
   const selectProperties = createSelector(
     (state: EcoAction) => state.ecommerce,
@@ -100,9 +102,9 @@ const EcommerceCart = () => {
   };
 
   const onCartCheckout = async (amount: number) => {
-    console.log(amount);
+    setPaymentLoading(true);
     const response = await fetch(
-      "http://localhost:8081/ecommerce/cart/create-order-on-server",
+      `${url}/ecommerce/cart/create-order-on-server`,
       {
         method: "POST",
         body: JSON.stringify({
@@ -115,42 +117,43 @@ const EcommerceCart = () => {
     );
     const order = await response.json();
 
-    console.log("This is order");
-    console.log(order);
-
     var options = {
       key: "rzp_test_gHKvCPTaMlouR1",
-      amount: amount,
+      amount: order.amount,
       currency: "INR",
       receipt: order.receipt,
       name: "KDM Engineers Group",
       description: "Testing Transaction",
       image: logo,
       order_id: order.id,
-      handler: async function (response) {
+      handler: async function (response: any) {
         const paymentInfo = {
           ...response,
+          amount,
         };
-        console.log("Payment succcessfull ");
+        console.log("just before Payment succcessfull ");
         dispatch(paymentSuccessfull(paymentInfo));
+        console.log("payment successfull just after");
         //Heey...pav validate your payment here
       },
       prefill: {
         name: "Pavan Marapalli",
-        email: "webdevmatrix@example.com",
+        email: "pavanmarapalli171862@gmail.com",
         contact: "8179769162",
       },
       notes: {
         address: "Razorpay Corporate Office",
       },
       theme: {
-        color: "#3399cc",
+        color: "#007bff",
       },
     };
     var rzp1 = new (window as any).Razorpay(options);
-    console.log(rzp1);
+    rzp1.open();
+
     rzp1.on("payment.failed", function (response: any) {
       console.log("heey... payment failed");
+      console.log(rzp1);
       console.log(response);
 
       alert(response.error.description);
@@ -162,7 +165,7 @@ const EcommerceCart = () => {
       alert(response.error.metadata.order_id);
       alert(response.error.metadata.payment_id);
     });
-    rzp1.open();
+    setPaymentLoading(false);
   };
 
   return (
@@ -443,7 +446,9 @@ const EcommerceCart = () => {
                               <div className="mt-2">
                                 <button
                                   className="btn btn-primary"
+                                  id="rzp-button1"
                                   type="button"
+                                  disabled={paymentLoading}
                                   onClick={(e) => {
                                     e.preventDefault();
                                     onCartCheckout(
@@ -455,8 +460,12 @@ const EcommerceCart = () => {
                                     );
                                   }}
                                 >
-                                  <i className="mdi mdi-cart-arrow-right me-1" />{" "}
-                                  Checkout
+                                  {paymentLoading ? (
+                                    <i className="bx bx-loader bx-spin "></i>
+                                  ) : (
+                                    <i className="mdi mdi-cart-arrow-right me-1" />
+                                  )}{" "}
+                                  Checkout{" "}
                                 </button>
                               </div>
                             </Col>

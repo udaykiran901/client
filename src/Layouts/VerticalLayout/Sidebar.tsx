@@ -5,31 +5,30 @@ import { Link } from "react-router-dom";
 import SidebarContent from "./SidebarContent";
 
 //import images
+
+import AppLogo from "../../assets/images/KDM_app_logo.png";
 import logo from "../../assets/images/logo.svg";
-import logoLightPng from "../../assets/images/logo-light.png";
-import logoLightSvg from "../../assets/images/logo-light.svg";
-import logoDark from "../../assets/images/logo-dark.png";
 
 const Sidebar = (props: any) => {
   return (
     <React.Fragment>
       <div className="vertical-menu">
         <div className="navbar-brand-box">
-          <Link to="/" className="logo logo-dark">
+          <Link to="#" className="logo logo-dark">
             <span className="logo-sm">
-              <img src={logo} alt="" height="22" />
+              <img src={logo} alt="" height="" className="w-100" />
             </span>
             <span className="logo-lg">
-              <img src={logoDark} alt="" height="17" />
+              <img src={logo} alt="" height="45" className="w-100" />
             </span>
           </Link>
 
-          <Link to="/" className="logo logo-light">
+          <Link to="#" className="logo logo-light">
             <span className="logo-sm">
-              <img src={logoLightSvg} alt="" height="22" />
+              <img src={logo} alt="" height="45" className="w-100" />
             </span>
             <span className="logo-lg">
-              <img src={logoLightPng} alt="" height="19" />
+              <img src={AppLogo} alt="" height="45" className="w-100" />
             </span>
           </Link>
         </div>

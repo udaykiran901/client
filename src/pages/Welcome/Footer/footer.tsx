@@ -1,9 +1,9 @@
-import React from "react"
-import { Container, Row, Col } from "reactstrap"
-import { Link } from "react-router-dom"
+import React from "react";
+import { Container, Row, Col } from "reactstrap";
+import { Link } from "react-router-dom";
 
 //Import Components
-import FooterLink from "./footer-link"
+import FooterLink from "./footer-link";
 
 const Features = () => {
   const footerLinks = [
@@ -34,7 +34,7 @@ const Features = () => {
         { title: "FAQs", link: "#" },
       ],
     },
-  ]
+  ];
 
   return (
     <React.Fragment>
@@ -62,20 +62,20 @@ const Features = () => {
                 <div className="blog-post">
                   <Link to="#" className="post">
                     <div className="badge badge-soft-success font-size-11 mb-3">
-                      Cryptocurrency
+                      News Article
                     </div>
                     <h5 className="post-title">Donec pede justo aliquet nec</h5>
                     <p className="mb-0">
-                      <i className="bx bx-calendar me-1"/> 04 Mar, 2020
+                      <i className="bx bx-calendar me-1" /> 04 Mar, 2020
                     </p>
                   </Link>
                   <Link to="#" className="post">
                     <div className="badge badge-soft-success font-size-11 mb-3">
-                      Cryptocurrency
+                      Another Article
                     </div>
                     <h5 className="post-title">In turpis, Pellentesque</h5>
                     <p className="mb-0">
-                      <i className="bx bx-calendar me-1"/> 12 Mar, 2020
+                      <i className="bx bx-calendar me-1" /> 12 Mar, 2020
                     </p>
                   </Link>
                 </div>
@@ -89,7 +89,7 @@ const Features = () => {
         </Container>
       </footer>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default Features
+export default Features;

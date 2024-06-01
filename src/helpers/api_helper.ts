@@ -2,8 +2,10 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { KDM_ECOMMERCE_USER_JWT_TOKEN } from "common/tokens";
 
-// default
-axios.defaults.baseURL = "http://localhost:8081";
+// export const url = "http://65.1.64.186:8081";
+export const url = "http://localhost:8081";
+
+axios.defaults.baseURL = url;
 
 // content type
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -13,7 +15,6 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.interceptors.response.use(
   function (response: any) {
     const formattedResponse = { data: response.data, status: response.status };
-
     return response.data ? formattedResponse : response;
   },
   function (error: any) {
@@ -82,13 +83,17 @@ class APIClient {
         paramKeys.push(key + "=" + params[key]);
         return paramKeys;
       });
+      console.log("With params");
 
       const queryString =
         paramKeys && paramKeys.length ? paramKeys.join("&") : "";
       response = axios.get(`${url}?${queryString}`, params);
     } else {
+      console.log("without params");
       response = axios.get(`${url}`, params);
     }
+    console.log("In response api helpers");
+    console.log(response);
 
     return response;
   };

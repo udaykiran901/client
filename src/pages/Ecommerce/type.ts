@@ -14,6 +14,8 @@ export interface EcoAction {
     backendParams: BackendParams[];
     backendProductDes: BackendProductDes;
     myOrders: MyOrder[];
+    step2loader: boolean;
+    addToCartLoading: false;
   };
 }
 

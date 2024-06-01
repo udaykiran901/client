@@ -75,6 +75,8 @@ export const GET_ALL_ECOMMERCE_ORDERS = "/bd/get-ecommerce-orders";
 export const COMPLETE_REGISTRATION =
   "/bd/complete-ecommerce-order-registration";
 
+export const GET_COMPLETE_ORDER_DETAILS = "/bd/order";
+
 export const GET_CUSTOMERS_LIST = "/bd/get-customers-list";
 export const GET_SUBSCRIBERS_LIST = "/bd/get-subscribers-list";
 export const GET_SUBSCRIBERS_GRAPH = "/bd/get-subscribers-graph";
@@ -82,6 +84,26 @@ export const GET_SUBSCRIBERS_GRAPH = "/bd/get-subscribers-graph";
 export const REGISTER_CUSTOMER = "/bd/reg-customer";
 export const GET_SUBSCRIBERS_GRAPH_LAST_30_DAYS =
   "/bd/get-subscribers-graph-last30days";
+
+export const GET_ONLINE_USERS = "/bd/get-online-users";
+export const GET_ONLINE_DAILY_USERS_COUNT = "/bd/get-online-users-daily";
+export const GET_ONLINE_MONTHLY_USERS_COUNT = "/bd/get-online-users-monthly";
+
+export const CUSTOMERS_MONTHLY_GRAPH = "/bd/get-customers-graph";
+export const CUSTOMER_LAST_30_RECORDS = "/bd/get-customers-graph-last30days";
+
+export const ORDERS_DAILY_RECORD = "/bd/order-daily-record";
+export const ORDERS_MONTHLY_RECORD = "/bd/orders-monthly-record";
+export const SAMPLES_STATISTICS = "/bd/samples-statistics";
+export const GET_DISCIPLINE_WISE_COUNT = "/bd/discipline-wise";
+
+//Admin
+export const GET_TOP_10_ORDERED_ACCOUNT = "/admin/top-10-accounts-ordered";
+export const GET_DAILY_COUNT_OF_ALL_ENTITIES =
+  "/admin/daily-counts-of-all-entities";
+
+export const GET_MONTHLY_COUNT_OF_ALL_ENTITIES =
+  "/admin/monthly-counts-of-all-entities";
 
 // HR and Admin
 export const GET_ROLES = "/hr-admin/get-roles";

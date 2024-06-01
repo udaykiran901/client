@@ -160,6 +160,9 @@ export const getMyOrdersPartialData = () =>
 
 //BD Module
 
+export const onGettingCompleteOrderDetails = (id: any) =>
+  api.get(`${url.GET_COMPLETE_ORDER_DETAILS}/${id}`, { params: { id } });
+
 export const requestCallback = (data: any) =>
   api.create(url.REQUEST_CALLBACK, data);
 
@@ -193,11 +196,51 @@ export const ongetAllOrders = () => api.get(url.GET_ALL_ECOMMERCE_ORDERS, null);
 export const fetchCustomersList = () => api.get(url.GET_CUSTOMERS_LIST, null);
 
 export const fetchSubscribers = () => api.get(url.GET_SUBSCRIBERS_LIST, null);
+
+export const onGettingOnlineUsersAPI = () =>
+  api.get(url.GET_ONLINE_USERS, null);
+
+//statistics or Graphs
+
+export const onGettingOnlineDailyUsersCount = () =>
+  api.get(url.GET_ONLINE_DAILY_USERS_COUNT, null);
+
+export const onGettingOnlineMonthlyUsersCount = () =>
+  api.get(url.GET_ONLINE_MONTHLY_USERS_COUNT, null);
+
 export const fetchSubscribersGraph = () =>
   api.get(url.GET_SUBSCRIBERS_GRAPH, null);
 
 export const fetchSubscribersGraphLast30Days = () =>
   api.get(url.GET_SUBSCRIBERS_GRAPH_LAST_30_DAYS, null);
+
+export const onGettingCustomersMonthlyCountAPI = () =>
+  api.get(url.CUSTOMERS_MONTHLY_GRAPH, null);
+
+export const onGettingCustomersLast30RecordsAPI = () =>
+  api.get(url.CUSTOMER_LAST_30_RECORDS, null);
+
+export const onGettingOrdersMonthlyRecordAPI = () =>
+  api.get(url.ORDERS_MONTHLY_RECORD, null);
+
+export const onGettingOrdersDailyRecordAPI = () =>
+  api.get(url.ORDERS_DAILY_RECORD, null);
+
+export const onGettingSampleStatisticsAPI = () =>
+  api.get(url.SAMPLES_STATISTICS, null);
+
+export const onGettingDisciplineWiseStatisticsAPI = () =>
+  api.get(url.GET_DISCIPLINE_WISE_COUNT, null);
+
+//Admin
+export const onGettingTop10OrdredAccountAPI = () =>
+  api.get(url.GET_TOP_10_ORDERED_ACCOUNT, null);
+
+export const onGettingDailyCountOfAllEntitiesAPI = () =>
+  api.get(url.GET_DAILY_COUNT_OF_ALL_ENTITIES, null);
+
+export const onGettingMonthlyCountOfAllEntitiesAPI = () =>
+  api.get(url.GET_MONTHLY_COUNT_OF_ALL_ENTITIES, null);
 
 // HR and Admin
 export const getRoles = () => api.get(url.GET_ROLES, null);

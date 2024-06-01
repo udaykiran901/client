@@ -50,8 +50,6 @@ const SubscribersList = () => {
     dispatch(getGraphSubscribers());
   }, [dispatch]);
 
-  console.log(subscribersLast30Records);
-
   const columns = useMemo(
     () => [
       {

@@ -48,11 +48,11 @@ const Navbar = () => {
       >
         <Container>
           <Link className="navbar-logo" to="/">
-            <img src={logoDark} alt="" height="19" className="logo logo-dark" />
+            <img src={logoDark} alt="" height="36" className="logo logo-dark" />
             <img
               src={logoLight}
               alt=""
-              height="19"
+              height="36"
               className="logo logo-light"
             />
           </Link>
@@ -92,24 +92,34 @@ const Navbar = () => {
             >
               <li className="nav-item">
                 <NavLink>
-                  <Link to={"/"}>Home</Link>
+                  <Link className="text-black" to={"/"}>
+                    Home
+                  </Link>
+                </NavLink>
+              </li>
+
+              <li className="nav-item">
+                <NavLink>
+                  <Link className="text-black" to={"/"}>
+                    About
+                  </Link>
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink href="#about">About</NavLink>
+                <NavLink>
+                  <Link className="text-black" to={"/"}>
+                    Projects
+                  </Link>
+                </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink href="#features">Features</NavLink>
+                <NavLink>
+                  <Link className="text-black" to={"/"}>
+                    Our Team
+                  </Link>
+                </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink href="#roadmap">Roadmap</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink href="#team">Team</NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink href={"#services"}>Services</NavLink>
-              </li>
+
               <li className="nav-item">
                 <NavLink href="#careers">Careers</NavLink>
               </li>

@@ -16,6 +16,7 @@ import {
   Input,
   Label,
   FormFeedback,
+  CardTitle,
 } from "reactstrap";
 
 //redux
@@ -27,8 +28,16 @@ import { createSelector } from "reselect";
 import Spinners from "Components/Common/Spinner";
 import { ToastContainer } from "react-toastify";
 import { EcoActionBD } from "./types";
-import { getCustomersList, registerCustomer } from "../../slices/BD/thunk";
+import {
+  getCustomersLast30records,
+  getCustomersList,
+  getCustomersMonthlyCount,
+  registerCustomer,
+} from "../../slices/BD/thunk";
 import { getDateAndTime } from "./CallBacksList";
+
+import CustomerRecordsLast30Count from "../../pages/Allcharts/apex/CustomerRecordsLast30Count";
+import CustomersMonthlyGraph from "../../pages/Allcharts/apex/CustomersMonthlyGraph";
 
 const CustomersList = () => {
   document.title = "Customers list | KDM Engineers Group";
@@ -40,12 +49,15 @@ const CustomersList = () => {
     (bd) => ({
       customers: bd.customers,
       loading: bd.loading,
+      customersLast30Recs: bd.customersLast30Recs,
+      customersMonthlyRec: bd.customersMonthlyRec,
     })
   );
 
   const navigate = useNavigate();
 
-  const { customers, loading }: any = useSelector(selectedProperties);
+  const { customers, loading, customersLast30Recs, customersMonthlyRec }: any =
+    useSelector(selectedProperties);
 
   const dispatch = useDispatch<any>();
 
@@ -53,9 +65,16 @@ const CustomersList = () => {
     dispatch(getCustomersList());
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(getCustomersMonthlyCount());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getCustomersLast30records());
+  }, [dispatch]);
+
   const validation: any = useFormik({
     enableReinitialize: true,
-
     initialValues: {
       name: "",
       email: "",
@@ -215,6 +234,33 @@ const CustomersList = () => {
       <div className="page-content">
         <Container fluid>
           <Row>
+            <Col lg={6}>
+              <Card>
+                <CardBody>
+                  <CardTitle tag="h6" className="mb-4">
+                    Customers Daily Record
+                  </CardTitle>
+                  <CustomerRecordsLast30Count
+                    data={customersLast30Recs || []}
+                    dataColors='["--bs-success"]'
+                  />
+                </CardBody>
+              </Card>
+            </Col>
+
+            <Col lg={6}>
+              <Card>
+                <CardBody>
+                  <CardTitle tag="h6" className="mb-4">
+                    Customers Monthly Record
+                  </CardTitle>
+                  <CustomersMonthlyGraph
+                    data={customersMonthlyRec || []}
+                    dataColors='["--bs-primary"]'
+                  />
+                </CardBody>
+              </Card>
+            </Col>
             <Col lg="12">
               {loading ? (
                 <Spinners />

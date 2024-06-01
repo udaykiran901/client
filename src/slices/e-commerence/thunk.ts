@@ -30,6 +30,7 @@ import {
   GET_PRODUCT_DETAILS,
   GET_PRODUCT_NAME_ID,
   ON_GET_MATERIALS_PARTIAL_DATA,
+  PAYMENT_SUCCESS_SAVE_ORDER,
 } from "../../helpers/url_helper";
 
 export const getProducts = createAsyncThunk(
@@ -235,22 +236,24 @@ export const createOrderOnServer = createAsyncThunk(
   CREATE_ORDER_IN_SERVER,
   async (data: any) => {
     try {
-      const response = await createOrderInServerAPI(data);
+      const response = createOrderInServerAPI(data);
       return response;
     } catch (error) {
+      console.log(" createOrderOnServer thunk error0", error);
       return error;
     }
   }
 );
 
 export const paymentSuccessfull = createAsyncThunk(
-  CREATE_ORDER_IN_SERVER,
+  PAYMENT_SUCCESS_SAVE_ORDER,
   async (data: any) => {
     try {
-      const response: any = await paymentSuccessfullSaveOrderAPI(data);
+      const response: any = paymentSuccessfullSaveOrderAPI(data);
       toast.success(response.data.message, { autoClose: 5000 });
       return response;
     } catch (error) {
+      console.log(" paymentSuccessfull thunk error0", error);
       return error;
     }
   }

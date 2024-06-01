@@ -142,7 +142,7 @@ const SidebarContent = (props: any) => {
           <ul className="metismenu list-unstyled" id="side-menu">
             <li className="menu-title">{props.t("Menu")} </li>
             <li>
-              <Link to="/#" className="has-arrow">
+              <Link to="#" className="has-arrow">
                 <i className="bx bx-home-circle"></i>
                 <span>{props.t("Your Profile")}</span>
               </Link>
@@ -154,50 +154,71 @@ const SidebarContent = (props: any) => {
                   <Link to="/hr/emp-list">{props.t("Employees")}</Link>
                 </li>
                 <li>
-                  <Link to="#">{props.t("HR Tab 2")}</Link>
+                  <Link to="/hr/add-emp">{props.t("Add Employee")}</Link>
                 </li>
-                <li>
-                  <Link to="#">{props.t("HR Tab 3")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("HR Tab 4")}</Link>
-                </li>
-                {/* <li>
-                  <Link to="#">
-                    <span
-                      className="badge rounded-pill text-bg-success float-end"
-                      key="t-new"
-                    >
-                      New
-                    </span>
-                    {props.t("Jobs")}
-                  </Link>
-                </li> */}
               </ul>
             </li>
-
-            <li className="menu-title">{props.t("Other Modules")}</li>
-
+            <li className="menu-title">{props.t("Other Modules/ BD")}</li>
             <li>
-              <Link to="#">
+              <Link to="/bd/subscribers">
                 <i className="bx bx-calendar"></i>
-                <span>{props.t("Calender")}</span>
-              </Link>
-            </li>
-
-            <li>
-              <Link to="#">
-                <i className="bx bx-chat"></i>
-                <span>{props.t("Messages ")}</span>
+                <span>{props.t("Subscribers")}</span>
               </Link>
             </li>
             <li>
-              <Link to="#">
+              <Link to="/bd/call-backs">
                 <i className="bx bx-chat"></i>
-                <span>{props.t("Leaves")}</span>
+                <span>{props.t("Call Backs ")}</span>
               </Link>
             </li>
-
+            <li>
+              <Link to="/bd/orders">
+                <i className="bx bx-chat"></i>
+                <span>{props.t("Ecommerce-Orders")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/bd/offline-orders">
+                <i className="bx bx-chat"></i>
+                <span>{props.t("Offline-Orders")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/bd/customer">
+                <i className="bx bx-chat"></i>
+                <span>{props.t("Customers")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/bd/users">
+                <i className="bx bx-chat"></i>
+                <span>{props.t("Site Users")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/bd/all-entities">
+                <i className="bx bx-chat"></i>
+                <span>{props.t("All Entities")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/bd/samples-statistics">
+                <i className="bx bx-chat"></i>
+                <span>{props.t("Samples")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/bd/add-product">
+                <i className="bx bx-chat"></i>
+                <span>{props.t("Add Product")}</span>
+              </Link>
+            </li>{" "}
+            <li>
+              <Link to="/bd/add-param">
+                <i className="bx bx-chat"></i>
+                <span>{props.t("Add Parameter")}</span>
+              </Link>
+            </li>
             <li>
               <Link to="#" className="has-arrow">
                 <i className="bx bx-store"></i>
@@ -228,7 +249,6 @@ const SidebarContent = (props: any) => {
                 </li>
               </ul>
             </li>
-
             <li>
               <Link to="#" className="has-arrow ">
                 <i className="bx bx-envelope"></i>
@@ -259,7 +279,6 @@ const SidebarContent = (props: any) => {
                 </li> */}
               </ul>
             </li>
-
             <li>
               <Link to="#" className="has-arrow ">
                 <i className="bx bx-receipt"></i>
@@ -274,7 +293,6 @@ const SidebarContent = (props: any) => {
                 </li>
               </ul>
             </li>
-
             <li>
               <Link to="#" className="has-arrow ">
                 <i className="bx bx-briefcase-alt-2"></i>
@@ -295,7 +313,6 @@ const SidebarContent = (props: any) => {
                 </li>
               </ul>
             </li>
-
             <li>
               <Link to="#" className="has-arrow ">
                 <i className="bx bx-task"></i>
@@ -313,7 +330,6 @@ const SidebarContent = (props: any) => {
                 </li>
               </ul>
             </li>
-
             <li>
               <Link to="#" className="has-arrow ">
                 <i className="bx bxs-user-detail"></i>
@@ -331,7 +347,6 @@ const SidebarContent = (props: any) => {
                 </li>
               </ul>
             </li>
-
             <li>
               <Link to="#" className="has-arrow">
                 <i className="bx bxs-detail" />
@@ -349,7 +364,6 @@ const SidebarContent = (props: any) => {
                 </li>
               </ul>
             </li>
-
             <li>
               <Link to="#">
                 <span
@@ -392,7 +406,6 @@ const SidebarContent = (props: any) => {
                 </li>
               </ul>
             </li>
-
             <li className="menu-title">Pages</li>
             <li>
               <Link to="#" className="has-arrow">
@@ -476,9 +489,7 @@ const SidebarContent = (props: any) => {
                 </li>
               </ul>
             </li>
-
             <li className="menu-title">{props.t("Components")}</li>
-
             <li>
               <Link to="#" className="has-arrow">
                 <i className="bx bx-tone" />
@@ -560,7 +571,6 @@ const SidebarContent = (props: any) => {
                 </li>
               </ul>
             </li>
-
             <li>
               <Link to="#">
                 <i className="bx bxs-eraser"></i>
@@ -602,7 +612,6 @@ const SidebarContent = (props: any) => {
                 </li>
               </ul>
             </li>
-
             <li>
               <Link to="#" className="has-arrow ">
                 <i className="bx bx-list-ul"></i>
@@ -617,7 +626,6 @@ const SidebarContent = (props: any) => {
                 </li>
               </ul>
             </li>
-
             <li>
               <Link to="#" className="has-arrow ">
                 <i className="bx bxs-bar-chart-alt-2"></i>
@@ -643,7 +651,6 @@ const SidebarContent = (props: any) => {
                 </li>
               </ul>
             </li>
-
             <li>
               <Link to="#" className="has-arrow ">
                 <i className="bx bx-aperture"></i>
@@ -664,7 +671,6 @@ const SidebarContent = (props: any) => {
                 </li>
               </ul>
             </li>
-
             <li>
               <Link to="#" className="has-arrow ">
                 <i className="bx bx-map"></i>
@@ -682,7 +688,6 @@ const SidebarContent = (props: any) => {
                 </li>
               </ul>
             </li>
-
             <li>
               <Link to="#" className="has-arrow ">
                 <i className="bx bx-share-alt"></i>

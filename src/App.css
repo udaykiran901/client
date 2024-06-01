@@ -100,3 +100,38 @@ input[readonly] {
 .small-font {
   font-size: 8px;
 }
+
+.background-banner {
+  height: 100vh;
+  width: 100vw;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2)),
+    url("../src/assets/images/banner.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 0px;
+  margin: 0px;
+}
+
+.transparent-bg {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  color: #fff;
+}
+
+.quotes-login-page {
+  background-color: rgba(0, 0, 0, 1) !important;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+/*  */
+
+/* input {
+  background-color: transparent !important;
+} */
+
+/* input:focus {
+  background-color: transparent !important;
+} */
+/* input:read-only {
+  background-color: transparent !important;
+} */

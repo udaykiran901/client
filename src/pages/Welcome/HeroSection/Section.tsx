@@ -17,10 +17,12 @@ import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import logo from "../../../assets/images/logo-dark.png";
 import profile from "../../../assets/images/profile-img.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RequestCallBackFormType } from "pages/BD/types";
 // import { onRequestCallBack } from "slices/thunk";
 import { onRequestCallbackThunk } from "slices/thunk";
+import { toggleCallbackForm } from "slices/BD/reducer";
+import { createSelector } from "reselect";
 
 export const Offsymbol = () => {
   return (
@@ -61,17 +63,22 @@ export const OnSymbol = () => {
 };
 
 const Section = () => {
-  const [modal_standard, setmodal_standard] = useState(false);
   const [whatsappSwitch, setWhatsappSwitch] = useState(true);
   const dispatch: any = useDispatch();
 
-  function tog_standard() {
-    setmodal_standard(!modal_standard);
-    removeBodyCss();
-  }
+  const selectedVars = createSelector(
+    (state: any) => state.bd,
+    (bd) => ({
+      showCallbackForm: bd.showCallbackForm,
+      loading: bd.loading,
+    })
+  );
 
-  function removeBodyCss() {
+  const { showCallbackForm, loading } = useSelector(selectedVars);
+
+  function tog_standard() {
     document.body.classList.add("no_padding");
+    dispatch(toggleCallbackForm());
   }
 
   const validation: any = useFormik({
@@ -102,7 +109,7 @@ const Section = () => {
     return (
       <div>
         <Modal
-          isOpen={modal_standard}
+          isOpen={showCallbackForm}
           toggle={() => {
             tog_standard();
           }}
@@ -230,11 +237,21 @@ const Section = () => {
                     <span> {"   "}I agree to be contacted via WhatsApp</span>
                     <div className="mt-3 d-grid">
                       <button
+                        disabled={loading}
                         type="submit"
                         className="btn  btn-primary btn-block "
                       >
-                        <i className="bx bx-support font-size-16 align-middle me-2"></i>{" "}
-                        Request Call back
+                        {loading ? (
+                          <React.Fragment>
+                            <i className="bx bx-loader bx-spin "></i> {"  "}
+                            Please Wait...
+                          </React.Fragment>
+                        ) : (
+                          <React.Fragment>
+                            <i className="bx bx-support font-size-16 align-middle me-2"></i>{" "}
+                            Request Call back
+                          </React.Fragment>
+                        )}
                       </button>
                     </div>
                   </Form>
@@ -253,7 +270,7 @@ const Section = () => {
         <div className="bg-overlay bg-primary"></div>
         <Container>
           <Row className="align-items-center">
-            {modal_standard && renderModal()}
+            {showCallbackForm && renderModal()}
             <Col lg={6}>
               <div className="text-white-50">
                 <h3>Welcome to</h3>

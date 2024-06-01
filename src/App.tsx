@@ -19,7 +19,7 @@ import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
 import { restoreCurrentUserInfo } from "slices/CurrentUser/reducer";
-import BDroutes from "Routes/ProtectedBDroutes";
+
 import ProtectedBDroutes from "Routes/ProtectedBDroutes";
 // import AuthProtected from "./Routes/AuthProtected";
 

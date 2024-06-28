@@ -51,23 +51,7 @@ const SelectTable: React.FC<TableProps> = ({
           );
         },
       },
-      {
-        header: "Param Id",
-        accessorKey: "paramId",
-        enableColumnFilter: false,
-        cell: (cellProps: any) => (
-          <div>
-            <p>{cellProps.row.original.paramId}</p>
-            {cellProps.row.original.isNabl ? (
-              <Badge className="font-size-9 badge-soft-success">
-                NABL Accrediation
-              </Badge>
-            ) : (
-              <Badge className="font-size-9 badge-soft-danger">NON-NABL</Badge>
-            )}
-          </div>
-        ),
-      },
+
       {
         header: "Parameter",
         accessorKey: "testName",
@@ -155,6 +139,21 @@ const SelectTable: React.FC<TableProps> = ({
             </div>
           );
         },
+      },
+      {
+        header: "Param Id",
+        accessorKey: "paramId",
+        enableColumnFilter: false,
+        cell: (cellProps: any) => (
+          <div>
+            <p>{cellProps.row.original.paramId}</p>
+            {cellProps.row.original.isNabl ? (
+              <Badge className="font-size-9 badge-soft-success">NABL</Badge>
+            ) : (
+              <Badge className="font-size-9 badge-soft-danger">NON-NABL</Badge>
+            )}
+          </div>
+        ),
       },
       {
         header: "Discipline",

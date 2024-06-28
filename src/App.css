@@ -123,6 +123,13 @@ input[readonly] {
   border-radius: 10px;
 }
 
+.button-link {
+  background-color: transparent;
+  border: 0;
+  outline: none;
+  color: red;
+}
+
 /*  */
 
 /* input {

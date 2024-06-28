@@ -465,7 +465,7 @@ const EcommerceCart = () => {
                                   ) : (
                                     <i className="mdi mdi-cart-arrow-right me-1" />
                                   )}{" "}
-                                  Checkout{" "}
+                                  Proceed to Pay{" "}
                                 </button>
                               </div>
                             </Col>

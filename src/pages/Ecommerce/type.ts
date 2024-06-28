@@ -16,6 +16,13 @@ export interface EcoAction {
     myOrders: MyOrder[];
     step2loader: boolean;
     addToCartLoading: false;
+    allParams: [];
+
+    materialTestingQuotation: {
+      mtqLoading: false;
+      error: "";
+      link: null;
+    };
   };
 }
 
@@ -51,13 +58,14 @@ interface KeyValue {
 
 export interface BackendParams {
   paramId: string;
-  price: number;
-  common_req: boolean;
-  requirement: string;
-  isNabl: boolean;
-  discipline: string;
-  params: string;
+  price?: number;
+  common_req?: boolean;
+  requirement?: string;
+  isNabl?: boolean;
+  discipline?: string;
+  params?: string;
   selected?: boolean;
+  subgroup?: number;
 }
 
 export interface BackendProductDes {
@@ -77,7 +85,6 @@ export interface BackendProductDes {
   image_lg: string;
   features: string;
   rating: number | null;
-  sample_count: number;
 }
 
 export interface Product {

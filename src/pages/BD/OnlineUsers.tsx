@@ -144,7 +144,7 @@ const OnlineUsers = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {onlineUsers.map(
+                          {(onlineUsers || []).map(
                             (eachUser: SiteUser, idx: number) => (
                               <tr>
                                 <th scope="row">{idx + 1}</th>

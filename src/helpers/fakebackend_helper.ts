@@ -116,6 +116,9 @@ export const getOrders = () => api.get(url.GET_ORDERS, null);
 // add Order--
 export const addNewOrder = (order: any) => api.create(url.ADD_NEW_ORDER, order);
 
+export const generateMaterialTestingServiceAPI = (data: any) =>
+  api.create(url.GENERATE_MATERIAL_TESTING_SERVICES_QUOTE, data);
+
 // update Order--
 export const updateOrder = (order: any) => api.put(url.UPDATE_ORDER, order);
 
@@ -159,6 +162,8 @@ export const getMyOrdersPartialData = () =>
   api.get(url.GET_MY_ORDERS_PARTIAL, null);
 
 //BD Module
+
+export const getAllParamsApi = () => api.get(url.GET_ALL_PARAMS, null);
 
 export const onGettingCompleteOrderDetails = (id: any) =>
   api.get(`${url.GET_COMPLETE_ORDER_DETAILS}/${id}`, { params: { id } });

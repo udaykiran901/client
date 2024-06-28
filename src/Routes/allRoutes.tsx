@@ -41,7 +41,8 @@ import SampleMaterials from "pages/BD/SampleMaterials";
 import OnlineUsers from "pages/BD/OnlineUsers";
 import EntitysCount from "pages/BD/EntitysCount";
 import OrderInfo from "forms/OrderInfo";
-import OfflineOrders from "pages/BD/OfflineOrders";
+import OfflineOrdersRegistration from "pages/BD/OfflineOrdersRegistration";
+import MaterialTesting from "pages/Welcome/Quotes/MaterialTesting";
 
 const BDRoutes = [
   { path: "/bd/product", component: <UserLoginForm /> },
@@ -67,8 +68,8 @@ const BDRoutes = [
     component: <EntitysCount />,
   },
   {
-    path: "/bd/offline-orders",
-    component: <OfflineOrders />,
+    path: "/bd/offline-order-registration",
+    component: <OfflineOrdersRegistration />,
   },
 ];
 
@@ -97,6 +98,7 @@ const publicRoutes = [
   { path: "/ecommerce-checkout", component: <EcommerceCheckout /> },
   { path: "/app", component: <AppLogin /> },
   { path: "/myorders", component: <MyOrders /> },
+  { path: "/material-testing-quote", component: <MaterialTesting /> },
 
   //jobs
   { path: "/job-apply", component: <ApplyJobs /> },

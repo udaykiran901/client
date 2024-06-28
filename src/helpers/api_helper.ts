@@ -83,17 +83,13 @@ class APIClient {
         paramKeys.push(key + "=" + params[key]);
         return paramKeys;
       });
-      console.log("With params");
 
       const queryString =
         paramKeys && paramKeys.length ? paramKeys.join("&") : "";
       response = axios.get(`${url}?${queryString}`, params);
     } else {
-      console.log("without params");
       response = axios.get(`${url}`, params);
     }
-    console.log("In response api helpers");
-    console.log(response);
 
     return response;
   };

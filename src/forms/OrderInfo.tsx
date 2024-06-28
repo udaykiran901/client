@@ -4,6 +4,7 @@ import withRouter from "Components/Common/withRouter";
 import Flatpickr from "react-flatpickr";
 import moment from "moment";
 import Select from "react-select";
+// import { renderParameterDetails } from "./OfflineOrderRegistrationForm";
 
 import {
   Col,
@@ -25,7 +26,7 @@ import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { Branch, Customer, OrderSamples, Orders } from "pages/BD/types";
 import { getDateAndTime } from "pages/BD/CallBacksList";
-import { renderParameterDetails } from "pages/BD/OrdersList";
+// import { renderParameterDetails } from "pages/BD/OrdersList";
 import {
   completeRegistration,
   getBranches,
@@ -33,16 +34,7 @@ import {
   getCustomersList,
 } from "slices/thunk";
 import { createSelector } from "reselect";
-import { EcoAction } from "pages/Ecommerce/type";
 import { useSelector } from "react-redux";
-
-// const drivers = [
-//   { key: "001", label: "Mahesh Babu Gattamaneni" },
-//   { key: "002", label: "Allu Arjun" },
-//   { key: "003", label: "Prabhas surname" },
-//   { key: "004", label: "Nikhil Surname" },
-//   { key: "005", label: "Some other Guy" },
-// ];
 
 export const formatSelectOptions = (options: any) => {
   return [
@@ -54,6 +46,55 @@ export const formatSelectOptions = (options: any) => {
       })),
     },
   ];
+};
+
+export const renderParameterDetails = (
+  eachSample: OrderSamples,
+  index: number
+) => {
+  return (
+    <div>
+      <small
+        className={`mb-5 text-${
+          eachSample.chemicalParams.length === 0 ? "danger" : "warning"
+        }`}
+      >
+        {eachSample.chemicalParams.length !== 0 && "CHEMICAL PARAMETERS"}
+      </small>
+      {eachSample.chemicalParams.map((eachParam) =>
+        eachParam.selectedParams.map((eachSelectedParam) => (
+          <p>
+            <i
+              className={`mdi mdi-circle-medium align-middle text-${
+                index % 2 !== 0 ? "success" : "warning"
+              } me-1`}
+            />
+            {eachSelectedParam.testName}
+          </p>
+        ))
+      )}
+
+      <small
+        className={`mb-5 text-${
+          eachSample.physicalParams.length === 0 ? "danger" : "warning"
+        }`}
+      >
+        {eachSample.physicalParams.length !== 0 && "PHYSICAL PARAMETERS"}
+      </small>
+      {eachSample.physicalParams.map((eachParam) =>
+        eachParam.selectedParams.map((eachSelectedParam) => (
+          <p>
+            <i
+              className={`mdi mdi-circle-medium align-middle text-${
+                index % 2 !== 0 ? "success" : "warning"
+              } me-1`}
+            />
+            {eachSelectedParam.testName}
+          </p>
+        ))
+      )}
+    </div>
+  );
 };
 
 const OrderInfo = (props: any) => {
@@ -182,9 +223,6 @@ const OrderInfo = (props: any) => {
         nhai_bool: nhaiBool,
         parent_ref_bool: parentRef,
       };
-
-      console.log(data);
-
       dispatch(completeRegistration(data));
     },
   });
@@ -194,10 +232,7 @@ const OrderInfo = (props: any) => {
       <td className="p-1" style={{ width: "200px" }}>
         <small>{placeholder}</small>
       </td>
-      <td
-        className="p-1"
-        style={{ backgroundColor: readOnlyForm ? "#e9ecef" : "transparent" }}
-      >
+      <td className="p-1">
         <Input
           name={`samples[${index}].${key}`}
           type="text"
@@ -206,8 +241,19 @@ const OrderInfo = (props: any) => {
           value={validation.values.samples[index]?.[key] || ""}
           placeholder={placeholder}
           className="border-0 m-0 p-0"
-          readOnly={readOnlyForm}
+          invalid={
+            validation.touched.samples?.[index]?.[key] &&
+            validation.errors.samples?.[index]?.[key]
+              ? true
+              : false
+          }
         />
+        {validation.touched.samples?.[index]?.[key] &&
+          validation.errors.samples?.[index]?.[key] && (
+            <FormFeedback type="invalid">
+              {validation.errors.samples[index][key]}
+            </FormFeedback>
+          )}
       </td>
     </tr>
   );
@@ -225,6 +271,9 @@ const OrderInfo = (props: any) => {
   }));
 
   const optionsList = formatSelectOptions(formattedCustomersRecords);
+  const labOptions = formatSelectOptions(formattedLabs);
+
+  console.log(validation.errors);
 
   return (
     <React.Fragment>
@@ -270,12 +319,7 @@ const OrderInfo = (props: any) => {
                   </Table>
                 </div>
 
-                <Card
-                  className="p-3"
-                  style={{
-                    backgroundColor: readOnlyForm ? "#e9ecef" : "transparent",
-                  }}
-                >
+                <Card className="p-3">
                   <h5 className="text-primary mb-2">Order Info</h5>
                   <Row>
                     <Col xl={12}>
@@ -341,9 +385,12 @@ const OrderInfo = (props: any) => {
                           onBlur={() => validation.setFieldTouched("lab", true)}
                           value={selectedGroup2}
                           onChange={(selectedOption) => {
-                            handleSelectGroup2(selectedGroup2, selectedOption);
+                            handleSelectGroup2(
+                              setselectedGroup2,
+                              selectedOption
+                            );
                           }}
-                          options={formattedLabs}
+                          options={labOptions}
                           className="select2-selection"
                         />
                         {validation.touched.lab && validation.errors.lab && (
@@ -446,6 +493,7 @@ const OrderInfo = (props: any) => {
                           )}
                       </div>
                     </Col>
+
                     {!readOnlyForm && (
                       <Col lg={6}>
                         <div className="mb-3">
@@ -474,6 +522,7 @@ const OrderInfo = (props: any) => {
                         </div>
                       </Col>
                     )}
+
                     <Col xl={12}>
                       <div className="mb-3">
                         <Label>Additional Information</Label>
@@ -492,12 +541,7 @@ const OrderInfo = (props: any) => {
                   </Row>
                 </Card>
 
-                <Card
-                  className="p-3 shadow-lg"
-                  style={{
-                    backgroundColor: readOnlyForm ? "#e9ecef" : "transparent",
-                  }}
-                >
+                <Card className="p-3 shadow-lg">
                   <h5 className="text-primary mb-3">Sample's data</h5>
 
                   <Row>
@@ -610,12 +654,7 @@ const OrderInfo = (props: any) => {
                   </Row>
                 </Card>
 
-                <Card
-                  className="p-3 shadow-lg"
-                  style={{
-                    backgroundColor: readOnlyForm ? "#e9ecef" : "transparent",
-                  }}
-                >
+                <Card className="p-3 shadow-lg">
                   <h5 className="text-primary mb-3">Customer's Data</h5>
 
                   {!readOnlyForm && (

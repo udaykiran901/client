@@ -10,6 +10,11 @@ import {
   Label,
   Card,
   CardBody,
+  Button,
+  ButtonDropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
 } from "reactstrap";
 import Switch from "react-switch";
 import * as Yup from "yup";
@@ -23,6 +28,7 @@ import { RequestCallBackFormType } from "pages/BD/types";
 import { onRequestCallbackThunk } from "slices/thunk";
 import { toggleCallbackForm } from "slices/BD/reducer";
 import { createSelector } from "reselect";
+import { useNavigate } from "react-router-dom";
 
 export const Offsymbol = () => {
   return (
@@ -64,7 +70,10 @@ export const OnSymbol = () => {
 
 const Section = () => {
   const [whatsappSwitch, setWhatsappSwitch] = useState(true);
+  const [drp_warning1, setDrp_warning1] = useState(false);
+
   const dispatch: any = useDispatch();
+  const navigate = useNavigate();
 
   const selectedVars = createSelector(
     (state: any) => state.bd,
@@ -104,6 +113,10 @@ const Section = () => {
       dispatch(onRequestCallbackThunk(reqObj));
     },
   });
+
+  const materialTestingQuote = () => {
+    navigate("/material-testing-quote");
+  };
 
   const renderModal = () => {
     return (
@@ -288,14 +301,6 @@ const Section = () => {
                 </p>
 
                 <div className="d-flex flex-wrap gap-2 mt-4">
-                  <a href="#services" className="btn btn-primary ">
-                    Get Started
-                  </a>
-
-                  {/* <Link to="#" className="btn btn-light">
-                    Request a Phone call
-                  </Link> */}
-
                   <button
                     type="button"
                     onClick={() => {
@@ -306,6 +311,39 @@ const Section = () => {
                   >
                     Request a Phone call
                   </button>
+
+                  <ButtonDropdown
+                    isOpen={drp_warning1}
+                    toggle={() => setDrp_warning1(!drp_warning1)}
+                  >
+                    <Button id="caret" color="warning">
+                      Get Quote for
+                    </Button>
+                    <DropdownToggle
+                      caret
+                      color="warning"
+                      className="dropdown-toggle-split"
+                    >
+                      <i className="mdi mdi-chevron-down" />
+                    </DropdownToggle>
+                    <DropdownMenu className="bg-warning">
+                      <DropdownItem onClick={materialTestingQuote}>
+                        Material Testing
+                      </DropdownItem>
+                      <DropdownItem>Structural Health Monitoring</DropdownItem>
+                      <DropdownItem>Traffic Surveys</DropdownItem>
+                      <DropdownItem>Geo Technical</DropdownItem>
+                      <DropdownItem>Topo Surveys</DropdownItem>
+                      <div className="dropdown-divider"></div>
+                      <DropdownItem
+                        onClick={() => {
+                          tog_standard();
+                        }}
+                      >
+                        Directly talk to an executive
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </ButtonDropdown>
                 </div>
               </div>
             </Col>

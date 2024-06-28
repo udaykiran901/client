@@ -55,12 +55,15 @@ export const ECOMMERCE_USER_LOGIN = "/ecommerce/user/login";
 export const ECOMMERCE_ADD_MATERIAL_TO_CART = "/ecommerce/addtocart";
 export const ON_GET_MATERIALS_PARTIAL_DATA = "/ecommerce/get-partial-data";
 export const GET_PRODUCT_DETAILS = "/ecommerce/get-product-details";
+export const GENERATE_MATERIAL_TESTING_SERVICES_QUOTE =
+  "/reports/material-testing-quotation";
 //cart
 export const GET_CART = "/ecommerce/getCart";
 export const DELETE_CART = "/ecommerce/delete-cart";
 export const CREATE_ORDER_IN_SERVER = "/ecommerce/cart/create-order-on-server";
 export const PAYMENT_SUCCESS_SAVE_ORDER = "/ecommerce/create-order";
 export const GET_MY_ORDERS_PARTIAL = "/ecommerce/get-my-orders";
+export const GET_ALL_PARAMS = "/bd/get-all-params";
 
 //BD Module
 export const REQUEST_CALLBACK = "/bd/on-request-callback";

@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 import { getProducts as onGetProducts } from "../slices/e-commerence/thunk";
 import { addingParam } from "slices/thunk";
 
-const generateUniqueID = () => {
+export const generateUniqueID = () => {
   const currentDate = new Date();
   const year = currentDate.getFullYear();
   const month = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -84,13 +84,12 @@ const AddParam = () => {
       discipline: "",
       additional_info: "",
       subgroup: "",
-      requirements: "",
+      requirements: "2 Kgs (Powdered Sample)",
     },
 
     validationSchema: Yup.object({
       subgroup: Yup.string().required("This field is required"),
       // requirements: Yup.string().required("This field is required"),
-
       isNabl: Yup.string().required("This field is required"),
       price: Yup.string().required("This field is required"),
       discipline: Yup.string().required("This field is required"),

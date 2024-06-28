@@ -178,7 +178,7 @@ const SidebarContent = (props: any) => {
               </Link>
             </li>
             <li>
-              <Link to="/bd/offline-orders">
+              <Link to="/bd/offline-order-registration">
                 <i className="bx bx-chat"></i>
                 <span>{props.t("Offline-Orders")}</span>
               </Link>

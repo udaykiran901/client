@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 
 import {
+  Alert,
   Button,
   Card,
   CardBody,
@@ -14,6 +15,9 @@ import {
   Row,
   TabContent,
   TabPane,
+  Offcanvas,
+  OffcanvasHeader,
+  OffcanvasBody,
 } from "reactstrap";
 import classnames from "classnames";
 
@@ -32,10 +36,13 @@ import Navbar from "pages/Welcome/Navbar/Navbar";
 import { KDM_ECOMMERCE_USER_JWT_TOKEN } from "common/tokens";
 import SelectTable from "./SelectTable";
 import Spinners from "Components/Common/Spinner";
+import AdditionalInfoForm from "forms/AdditionalInfoForm";
 
 const EcommerceProductDetail = (props) => {
   document.title = "Product Details | KDM Engineers Group";
   const dispatch = useDispatch<any>();
+  const [isRight, setIsRight] = useState(false);
+
   const selectProperties = createSelector(
     (state: EcoAction) => state.ecommerce,
 
@@ -122,6 +129,10 @@ const EcommerceProductDetail = (props) => {
     offerPercentage: backendProductDes.offer,
   };
 
+  const toggleRightCanvas = () => {
+    setIsRight(!isRight);
+  };
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -150,14 +161,6 @@ const EcommerceProductDetail = (props) => {
                                   </div>
                                 </TabPane>
                               </TabContent>
-                              {backendProductDes.sample_count &&
-                              backendProductDes.sample_count > 0 ? (
-                                <p className="text-warning mt-4">
-                                  Heey... their are already{" "}
-                                  {backendProductDes.sample_count} Sample /
-                                  Sample's in your cart
-                                </p>
-                              ) : null}
                             </Col>
                           </Row>
                         </div>
@@ -210,7 +213,7 @@ const EcommerceProductDetail = (props) => {
                         <Button
                           disabled={addToCartLoading}
                           type="button"
-                          className="btn btn-primary"
+                          className="btn btn-success"
                           onClick={() => {
                             onAddToCart();
                           }}
@@ -226,6 +229,50 @@ const EcommerceProductDetail = (props) => {
                           )}
                         </Button>
                       </div>
+
+                      <Alert color="primary mt-5">
+                        <p>
+                          <b>
+                            <i>Can’t Find What You’re Looking For?</i>
+                          </b>
+                        </p>
+                        <p>
+                          We strive to offer a comprehensive range of material
+                          testing services. However, we understand that
+                          sometimes you might need a test that's not listed, or
+                          you might have specific questions about a material.
+                          We're here to help!
+                        </p>
+                        <p>
+                          please{" "}
+                          <button
+                            onClick={toggleRightCanvas}
+                            className="button-link"
+                          >
+                            {" "}
+                            Click here
+                          </button>
+                        </p>{" "}
+                        Our team of experts is ready to assist you with any
+                        inquiries or special requests you may have.
+                      </Alert>
+
+                      <Offcanvas
+                        isOpen={isRight}
+                        direction="end"
+                        toggle={toggleRightCanvas}
+                      >
+                        <OffcanvasHeader toggle={toggleRightCanvas}>
+                          Please Fill the form below
+                        </OffcanvasHeader>
+                        <OffcanvasBody>
+                          <code>
+                            you may contact this number for any additional
+                            information or discounts{" "}
+                          </code>
+                          <AdditionalInfoForm></AdditionalInfoForm>
+                        </OffcanvasBody>
+                      </Offcanvas>
 
                       <Col lg={12}>
                         <div className="mt-5">

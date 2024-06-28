@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 
 import {
   Container,
@@ -6,8 +6,6 @@ import {
   Col,
   CardBody,
   UncontrolledTooltip,
-  Modal,
-  ModalBody,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -20,13 +18,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 
-import {
-  EcoActionBD,
-  OrderSampleParams,
-  OrderSampleSelectedParams,
-  OrderSamples,
-  Orders,
-} from "./types";
+import { EcoActionBD, Orders } from "./types";
 import { ToastContainer } from "react-toastify";
 import Spinners from "Components/Common/Spinner";
 
@@ -78,65 +70,16 @@ export const renderOrderTags = (order: Orders) => {
   );
 };
 
-export const renderParameterDetails = (
-  eachSample: OrderSamples,
-  index: number
-) => (
-  <div>
-    <small
-      className={`mb-5 text-${
-        eachSample.chemicalParams.length === 0 ? "danger" : "warning"
-      }`}
-    >
-      {eachSample.chemicalParams.length !== 0 && "CHEMICAL PARAMETERS"}
-    </small>
-    {eachSample.chemicalParams.map((eachParam: OrderSampleParams) =>
-      eachParam.selectedParams.map(
-        (eachSelectedParam: OrderSampleSelectedParams) => (
-          <p>
-            <i
-              className={`mdi mdi-circle-medium align-middle text-${
-                index % 2 !== 0 ? "success" : "warning"
-              } me-1`}
-            />
-
-            {eachSelectedParam.testName}
-          </p>
-        )
-      )
-    )}
-
-    <small
-      className={`mb-5 text-${
-        eachSample.physicalParams.length === 0 ? "danger" : "warning"
-      }`}
-    >
-      {eachSample.physicalParams.length !== 0 && "PHYSICAL PARAMETERS"}
-    </small>
-
-    {eachSample.physicalParams.map((eachParam: OrderSampleParams) =>
-      eachParam.selectedParams.map(
-        (eachSelectedParam: OrderSampleSelectedParams) => (
-          <p>
-            <i
-              className={`mdi mdi-circle-medium align-middle text-${
-                index % 2 !== 0 ? "success" : "warning"
-              } me-1`}
-            />
-            {eachSelectedParam.testName}
-          </p>
-        )
-      )
-    )}
-  </div>
-);
-
 export const greenBadge = (text: string) => (
   <Badge className="font-size-10 badge-soft-success m-1">{text}</Badge>
 );
 
 export const redBadge = (text: string) => (
   <Badge className="font-size-10 badge-soft-danger m-1">{text}</Badge>
+);
+
+export const infoBadge = (text: string) => (
+  <Badge className="font-size-10 badge-soft-info m-1">{text}</Badge>
 );
 
 const OrdersList = () => {

@@ -20,6 +20,8 @@ import {
   paymentSuccessfullSaveOrder as paymentSuccessfullSaveOrderAPI,
   getMyOrdersPartialData as getMyOrdersPartialDataAPI,
   onCompleteRegistration as completeRegistrationAPI,
+  getAllParamsApi,
+  generateMaterialTestingServiceAPI,
 } from "../../helpers/fakebackend_helper";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -31,7 +33,19 @@ import {
   GET_PRODUCT_NAME_ID,
   ON_GET_MATERIALS_PARTIAL_DATA,
   PAYMENT_SUCCESS_SAVE_ORDER,
+  GET_ALL_PARAMS,
+  GENERATE_MATERIAL_TESTING_SERVICES_QUOTE,
 } from "../../helpers/url_helper";
+
+export const onGetAllParams = createAsyncThunk(GET_ALL_PARAMS, async () => {
+  try {
+    const response = await getAllParamsApi();
+    return response.data;
+  } catch (error) {
+    toast.error("Please Check your connection and reload the page");
+    return error;
+  }
+});
 
 export const getProducts = createAsyncThunk(
   ON_GET_MATERIALS_PARTIAL_DATA,
@@ -279,6 +293,23 @@ export const completeRegistration = createAsyncThunk(
       toast.success(response.data.message, { autoClose: 5000 });
       return response;
     } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const generateMaterialTestingServiceQuote = createAsyncThunk(
+  GENERATE_MATERIAL_TESTING_SERVICES_QUOTE,
+  async (data: any) => {
+    try {
+      const response: any = await generateMaterialTestingServiceAPI(data);
+      toast.success(response.data.message, { autoClose: 5000 });
+      return response;
+    } catch (error: any) {
+      toast.error(
+        "Error generating Quotation, Reload the page &  check your network and try again",
+        { autoClose: 5000 }
+      );
       return error;
     }
   }

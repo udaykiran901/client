@@ -6,10 +6,10 @@ import {
   getCart,
   deleteCart,
   addProductToCart,
-  createOrderOnServer,
   getMyOrdersPartial,
   paymentSuccessfull,
-  completeRegistration,
+  onGetAllParams,
+  generateMaterialTestingServiceQuote,
 } from "./thunk";
 
 import {
@@ -40,6 +40,13 @@ interface InitialState {
   backendProductDes: BackendProductDes;
   myOrders: MyOrder[];
   addToCartLoading: boolean;
+  allParams: BackendParams[];
+
+  materialTestingQuotation: {
+    mtqLoading: boolean;
+    error: string;
+    link: null;
+  };
 }
 
 export const initialState: InitialState = {
@@ -56,6 +63,13 @@ export const initialState: InitialState = {
   backendProductDes: {} as BackendProductDes,
   myOrders: [],
   addToCartLoading: false,
+  allParams: [],
+
+  materialTestingQuotation: {
+    mtqLoading: false,
+    error: "",
+    link: null,
+  },
 };
 
 const EcommerceSlice = createSlice({
@@ -69,6 +83,11 @@ const EcommerceSlice = createSlice({
       state.backendParams = action.payload.params;
     });
 
+    builder.addCase(onGetAllParams.fulfilled, (state: any, action: any) => {
+      console.log("In reducer");
+      state.allParams = action.payload.data;
+    });
+
     builder.addCase(getProducts.rejected, (state: any, action: any) => {
       state.error = action.payload ? action.payload?.error : null;
     });
@@ -76,7 +95,6 @@ const EcommerceSlice = createSlice({
     builder.addCase(getProductDetail.fulfilled, (state: any, action: any) => {
       state.backendParams = action.payload.params;
       state.backendProductDes = action.payload.product;
-      state.backendProductDes.sample_count = action.payload.cartItems.length;
     });
 
     builder.addCase(getProductDetail.rejected, (state: any, action: any) => {
@@ -111,7 +129,6 @@ const EcommerceSlice = createSlice({
     builder.addCase(addProductToCart.fulfilled, (state, action) => {
       state.backendProductDes = {
         ...state.backendProductDes,
-        sample_count: state.backendProductDes.sample_count + 1,
       };
 
       const updatedParams = state.backendParams.map((each: BackendParams) => {
@@ -127,13 +144,10 @@ const EcommerceSlice = createSlice({
       state.addToCartLoading = false;
     });
 
-    builder.addCase(createOrderOnServer.fulfilled, (state, action) => {
-      console.log("createOrderOnServer this success");
-    });
+    // builder.addCase(createOrderOnServer.fulfilled, (state, action) => {});
 
     builder.addCase(paymentSuccessfull.fulfilled, (state, action) => {
       state.cart = [];
-      console.log("paymentSuccessfull this success");
     });
 
     //cart
@@ -151,9 +165,33 @@ const EcommerceSlice = createSlice({
       state.myOrders = action.payload.data;
     });
 
-    builder.addCase(getMyOrdersPartial.rejected, (state, action) => {
-      console.log("Api Rejected");
-    });
+    //quotation
+    builder.addCase(
+      generateMaterialTestingServiceQuote.fulfilled,
+      (state: any, action: any) => {
+        state.materialTestingQuotation.mtqLoading = false;
+        state.materialTestingQuotation.link = action.payload.link;
+        state.materialTestingQuotation.error = action.payload.error;
+      }
+    );
+
+    builder.addCase(
+      generateMaterialTestingServiceQuote.pending,
+      (state: any, action: any) => {
+        state.materialTestingQuotation.mtqLoading = true;
+        state.materialTestingQuotation.link = "";
+        state.materialTestingQuotation.error = "";
+      }
+    );
+
+    builder.addCase(
+      generateMaterialTestingServiceQuote.rejected,
+      (state: any, action: any) => {
+        state.materialTestingQuotation.mtqLoading = false;
+        state.materialTestingQuotation.error = "Error generating the quotation";
+        //write for error case
+      }
+    );
 
     builder.addMatcher(
       (action) => action.type.endsWith("/pending"),
@@ -168,6 +206,7 @@ const EcommerceSlice = createSlice({
         state.loading = false;
       }
     );
+
     builder.addMatcher(
       (action) => action.type.endsWith("/rejected"),
       (state, action) => {

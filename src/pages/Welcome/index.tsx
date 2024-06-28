@@ -137,9 +137,9 @@ const Welcome = () => {
                 <p className="text-muted font-size-14 mb-4">
                   Stay ahead with the latest updates and exclusive offers by
                   subscribing to our newsletter. Be the first to know about new
-                  arrivals, special promotions, and insightful articles on
-                  material testing, including soil, cement, and more. Don't miss
-                  out
+                  Job openings, arrivals, special promotions, and insightful
+                  articles on material testing, including soil, cement, and
+                  more. Don't miss out
                 </p>
                 <p className="text-muted font-size-14 mb-4">
                   subscribe today to elevate your understanding and stay

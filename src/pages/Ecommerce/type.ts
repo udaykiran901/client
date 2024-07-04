@@ -22,6 +22,7 @@ export interface EcoAction {
       mtqLoading: false;
       error: "";
       link: null;
+      quotation_generated: false;
     };
   };
 }

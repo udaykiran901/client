@@ -304,7 +304,7 @@ export const generateMaterialTestingServiceQuote = createAsyncThunk(
     try {
       const response: any = await generateMaterialTestingServiceAPI(data);
       toast.success(response.data.message, { autoClose: 5000 });
-      return response;
+      return response.data;
     } catch (error: any) {
       toast.error(
         "Error generating Quotation, Reload the page &  check your network and try again",

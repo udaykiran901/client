@@ -46,6 +46,7 @@ interface InitialState {
     mtqLoading: boolean;
     error: string;
     link: null;
+    quotation_generated: boolean;
   };
 }
 
@@ -69,13 +70,26 @@ export const initialState: InitialState = {
     mtqLoading: false,
     error: "",
     link: null,
+    quotation_generated: false,
   },
 };
 
 const EcommerceSlice = createSlice({
   name: "EcommerceSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    resetPopup(state) {
+      return {
+        ...state,
+        materialTestingQuotation: {
+          mtqLoading: false,
+          error: "",
+          link: null,
+          quotation_generated: false,
+        },
+      };
+    },
+  },
 
   extraReducers: (builder) => {
     builder.addCase(getProducts.fulfilled, (state: any, action: any) => {
@@ -169,9 +183,12 @@ const EcommerceSlice = createSlice({
     builder.addCase(
       generateMaterialTestingServiceQuote.fulfilled,
       (state: any, action: any) => {
+        console.log(action.payload);
         state.materialTestingQuotation.mtqLoading = false;
         state.materialTestingQuotation.link = action.payload.link;
         state.materialTestingQuotation.error = action.payload.error;
+        state.materialTestingQuotation.quotation_generated =
+          action.payload.quotation_generated;
       }
     );
 
@@ -215,5 +232,7 @@ const EcommerceSlice = createSlice({
     );
   },
 });
+
+export const { resetPopup } = EcommerceSlice.actions;
 
 export default EcommerceSlice.reducer;

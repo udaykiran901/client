@@ -140,6 +140,30 @@ const OrdersList = () => {
           );
         },
       },
+
+      {
+        header: "Proforma ",
+        accessorKey: "proforma",
+        enableColumnFilter: false,
+        enableSorting: false,
+        cell: (cellProps: any) => (
+          <div style={{ cursor: "pointer" }}>
+            {cellProps.row.original.proforma ? (
+              <a
+                href={cellProps.row.original.proforma}
+                target="_blank"
+                className="text-success"
+              >
+                {" "}
+                <i className="bx bxs-file-pdf fs-1 align-middle text-danger me-2"></i>
+              </a>
+            ) : (
+              redBadge("Under Review")
+            )}
+          </div>
+        ),
+      },
+
       {
         header: "Mode",
         accessorKey: "mode",

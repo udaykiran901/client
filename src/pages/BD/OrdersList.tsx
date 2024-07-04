@@ -14,6 +14,7 @@ import {
   Card,
   CardTitle,
 } from "reactstrap";
+import { ONLINE, OFFLINE } from "common/tokens";
 
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -22,7 +23,7 @@ import { EcoActionBD, Orders } from "./types";
 import { ToastContainer } from "react-toastify";
 import Spinners from "Components/Common/Spinner";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   getAllOrders,
   getOrdersDailyRecord,
@@ -120,26 +121,36 @@ const OrdersList = () => {
         enableColumnFilter: false,
         enableSorting: false,
         cell: (cellProps: any) => {
+          const projectName = cellProps.row.original.project_name;
+          const columnStyle: React.CSSProperties = {
+            // minWidth: "100px",
+            maxWidth: "400px",
+
+            whiteSpace: "normal",
+            wordWrap: "break-word",
+          };
           return (
-            <p>
-              {cellProps.row.original.project_name === null
-                ? redBadge("Under Review")
-                : cellProps.row.original.project_name}
-            </p>
+            <div style={columnStyle}>
+              {projectName === null ? (
+                redBadge("Under Review")
+              ) : (
+                <span>{projectName}</span>
+              )}
+            </div>
           );
         },
       },
       {
-        header: "Subject",
-        accessorKey: "subject",
+        header: "Mode",
+        accessorKey: "mode",
         enableColumnFilter: false,
         enableSorting: false,
         cell: (cellProps: any) => {
           return (
             <p>
-              {cellProps.row.original.subject === null
-                ? redBadge("Under Review")
-                : cellProps.row.original.subject}
+              {cellProps.row.original.mode === ONLINE
+                ? greenBadge("Online")
+                : infoBadge("Offline")}
             </p>
           );
         },
@@ -239,6 +250,12 @@ const OrdersList = () => {
     []
   );
 
+  const navigate = useNavigate();
+
+  const handleUserClicks = () => {
+    navigate("/bd/offline-order-registration");
+  };
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -277,6 +294,13 @@ const OrdersList = () => {
               {loading && <Spinners />}
               {orders && (
                 <CardBody style={{ backgroundColor: "White" }}>
+                  <button
+                    className="btn btn-primary m-2"
+                    type="button"
+                    onClick={handleUserClicks}
+                  >
+                    Create Order
+                  </button>
                   <TableContainer
                     columns={columns}
                     data={orders || []}

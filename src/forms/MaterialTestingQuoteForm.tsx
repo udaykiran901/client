@@ -239,8 +239,10 @@ const MaterialTestingQuoteForm = () => {
 
     validationSchema: Yup.object({
       name: Yup.string().required("This Field is Required"),
-      mobile: Yup.string().required("This Field is Required"),
       email: Yup.string(),
+      mobile: Yup.string()
+        .matches(/^[0-9]{10}$/)
+        .required("Please Enter Your Phone No"),
     }),
 
     onSubmit: (value: any) => {

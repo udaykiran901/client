@@ -12,3 +12,6 @@ export const EMPLOYEE_LOCAL_STORAGE_KEY = "loggedInUser";
 //CONSTANTS
 export const CHEMICAL = "CHEMICAL";
 export const PHYSICAL = "PHYSICAL";
+
+export const ONLINE = "ONLINE";
+export const OFFLINE = "OFFLINE";

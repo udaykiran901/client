@@ -34,7 +34,11 @@ import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { Branch, Customer, EcoActionBD, OrderSamples } from "pages/BD/types";
 
-import { getBranches, getCustomersList } from "slices/thunk";
+import {
+  getBranches,
+  getCustomersList,
+  offlineOrderRegistration,
+} from "slices/thunk";
 import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
 import { EcoAction, TestParams, BackendParams } from "pages/Ecommerce/type";
@@ -57,6 +61,7 @@ export interface SampleFields {
   ref_code: string;
   sample_id_optional_field: string;
   site_name: string;
+  product_id?: string;
 }
 
 export const initialSampleReportFields: SampleFields = {
@@ -69,6 +74,7 @@ export const initialSampleReportFields: SampleFields = {
   ref_code: "",
   sample_id_optional_field: "",
   site_name: "",
+  product_id: "",
 };
 
 export const initialSampleDetails: NextedState = {
@@ -126,6 +132,16 @@ export const renderParameterDetails = (eachSample: any, index: number) => {
       )}
     </div>
   );
+};
+
+export const calculateDiscountedPrice = (
+  originalPrice: number,
+  discountPercentage: number
+) => {
+  const discountAmount = (originalPrice * discountPercentage) / 100;
+  const discountedPrice = originalPrice - discountAmount;
+
+  return discountedPrice;
 };
 
 const OfflineOrderRegistrationForm = () => {
@@ -283,11 +299,11 @@ const OfflineOrderRegistrationForm = () => {
       PHYSICAL
     );
 
-    const updatedRows: NextedState[] = rows1.map((row: any) => {
+    const updatedRows: NextedState[] = rows1.map((row: NextedState) => {
       if (row.row_id === row_id) {
         return {
           ...row,
-          sampleId: productId,
+          sampleId: productId.toString(),
           sampleName: sample[0].name,
           sample_image: sample[0].image,
           chemicalParams: chemicalParams,
@@ -370,28 +386,38 @@ const OfflineOrderRegistrationForm = () => {
     validation.setFieldValue("lab", selectedOption.value);
   };
 
+  const calculateFinalPrice = (price: number) => {
+    const taxRate = 0.18;
+    const finalPrice = price + price * taxRate;
+    return finalPrice;
+  };
+
   //end of this fucking variables
   const validation: any = useFormik({
     enableReinitialize: true,
     initialValues: {
       order_id: "",
-      project_name: "",
-      subject: "",
-      parent_ref: "",
-      nhai_hq_letter: "",
-      additional_info: "",
+      project_name: "some project name goes here ",
+      subject: "some subject hoes gerw",
+      parent_ref: "hello world",
+      nhai_hq_letter: "hello soelw",
+      additional_info: "some additional information",
       letter: null,
       due_date: "",
+      discount: 0,
+      transportation_fee: 0,
 
       // samples info
       samples: [],
-      samples_address: "",
+      samples_address: "some sample address goes here",
 
       //customers info
       customer_id: "",
 
       //lab details
       lab: "",
+
+      ref: "",
     },
 
     validationSchema: Yup.object({
@@ -399,6 +425,7 @@ const OfflineOrderRegistrationForm = () => {
       subject: Yup.string().required("Please Enter Subject"),
       letter: Yup.mixed().required("Letter is required"),
       due_date: Yup.date().required("Expected Delivery Date is required"),
+      ref: Yup.string().required("Ref is required"),
 
       // samples data
       samples: Yup.array().of(
@@ -422,15 +449,57 @@ const OfflineOrderRegistrationForm = () => {
       lab: Yup.string().required("Please assign the lab"),
     }),
     onSubmit: (values: any) => {
+      const prices = rows1.map((eachRow: NextedState) => {
+        const physicalSum = eachRow.physicalParams.reduce(
+          (accum: number, eachParam: BackendParams) => {
+            return (
+              accum +
+              (eachRow.isOffer
+                ? calculateDiscountedPrice(eachParam.price || 0, eachRow.offer)
+                : eachParam.price || 0)
+            );
+          },
+          0
+        );
+
+        const chemicalSum = eachRow.chemicalParams.reduce(
+          (accum: number, eachParam: BackendParams) => {
+            return (
+              accum +
+              (eachRow.isOffer
+                ? calculateDiscountedPrice(eachParam.price || 0, eachRow.offer)
+                : eachParam.price || 0)
+            );
+          },
+          0
+        );
+        return physicalSum + chemicalSum;
+      });
+
+      const amount = prices.reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0
+      );
       const data = {
+        amount,
         ...values,
         nhai_bool: nhaiBool,
         parent_ref_bool: parentRef,
-        selectedSamples: extractSelectedTests(rows1),
+        selectedSamples: extractSelectedTests(rows1).map(
+          (eachSample: NextedState) => {
+            const sampleReportDetails = values.samples.find(
+              (eachSampleDetails: SampleFields) =>
+                eachSampleDetails.sample_id === eachSample.row_id
+            );
+            return {
+              ...eachSample,
+              reportFields: sampleReportDetails,
+            };
+          }
+        ),
       };
 
-      console.log(data);
-      // dispatch(completeRegistration(data));
+      dispatch(offlineOrderRegistration(data));
     },
   });
 
@@ -730,7 +799,7 @@ const OfflineOrderRegistrationForm = () => {
                 Offline Order Registration Form
               </h5>
               <Row>
-                <Col xl={12}>
+                <Col xl={6}>
                   <div className="mb-3">
                     <Label>Project Name</Label>
                     <Input
@@ -758,14 +827,14 @@ const OfflineOrderRegistrationForm = () => {
                   </div>
                 </Col>
 
-                <Col xl={12}>
+                <Col xl={6}>
                   <div className="mb-3">
                     <Label>Subject</Label>
                     <Input
                       readOnly={false}
                       name="subject"
                       type="textarea"
-                      rows={2}
+                      rows={3}
                       onChange={validation.handleChange}
                       onBlur={validation.handleBlur}
                       value={validation.values.subject || ""}
@@ -784,7 +853,7 @@ const OfflineOrderRegistrationForm = () => {
                   </div>
                 </Col>
 
-                <Col lg={12}>
+                <Col lg={6}>
                   <div className="mb-3">
                     <Label>Assign Lab </Label>
                     <Select
@@ -801,6 +870,27 @@ const OfflineOrderRegistrationForm = () => {
                         {validation.errors.lab}
                       </span>
                     )}
+                  </div>
+                </Col>
+
+                <Col lg={6}>
+                  <div className="mb-3">
+                    <Label for="basicpill-ref-input1">Ref</Label>
+                    <Input
+                      type="text"
+                      name="ref"
+                      className="form-control"
+                      id="basicpill-ref-input1"
+                      placeholder="Enter Reference"
+                      value={validation.values.ref}
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                    />
+                    {validation.errors.ref && validation.touched.ref ? (
+                      <span className="text-danger">
+                        {validation.errors.ref}
+                      </span>
+                    ) : null}
                   </div>
                 </Col>
 
@@ -1004,7 +1094,7 @@ const OfflineOrderRegistrationForm = () => {
 
               {!false && (
                 <Row>
-                  <Col lg={12}>
+                  <Col lg={10}>
                     <div className="mb-3">
                       <Label>Select Customer</Label>
                       <Select
@@ -1026,6 +1116,60 @@ const OfflineOrderRegistrationForm = () => {
                         )}
                     </div>
                   </Col>
+                  <Col lg={5}>
+                    <div className="mb-3">
+                      <Label htmlFor="discount">Discount :</Label>
+                      <Input
+                        type="number"
+                        name="discount"
+                        id="discount"
+                        placeholder="Enter discount 1%-10%"
+                        className="form-control"
+                        value={validation.values.discount}
+                        min={0}
+                        max={10}
+                        onChange={validation.handleChange}
+                        onBlur={validation.handleBlur}
+                        invalid={
+                          validation.touched.discount &&
+                          validation.errors.discount
+                        }
+                      />
+                      {validation.errors.discount &&
+                      validation.touched.discount ? (
+                        <FormFeedback type="invalid">
+                          {validation.errors.discount}
+                        </FormFeedback>
+                      ) : null}
+                    </div>
+                  </Col>
+                  <Col lg={5}>
+                    <div className="mb-3">
+                      <Label htmlFor="transportation_fee">
+                        transportation_fee:
+                      </Label>
+                      <Input
+                        type="number"
+                        name="transportation_fee"
+                        id="transportation_fee"
+                        placeholder="Enter Transportation Charges"
+                        className="form-control"
+                        value={validation.values.transportation_fee}
+                        onChange={validation.handleChange}
+                        onBlur={validation.handleBlur}
+                        invalid={
+                          validation.touched.transportation_fee &&
+                          validation.errors.transportation_fee
+                        }
+                      />
+                      {validation.errors.transportation_fee &&
+                      validation.touched.transportation_fee ? (
+                        <FormFeedback type="invalid">
+                          {validation.errors.transportation_fee}
+                        </FormFeedback>
+                      ) : null}
+                    </div>
+                  </Col>
                 </Row>
               )}
             </Card>
@@ -1034,11 +1178,9 @@ const OfflineOrderRegistrationForm = () => {
               type="submit"
               color="success"
               className="save-customer"
-              disabled={!validation.isValid || validation.isSubmitting}
+              // disabled={!validation.isValid || validation.isSubmitting}
             >
-              <>
-                Submit <i className="bx bx-loader bx-spin "></i>
-              </>
+              Register Order <i className="bx bx-loader bx-spin "></i>
             </Button>
           </Form>
         </Col>

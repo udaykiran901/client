@@ -43,6 +43,7 @@ import EntitysCount from "pages/BD/EntitysCount";
 import OrderInfo from "forms/OrderInfo";
 import OfflineOrdersRegistration from "pages/BD/OfflineOrdersRegistration";
 import MaterialTesting from "pages/Welcome/Quotes/MaterialTesting";
+import Quotations from "pages/BD/Quotations";
 
 const BDRoutes = [
   { path: "/bd/product", component: <UserLoginForm /> },
@@ -70,6 +71,10 @@ const BDRoutes = [
   {
     path: "/bd/offline-order-registration",
     component: <OfflineOrdersRegistration />,
+  },
+  {
+    path: "/bd/quotations",
+    component: <Quotations />,
   },
 ];
 

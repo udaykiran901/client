@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
+  onRegisteringOfflineOrderAPI,
   onSubscribeUpdates,
   requestCallback as requestCallbackAPI,
   onAddingNewProduct as onAddingNewProductApi,
@@ -25,6 +26,9 @@ import {
   onGettingDailyCountOfAllEntitiesAPI,
   onGettingMonthlyCountOfAllEntitiesAPI,
   onGettingCompleteOrderDetails,
+  onGettingDailyQuotationsAPI,
+  onGettingMonthlyQuotationsAPI,
+  onGettingQuotationsAPI,
 } from "../../helpers/fakebackend_helper";
 
 import { toast } from "react-toastify";
@@ -56,6 +60,10 @@ import {
   GET_DAILY_COUNT_OF_ALL_ENTITIES,
   GET_MONTHLY_COUNT_OF_ALL_ENTITIES,
   GET_COMPLETE_ORDER_DETAILS,
+  OFFLINE_ORDER_REGISTRATION,
+  GET_QUOTATIONS,
+  GET_DAILY_QUOTAIONS_COUNT,
+  GET_MONTHLY_QUOTATIONS_COUNT,
 } from "../../helpers/url_helper";
 
 export const onRequestCallbackThunk = createAsyncThunk(
@@ -340,6 +348,7 @@ export const getOnlineUsers = createAsyncThunk(GET_ONLINE_USERS, async () => {
     return error;
   }
 });
+
 export const getDailyOnlineUsersCount = createAsyncThunk(
   GET_ONLINE_DAILY_USERS_COUNT,
   async () => {
@@ -351,6 +360,7 @@ export const getDailyOnlineUsersCount = createAsyncThunk(
     }
   }
 );
+
 export const getMonthlyUsersOnlineCount = createAsyncThunk(
   GET_ONLINE_MONTHLY_USERS_COUNT,
   async () => {
@@ -398,3 +408,61 @@ export const getCountOfAllEntitiesMonthly = createAsyncThunk(
     }
   }
 );
+
+export const offlineOrderRegistration = createAsyncThunk(
+  OFFLINE_ORDER_REGISTRATION,
+  async (details: any) => {
+    try {
+      const response = await onRegisteringOfflineOrderAPI(details);
+      if (response.status === 200) {
+        toast.success("Order Register Successfully", {
+          autoClose: 5000,
+        });
+      } else {
+        toast.error("Failed to register order", {
+          autoClose: 10000,
+        });
+      }
+      return response;
+    } catch (error: any) {
+      toast.error(error.data.error, {
+        autoClose: 10000,
+      });
+      return error;
+    }
+  }
+);
+
+//quotations
+export const getDailyQuotationCount = createAsyncThunk(
+  GET_DAILY_QUOTAIONS_COUNT,
+  async () => {
+    try {
+      const response = await onGettingDailyQuotationsAPI();
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const getMonthlyQuotationsCount = createAsyncThunk(
+  GET_MONTHLY_QUOTATIONS_COUNT,
+  async () => {
+    try {
+      const response = await onGettingMonthlyQuotationsAPI();
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const getAllQuotations = createAsyncThunk(GET_QUOTATIONS, async () => {
+  try {
+    const response = await onGettingQuotationsAPI();
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+});

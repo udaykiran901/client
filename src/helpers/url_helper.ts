@@ -66,6 +66,7 @@ export const GET_MY_ORDERS_PARTIAL = "/ecommerce/get-my-orders";
 export const GET_ALL_PARAMS = "/bd/get-all-params";
 
 //BD Module
+
 export const REQUEST_CALLBACK = "/bd/on-request-callback";
 export const ON_SUBSCRIBE = "/bd/subscribe";
 export const ON_ADDING_NEW_PRODUCT = "/bd/adding-new-product";
@@ -92,6 +93,11 @@ export const GET_ONLINE_USERS = "/bd/get-online-users";
 export const GET_ONLINE_DAILY_USERS_COUNT = "/bd/get-online-users-daily";
 export const GET_ONLINE_MONTHLY_USERS_COUNT = "/bd/get-online-users-monthly";
 
+//quotations
+export const GET_QUOTATIONS = "/bd/get-quotations";
+export const GET_DAILY_QUOTAIONS_COUNT = "/bd/get-quotations-daily";
+export const GET_MONTHLY_QUOTATIONS_COUNT = "/bd/get-quotations-monthly";
+
 export const CUSTOMERS_MONTHLY_GRAPH = "/bd/get-customers-graph";
 export const CUSTOMER_LAST_30_RECORDS = "/bd/get-customers-graph-last30days";
 
@@ -99,6 +105,7 @@ export const ORDERS_DAILY_RECORD = "/bd/order-daily-record";
 export const ORDERS_MONTHLY_RECORD = "/bd/orders-monthly-record";
 export const SAMPLES_STATISTICS = "/bd/samples-statistics";
 export const GET_DISCIPLINE_WISE_COUNT = "/bd/discipline-wise";
+export const OFFLINE_ORDER_REGISTRATION = "/bd/register-offline-order";
 
 //Admin
 export const GET_TOP_10_ORDERED_ACCOUNT = "/admin/top-10-accounts-ordered";

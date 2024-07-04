@@ -23,6 +23,9 @@ import {
   getDailyCountOfAllEntities,
   getCountOfAllEntitiesMonthly,
   getCompleteOrderDetails,
+  getDailyQuotationCount,
+  getMonthlyQuotationsCount,
+  getAllQuotations,
 } from "./thunk";
 import {
   CallBacks,
@@ -33,6 +36,7 @@ import {
   SamplesGraph,
   SiteUser,
   DailyGraphAllTntities,
+  Quotation,
 } from "pages/BD/types";
 import { completeRegistration } from "slices/thunk";
 
@@ -60,6 +64,10 @@ interface InitialState {
   dailyCountAllEntities: DailyGraphAllTntities[];
   MonthlyAllEntities: DailyGraphAllTntities[];
   orderInfo: Orders;
+
+  quotations: Quotation[];
+  quotationsDaily: CountGraph[];
+  quotationsMonthly: CountGraph[];
 }
 
 export const initialState: InitialState = {
@@ -86,6 +94,11 @@ export const initialState: InitialState = {
   dailyCountAllEntities: [],
   MonthlyAllEntities: [],
   orderInfo: {} as Orders,
+
+  //quotations
+  quotations: [],
+  quotationsDaily: [],
+  quotationsMonthly: [],
 };
 
 const BDslice = createSlice({
@@ -284,6 +297,26 @@ const BDslice = createSlice({
       }
     );
 
+    //quotations
+    builder.addCase(getAllQuotations.fulfilled, (state: any, action: any) => {
+      state.quotations = action.payload.data;
+    });
+
+    builder.addCase(
+      getDailyQuotationCount.fulfilled,
+      (state: any, action: any) => {
+        state.quotationsDaily = action.payload.data;
+      }
+    );
+
+    builder.addCase(
+      getMonthlyQuotationsCount.fulfilled,
+      (state: any, action: any) => {
+        state.quotationsMonthly = action.payload.data;
+      }
+    );
+
+    //end of quotations
     builder.addMatcher(
       (action) => action.type.endsWith("/pending"),
       (state, action) => {

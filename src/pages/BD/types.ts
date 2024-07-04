@@ -4,6 +4,16 @@ export interface RequestCallBackFormType {
   whatsapp: boolean;
 }
 
+export interface Quotation {
+  qtn_id: string;
+  location: string;
+  created_at: string;
+  proforma_name: string;
+  contact: string;
+  email: string;
+  created_by: string;
+}
+
 export interface EcoActionBD {
   bd: {
     callbacks: [];
@@ -32,6 +42,9 @@ export interface EcoActionBD {
     MonthlyAllEntities: [];
     orderInfo: {};
     branches: [];
+    quotations: [];
+    quotationsDaily: [];
+    quotationsMonthly: [];
   };
 }
 
@@ -127,6 +140,9 @@ export interface Orders {
   samples_collection_address?: string;
   registration_done: boolean;
   lab: string;
+  ref?: string;
+  mode?: string;
+  proforma?: string;
 }
 
 export interface Customer {

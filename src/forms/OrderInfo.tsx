@@ -171,6 +171,9 @@ const OrderInfo = (props: any) => {
       additional_info: (order && order.additional_info) || "",
       letter: null,
       due_date: (order && order.due_date) || "",
+      ref: (order && order.ref) || "", //this is not parent ref PMN
+      discount: 0,
+      transportation_fee: 0,
 
       //samples info
       samples: (order.samplesList || []).map((eachSample) => ({
@@ -197,6 +200,7 @@ const OrderInfo = (props: any) => {
       subject: Yup.string().required("Please Enter Subject"),
       letter: Yup.mixed().required("Letter is required"),
       due_date: Yup.date().required("Expected Delivery Date is required"),
+      ref: Yup.string().required("Ref is mandatory"),
 
       //samples data
       samples: Yup.array().of(
@@ -322,7 +326,7 @@ const OrderInfo = (props: any) => {
                 <Card className="p-3">
                   <h5 className="text-primary mb-2">Order Info</h5>
                   <Row>
-                    <Col xl={12}>
+                    <Col xl={6}>
                       <div className="mb-3">
                         <Label>Project Name</Label>
                         <Input
@@ -350,14 +354,14 @@ const OrderInfo = (props: any) => {
                       </div>
                     </Col>
 
-                    <Col xl={12}>
+                    <Col xl={6}>
                       <div className="mb-3">
                         <Label>Subject</Label>
                         <Input
                           readOnly={readOnlyForm}
                           name="subject"
                           type="textarea"
-                          rows={2}
+                          rows={3}
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
                           value={validation.values.subject || ""}
@@ -378,7 +382,7 @@ const OrderInfo = (props: any) => {
                       </div>
                     </Col>
 
-                    <Col lg={12}>
+                    <Col lg={6}>
                       <div className="mb-3">
                         <Label>Assign Lab </Label>
                         <Select
@@ -400,6 +404,28 @@ const OrderInfo = (props: any) => {
                         )}
                       </div>
                     </Col>
+
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        <Label for="basicpill-ref-input1">Ref</Label>
+                        <Input
+                          type="text"
+                          name="ref"
+                          className="form-control"
+                          id="basicpill-ref-input1"
+                          placeholder="Enter Reference"
+                          value={validation.values.ref}
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                        />
+                        {validation.errors.ref && validation.touched.ref ? (
+                          <span className="text-danger">
+                            {validation.errors.ref}
+                          </span>
+                        ) : null}
+                      </div>
+                    </Col>
+
                     <Col xl={6}>
                       <div className="form-check ml-3">
                         <input
@@ -657,9 +683,9 @@ const OrderInfo = (props: any) => {
                 <Card className="p-3 shadow-lg">
                   <h5 className="text-primary mb-3">Customer's Data</h5>
 
-                  {!readOnlyForm && (
+                  {!false && (
                     <Row>
-                      <Col lg={12}>
+                      <Col lg={10}>
                         <div className="mb-3">
                           <Label>Select Customer</Label>
                           <Select
@@ -682,6 +708,60 @@ const OrderInfo = (props: any) => {
                                 {validation.errors.customer_id}
                               </span>
                             )}
+                        </div>
+                      </Col>
+                      <Col lg={5}>
+                        <div className="mb-3">
+                          <Label htmlFor="discount">Discount :</Label>
+                          <Input
+                            type="number"
+                            name="discount"
+                            id="discount"
+                            placeholder="Enter discount 1%-10%"
+                            className="form-control"
+                            value={validation.values.discount}
+                            min={0}
+                            max={10}
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            invalid={
+                              validation.touched.discount &&
+                              validation.errors.discount
+                            }
+                          />
+                          {validation.errors.discount &&
+                          validation.touched.discount ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.discount}
+                            </FormFeedback>
+                          ) : null}
+                        </div>
+                      </Col>
+                      <Col lg={5}>
+                        <div className="mb-3">
+                          <Label htmlFor="transportation_fee">
+                            transportation_fee:
+                          </Label>
+                          <Input
+                            type="number"
+                            name="transportation_fee"
+                            id="transportation_fee"
+                            placeholder="Enter Transportation Charges"
+                            className="form-control"
+                            value={validation.values.transportation_fee}
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            invalid={
+                              validation.touched.transportation_fee &&
+                              validation.errors.transportation_fee
+                            }
+                          />
+                          {validation.errors.transportation_fee &&
+                          validation.touched.transportation_fee ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.transportation_fee}
+                            </FormFeedback>
+                          ) : null}
                         </div>
                       </Col>
                     </Row>

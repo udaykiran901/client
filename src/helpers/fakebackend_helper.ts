@@ -162,7 +162,6 @@ export const getMyOrdersPartialData = () =>
   api.get(url.GET_MY_ORDERS_PARTIAL, null);
 
 //BD Module
-
 export const getAllParamsApi = () => api.get(url.GET_ALL_PARAMS, null);
 
 export const onGettingCompleteOrderDetails = (id: any) =>
@@ -205,8 +204,18 @@ export const fetchSubscribers = () => api.get(url.GET_SUBSCRIBERS_LIST, null);
 export const onGettingOnlineUsersAPI = () =>
   api.get(url.GET_ONLINE_USERS, null);
 
-//statistics or Graphs
+export const onRegisteringOfflineOrderAPI = (data: any) =>
+  api.create(url.OFFLINE_ORDER_REGISTRATION, data);
 
+//BD module , Quotations
+
+export const onGettingDailyQuotationsAPI = () =>
+  api.get(url.GET_DAILY_QUOTAIONS_COUNT, null);
+export const onGettingMonthlyQuotationsAPI = () =>
+  api.get(url.GET_MONTHLY_QUOTATIONS_COUNT, null);
+export const onGettingQuotationsAPI = () => api.get(url.GET_QUOTATIONS, null);
+
+//statistics or Graphs
 export const onGettingOnlineDailyUsersCount = () =>
   api.get(url.GET_ONLINE_DAILY_USERS_COUNT, null);
 

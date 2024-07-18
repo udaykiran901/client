@@ -11,6 +11,7 @@ import TableContainer from "Components/Common/TableContainer";
 
 import { CHEMICAL } from "common/tokens";
 import { offerDetails } from "../type";
+import { darkGreenBadge } from "Components/Common/Badges";
 
 interface TableProps {
   toggleTest: (id: any) => void;
@@ -23,6 +24,7 @@ interface TableProps {
     isNabl: boolean;
     discipline: string;
     params: any;
+    popular: boolean;
   }[];
 }
 
@@ -59,6 +61,9 @@ const SelectTable: React.FC<TableProps> = ({
         cell: (cellProps: any) => {
           return (
             <div>
+              {cellProps.row.original.popular
+                ? darkGreenBadge("Popular Test")
+                : ""}
               {cellProps.row.original.params.map((eachParam) => (
                 <div className="d-flex">
                   <i className="mdi mdi-circle-medium align-middle text-primary me-1" />

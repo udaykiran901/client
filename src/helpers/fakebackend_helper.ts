@@ -42,6 +42,13 @@ export const postFakeRegister = (data: any) => {
   });
 };
 
+//laboratory
+
+export const onGettingPendingAssigningSamplesAPI = () =>
+  api.get(url.GET_PENDING_ASSIGNING_JOBS, null);
+
+export const getAllAnalystAPI = () => api.get(url.GET_ALL_ANALYSTS, null);
+
 // Login Method
 export const postFakeLogin = (data: any) =>
   api.create(url.POST_FAKE_LOGIN, data);
@@ -197,6 +204,9 @@ export const getRequestCallbacks = () =>
 
 export const ongetAllOrders = () => api.get(url.GET_ALL_ECOMMERCE_ORDERS, null);
 
+export const onGettingAllSamplesAPI = (data: string) =>
+  api.get(`${url.GET_ALL_SAMPLES}`, { data });
+
 export const fetchCustomersList = () => api.get(url.GET_CUSTOMERS_LIST, null);
 
 export const fetchSubscribers = () => api.get(url.GET_SUBSCRIBERS_LIST, null);
@@ -214,6 +224,9 @@ export const onGettingDailyQuotationsAPI = () =>
 export const onGettingMonthlyQuotationsAPI = () =>
   api.get(url.GET_MONTHLY_QUOTATIONS_COUNT, null);
 export const onGettingQuotationsAPI = () => api.get(url.GET_QUOTATIONS, null);
+
+export const onRequestingConversionToTax = (id: number) =>
+  api.create(url.TAX_CONVERSION_REQUESTED, id);
 
 //statistics or Graphs
 export const onGettingOnlineDailyUsersCount = () =>

@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -53,8 +52,6 @@ const CustomersList = () => {
       customersMonthlyRec: bd.customersMonthlyRec,
     })
   );
-
-  const navigate = useNavigate();
 
   const { customers, loading, customersLast30Recs, customersMonthlyRec }: any =
     useSelector(selectedProperties);

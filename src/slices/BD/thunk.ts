@@ -29,6 +29,8 @@ import {
   onGettingDailyQuotationsAPI,
   onGettingMonthlyQuotationsAPI,
   onGettingQuotationsAPI,
+  onRequestingConversionToTax,
+  onGettingAllSamplesAPI,
 } from "../../helpers/fakebackend_helper";
 
 import { toast } from "react-toastify";
@@ -64,6 +66,8 @@ import {
   GET_QUOTATIONS,
   GET_DAILY_QUOTAIONS_COUNT,
   GET_MONTHLY_QUOTATIONS_COUNT,
+  TAX_CONVERSION_REQUESTED,
+  GET_ALL_SAMPLES,
 } from "../../helpers/url_helper";
 
 export const onRequestCallbackThunk = createAsyncThunk(
@@ -186,6 +190,17 @@ export const getAllOrders = createAsyncThunk(
   }
 );
 
+export const getAllSampleMaterials = createAsyncThunk(
+  GET_ALL_SAMPLES,
+  async (order_id: string) => {
+    try {
+      const response = await onGettingAllSamplesAPI(order_id);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
 export const getCustomersList = createAsyncThunk(
   GET_CUSTOMERS_LIST,
   async () => {
@@ -222,8 +237,6 @@ export const getCompleteOrderDetails = createAsyncThunk(
   async (data: any) => {
     try {
       const response = await onGettingCompleteOrderDetails(data);
-      console.log("In response thunk");
-      console.log(response);
       return response.data;
     } catch (error) {
       return error;
@@ -466,3 +479,30 @@ export const getAllQuotations = createAsyncThunk(GET_QUOTATIONS, async () => {
     return error;
   }
 });
+
+//tax conversion
+export const convertToTaxRequested = createAsyncThunk(
+  TAX_CONVERSION_REQUESTED,
+  async (data: any, { dispatch }) => {
+    try {
+      const response = await onRequestingConversionToTax(data);
+      if (response.status === 200) {
+        toast.success("Converted To tax successfully", {
+          autoClose: 5000,
+        });
+        dispatch(getCompleteOrderDetails(data.orderId));
+        dispatch(getAllOrders());
+      } else {
+        toast.error("Action Failed, Please try again", {
+          autoClose: 5000,
+        });
+      }
+      return response;
+    } catch (error: any) {
+      toast.error(error.data.error, {
+        autoClose: 10000,
+      });
+      return error;
+    }
+  }
+);

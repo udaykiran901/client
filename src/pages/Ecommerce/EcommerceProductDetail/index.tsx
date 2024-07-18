@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 
 import {
   Alert,
-  Button,
   Card,
   CardBody,
   Col,
@@ -210,10 +209,10 @@ const EcommerceProductDetail = (props) => {
                       )}
 
                       <div>
-                        <Button
+                        <button
                           disabled={addToCartLoading}
                           type="button"
-                          className="btn btn-success"
+                          className="btn btn-primary"
                           onClick={() => {
                             onAddToCart();
                           }}
@@ -227,7 +226,7 @@ const EcommerceProductDetail = (props) => {
                               <i className="bx bx-cart me-2" /> Add to cart
                             </>
                           )}
-                        </Button>
+                        </button>
                       </div>
 
                       <Alert color="primary mt-5">

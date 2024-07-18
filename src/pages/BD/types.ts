@@ -45,6 +45,8 @@ export interface EcoActionBD {
     quotations: [];
     quotationsDaily: [];
     quotationsMonthly: [];
+
+    allOrderSamples: [];
   };
 }
 
@@ -96,6 +98,7 @@ export interface OrderSamples {
   offer: number;
   chemicalParams: OrderSampleParams[];
   physicalParams: OrderSampleParams[];
+  params: OrderSampleParams[];
   name: string;
   image: string;
 
@@ -120,8 +123,9 @@ export interface OrderCustomerInfo {
   email: string;
 }
 
+//for listing all the orders screen
 export interface Orders {
-  placedOn: string;
+  created_at: string;
   order_id: string;
   samplesList?: OrderSamples[];
   samples_received?: boolean;
@@ -132,7 +136,7 @@ export interface Orders {
   parent_ref?: string;
   nhai_hq_letter?: string;
   additional_info?: string;
-  letter?: string;
+  client_letter?: string;
   due_date?: string;
   razorpay_order_id?: string;
   razorpay_payment_id?: string;
@@ -143,6 +147,52 @@ export interface Orders {
   ref?: string;
   mode?: string;
   proforma?: string;
+  order_number: number;
+  nhai_bool: boolean;
+  parent_ref_bool: boolean;
+  discount: number;
+  transportation_fee: number;
+  customer_id: string;
+
+  converted_to_tax: boolean;
+  tax_invoice: string;
+  tax_number: number;
+  tax_converted_date: string;
+
+  samples: Samples[];
+}
+
+export interface Samples {
+  sample_id: string;
+  product_id: number;
+  source: string;
+  quantity: string;
+  grade: string;
+  brandName: string;
+  week_no: string;
+  ref_code: string;
+  sample_id_optional_field: string;
+  sample_code: string;
+  site_name: string;
+  params: Param[];
+  product: Product;
+  job_assigned: boolean;
+}
+
+export interface Param {
+  sample_id: string;
+  param_id: string;
+  params_info: OrderSampleSelectedParams[];
+  status: string;
+  param: {
+    discipline: string;
+  };
+}
+
+interface Product {
+  id: number;
+  name: string;
+  image: string;
 }
 
 export interface Customer {

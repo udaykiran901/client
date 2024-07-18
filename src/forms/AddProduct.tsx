@@ -105,7 +105,7 @@ const AddProduct = () => {
       prefix: Yup.string()
         .required("Prefix is required")
         .matches(
-          /^[A-Z]{1,5}$/,
+          /^[A-Z]{1,8}$/,
           "Prefix must be a maximum of 5 capital letters"
         ),
 

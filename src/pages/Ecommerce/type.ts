@@ -51,6 +51,7 @@ export interface ProductPartialInfo {
   isOffer: boolean;
   base_price: number;
   features: string[];
+  prefix: string;
 }
 
 interface KeyValue {
@@ -67,6 +68,7 @@ export interface BackendParams {
   params?: string;
   selected?: boolean;
   subgroup?: number;
+  popular?: boolean;
 }
 
 export interface BackendProductDes {

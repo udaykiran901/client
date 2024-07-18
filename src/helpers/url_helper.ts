@@ -1,3 +1,8 @@
+//laboratory
+
+export const GET_PENDING_ASSIGNING_JOBS = "/lab/get-pending-Assigned-samples";
+export const GET_ALL_ANALYSTS = "/lab/get-all-analysts";
+
 //REGISTER
 export const POST_FAKE_REGISTER = "/post-fake-register";
 
@@ -12,7 +17,8 @@ export const SOCIAL_LOGIN = "/social-login";
 export const POST_EDIT_JWT_PROFILE = "/post-jwt-profile";
 export const POST_EDIT_PROFILE = "/post-fake-profile";
 
-// Ecommerce
+// ================================================== Ecommerce ==============================================
+
 // Product
 export const GET_PRODUCTS = "/apps/product";
 export const GET_PRODUCTS_DETAIL = "/apps/productDetail";
@@ -93,6 +99,8 @@ export const GET_ONLINE_USERS = "/bd/get-online-users";
 export const GET_ONLINE_DAILY_USERS_COUNT = "/bd/get-online-users-daily";
 export const GET_ONLINE_MONTHLY_USERS_COUNT = "/bd/get-online-users-monthly";
 
+export const GET_ALL_SAMPLES = "/bd/get-all-samples";
+
 //quotations
 export const GET_QUOTATIONS = "/bd/get-quotations";
 export const GET_DAILY_QUOTAIONS_COUNT = "/bd/get-quotations-daily";
@@ -106,6 +114,7 @@ export const ORDERS_MONTHLY_RECORD = "/bd/orders-monthly-record";
 export const SAMPLES_STATISTICS = "/bd/samples-statistics";
 export const GET_DISCIPLINE_WISE_COUNT = "/bd/discipline-wise";
 export const OFFLINE_ORDER_REGISTRATION = "/bd/register-offline-order";
+export const TAX_CONVERSION_REQUESTED = "/bd/request-convert-to-tax";
 
 //Admin
 export const GET_TOP_10_ORDERED_ACCOUNT = "/admin/top-10-accounts-ordered";

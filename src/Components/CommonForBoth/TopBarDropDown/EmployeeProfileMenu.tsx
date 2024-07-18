@@ -39,7 +39,7 @@ const EmployeeProfileMenu = (props: any) => {
     Cookies.remove(EMPLOYEE_LOCAL_STORAGE_KEY);
   };
 
-  const { last_name } = employee;
+  const { last_name, profile_photo } = employee;
 
   return (
     <React.Fragment>
@@ -57,12 +57,15 @@ const EmployeeProfileMenu = (props: any) => {
             {"Hi " + last_name + " !" || "User"}
           </span>
           <i className="mdi mdi-chevron-down d-none d-xl-inline-block" />
+
           <img
-            className="rounded-circle header-profile-user"
             src={
-              "https://keka-pavan.s3.ap-south-1.amazonaws.com/steel-lg.40629e92cf9019a54fa2.png"
+              profile_photo
+                ? profile_photo
+                : "https://keka-pavan.s3.ap-south-1.amazonaws.com/steel-lg.40629e92cf9019a54fa2.png"
             }
-            alt="Header Avatar"
+            alt=""
+            className="rounded avatar-sm"
           />
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">

@@ -1,5 +1,5 @@
 import MaterialTestingQuoteForm from "forms/MaterialTestingQuoteForm";
-import React, { useEffect } from "react";
+import React from "react";
 import { Container } from "reactstrap";
 import Navbar from "pages/Welcome/Navbar/Navbar";
 import { ToastContainer } from "react-toastify";

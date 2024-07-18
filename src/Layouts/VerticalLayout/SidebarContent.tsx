@@ -172,6 +172,12 @@ const SidebarContent = (props: any) => {
               </Link>
             </li>
             <li>
+              <Link to="/lab">
+                <i className="bx bxs-flask"></i>
+                <span>{props.t("Laboratory")}</span>
+              </Link>
+            </li>
+            <li>
               <Link to="/bd/orders">
                 <i className="bx bx-shopping-bag"></i>
                 <span>{props.t("Orders")}</span>

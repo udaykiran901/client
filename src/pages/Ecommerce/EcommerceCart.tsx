@@ -41,13 +41,6 @@ const EcommerceCart = () => {
 
   let sum = 0;
 
-  // const assigned = (cart || [])?.map((item: any) => item.basePrice);
-
-  // let subTotal = 0;
-  // for (let i = 0; i < assigned.length; i++) {
-  //   subTotal += Math.round(assigned[i]);
-  // }
-
   const total = (cart || []).reduce((accum, eachSample) => {
     return (
       accum +
@@ -286,8 +279,7 @@ const EcommerceCart = () => {
                                         </>
                                       ) : (
                                         <b className="text-success">
-                                          {/* Rs. {getPriceOf(sample.products)} /- */}
-                                          100
+                                          Rs. {getPriceOf(sample.parameters)} /-
                                         </b>
                                       )}
 

@@ -18,7 +18,6 @@ import {
 } from "../../slices/BD/thunk";
 
 export const getDateAndTime = (dateStr: string) => {
-  console.log(dateStr);
   const date = new Date(dateStr);
 
   const year = date.getFullYear();

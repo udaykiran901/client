@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import {
   Container,
@@ -13,25 +13,28 @@ import {
   Badge,
   Card,
   CardTitle,
+  Modal,
+  ModalHeader,
 } from "reactstrap";
-import { ONLINE, OFFLINE } from "common/tokens";
 
+import { ONLINE } from "common/tokens";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
-
 import { EcoActionBD, Orders } from "./types";
 import { ToastContainer } from "react-toastify";
 import Spinners from "Components/Common/Spinner";
-
 import { Link, useNavigate } from "react-router-dom";
 import {
   getAllOrders,
   getOrdersDailyRecord,
   getOrdersMonthlyRecord,
 } from "slices/thunk";
+
 import TableContainer from "common/TableContainer";
 import { getDateAndTime, getOnlyDate } from "./CallBacksList";
 import LinerGraph from "pages/Allcharts/apex/LinerGraph";
+
+import TrackSample from "./TrackSample";
 
 export const renderOrderTags = (order: Orders) => {
   return (
@@ -83,8 +86,17 @@ export const infoBadge = (text: string) => (
   <Badge className="font-size-10 badge-soft-info m-1">{text}</Badge>
 );
 
+interface TrackSample {
+  order_id: string;
+  modalStatus: boolean;
+}
+
 const OrdersList = () => {
   document.title = "Orders | KDM Engineers Group";
+  const [tractSample, setTrackSample] = useState<TrackSample>({
+    order_id: "",
+    modalStatus: false,
+  });
 
   const selectProperties = createSelector(
     (state: EcoActionBD) => state.bd,
@@ -109,6 +121,7 @@ const OrdersList = () => {
   useEffect(() => {
     dispatch(getOrdersMonthlyRecord());
   }, [dispatch]);
+
   useEffect(() => {
     dispatch(getOrdersDailyRecord());
   }, [dispatch]);
@@ -142,7 +155,7 @@ const OrdersList = () => {
       },
 
       {
-        header: "Proforma ",
+        header: "P.I",
         accessorKey: "proforma",
         enableColumnFilter: false,
         enableSorting: false,
@@ -158,7 +171,68 @@ const OrdersList = () => {
                 <i className="bx bxs-file-pdf fs-1 align-middle text-danger me-2"></i>
               </a>
             ) : (
-              redBadge("Under Review")
+              redBadge("NA")
+            )}
+          </div>
+        ),
+      },
+
+      {
+        header: "W.O",
+        accessorKey: "client_letter",
+        enableColumnFilter: false,
+        enableSorting: false,
+        cell: (cellProps: any) => (
+          <div style={{ cursor: "pointer" }}>
+            {cellProps.row.original.registration_done ? (
+              <a
+                href={cellProps.row.original.client_letter}
+                target="_blank"
+                className="text-success"
+              >
+                {" "}
+                <i className="bx bxs-file-pdf fs-1 align-middle text-success me-2"></i>
+              </a>
+            ) : (
+              redBadge("NA")
+            )}
+          </div>
+
+          // <div style={{ cursor: "pointer" }}>
+          //   {cellProps.row.original.registration_done ? (
+          //     <a
+          //       href={cellProps.row.original.client_letter}
+          //       target="_blank"
+          //       className="text-success"
+          //     >
+          //       {" "}
+          //       <i className="bx bxs-file-pdf fs-1 align-middle text-success me-2"></i>
+          //     </a>
+          //   ) : (
+          //     redBadge("NA")
+          //   )}
+          // </div>
+        ),
+      },
+
+      {
+        header: "T.I",
+        accessorKey: "converted_to_tax",
+        enableColumnFilter: false,
+        enableSorting: false,
+        cell: (cellProps: any) => (
+          <div style={{ cursor: "pointer" }}>
+            {cellProps.row.original.converted_to_tax ? (
+              <a
+                href={cellProps.row.original.tax_invoice}
+                target="_blank"
+                className="text-success"
+              >
+                {" "}
+                <i className="bx bxs-file-pdf fs-1 align-middle text-primary me-2"></i>
+              </a>
+            ) : (
+              redBadge("NA")
             )}
           </div>
         ),
@@ -211,62 +285,71 @@ const OrdersList = () => {
       },
 
       {
-        header: "Action",
+        header: "Actions",
         enableColumnFilter: false,
         enableSorting: false,
         cell: (cellProps: any) => {
+          const trackSampleClicked = (order_id: string) => {
+            setTrackSample({
+              order_id,
+              modalStatus: true,
+            });
+          };
           return (
-            <UncontrolledDropdown>
-              <DropdownToggle tag="a" href="#" className="card-drop">
-                <i className="mdi mdi-dots-horizontal font-size-18"></i>
-              </DropdownToggle>
-              <DropdownMenu className="dropdown-menu-end">
-                <Link to={`/bd/orders/${cellProps.row.original.order_id}`}>
-                  <DropdownItem>
+            <div className="d-flex" style={{ cursor: "pointer" }}>
+              <i
+                className="bx bxs-flask font-size-20 mr-3"
+                onClick={() =>
+                  trackSampleClicked(cellProps.row.original.order_id)
+                }
+              ></i>
+              <UncontrolledDropdown>
+                <DropdownToggle tag="a" className="card-drop">
+                  <i className="mdi mdi-dots-horizontal font-size-18"></i>
+                </DropdownToggle>
+                <DropdownMenu className="dropdown-menu-end">
+                  <Link to={`/bd/orders/${cellProps.row.original.order_id}`}>
+                    <DropdownItem>
+                      <i
+                        className="mdi mdi-eye-outline font-size-16 text-success me-1 mr-2"
+                        id="edittooltip"
+                      ></i>
+                      Order Info
+                      <UncontrolledTooltip placement="top" target="edittooltip">
+                        Order Info
+                      </UncontrolledTooltip>
+                    </DropdownItem>
+                  </Link>
+
+                  <DropdownItem href="#" onClick={() => {}}>
                     <i
-                      className="mdi mdi-eye-outline font-size-16 text-success me-1 mr-2"
+                      className="mdi mdi-ambulance font-size-16 text-success me-1 mr-2"
                       id="edittooltip"
                     ></i>
-                    Order Info
+                    Driver Details
                     <UncontrolledTooltip placement="top" target="edittooltip">
-                      Order Info
+                      Driver Info
                     </UncontrolledTooltip>
                   </DropdownItem>
-                </Link>
 
-                <DropdownItem
-                  href="#"
-                  onClick={() => {
-                    // console.log("Edit trigered");
-                  }}
-                >
-                  <i
-                    className="mdi mdi-ambulance font-size-16 text-success me-1 mr-2"
-                    id="edittooltip"
-                  ></i>
-                  Driver Details
-                  <UncontrolledTooltip placement="top" target="edittooltip">
-                    Driver Info
-                  </UncontrolledTooltip>
-                </DropdownItem>
-
-                <DropdownItem
-                  href="#"
-                  onClick={() => {
-                    // console.log("Edit trigered");
-                  }}
-                >
-                  <i
-                    className="mdi mdi-ambulance font-size-16 text-success me-1 mr-2"
-                    id="edittooltip"
-                  ></i>
-                  Customer Info
-                  <UncontrolledTooltip placement="top" target="edittooltip">
+                  <DropdownItem
+                    href="#"
+                    onClick={() => {
+                      // console.log("Edit trigered");
+                    }}
+                  >
+                    <i
+                      className="mdi mdi-ambulance font-size-16 text-success me-1 mr-2"
+                      id="edittooltip"
+                    ></i>
                     Customer Info
-                  </UncontrolledTooltip>
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
+                    <UncontrolledTooltip placement="top" target="edittooltip">
+                      Customer Info
+                    </UncontrolledTooltip>
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </div>
           );
         },
       },
@@ -317,27 +400,58 @@ const OrdersList = () => {
             <Col className="col-12">
               {loading && <Spinners />}
               {orders && (
-                <CardBody style={{ backgroundColor: "White" }}>
-                  <button
-                    className="btn btn-primary m-2"
-                    type="button"
-                    onClick={handleUserClicks}
-                  >
-                    Create Order
-                  </button>
-                  <TableContainer
-                    columns={columns}
-                    data={orders || []}
-                    isPagination={true}
-                    tableClass="align-middle table-nowrap table-hover dt-responsive nowrap w-100 dataTable no-footer dtr-inline"
-                    theadClass="table-light"
-                    paginationWrapper="dataTables_paginate paging_simple_numbers pagination-rounded"
-                    pagination="pagination"
-                  />
-                </CardBody>
+                <Card>
+                  <CardBody className="p-3">
+                    <button
+                      className="btn btn-primary m-2"
+                      type="button"
+                      onClick={handleUserClicks}
+                    >
+                      Register Order
+                    </button>
+
+                    <TableContainer
+                      columns={columns}
+                      data={orders || []}
+                      isPagination={true}
+                      tableClass="align-middle table-nowrap table-hover dt-responsive nowrap w-100 dataTable no-footer dtr-inline"
+                      theadClass="table-light"
+                      paginationWrapper="dataTables_paginate paging_simple_numbers pagination-rounded"
+                      pagination="pagination"
+                    />
+                  </CardBody>
+                </Card>
               )}
             </Col>
           </Row>
+
+          <Modal
+            size="xl"
+            isOpen={tractSample.modalStatus}
+            toggle={() => {
+              setTrackSample({
+                order_id: tractSample.order_id,
+                modalStatus: !tractSample.modalStatus,
+              });
+            }}
+          >
+            <ModalHeader
+              toggle={() => {
+                setTrackSample({
+                  order_id: tractSample.order_id,
+                  modalStatus: !tractSample.modalStatus,
+                });
+              }}
+            >
+              <div className="modal-title mt-0 h5">Status of Samples</div>
+            </ModalHeader>
+            <div className="modal-body">
+              <TrackSample
+                order_id={tractSample.order_id}
+                complete_info={false}
+              />
+            </div>
+          </Modal>
 
           <ToastContainer />
         </Container>

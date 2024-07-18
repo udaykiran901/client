@@ -84,7 +84,7 @@ const AddParam = () => {
       discipline: "",
       additional_info: "",
       subgroup: "",
-      requirements: "2 Kgs (Powdered Sample)",
+      requirements: "20 Kg's / Sample",
     },
 
     validationSchema: Yup.object({

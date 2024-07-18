@@ -30,3 +30,6 @@ export * from "./jobs/thunk";
 
 //Current User
 export * from "./CurrentUser/thunk";
+
+//laboratory
+export * from "./Lab/thunk";

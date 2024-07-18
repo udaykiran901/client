@@ -1,12 +1,8 @@
 import React, { useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 import getChartColorsArray from "../../../Components/Common/ChartDynamicColor";
-import { createSelector } from "reselect";
-import { CountGraph, EcoActionBD } from "pages/BD/types";
 
-import { getGraphSubscribers } from "slices/thunk";
-import Spinners from "Components/Common/Spinner";
-import { useDispatch, useSelector } from "react-redux";
+import { CountGraph } from "pages/BD/types";
 
 const SubscribersGraphComponent = ({
   dataColors,

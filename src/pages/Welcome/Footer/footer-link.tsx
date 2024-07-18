@@ -4,7 +4,6 @@ import { Row, Col } from "reactstrap";
 //Import Images
 import logolight from "../../../assets/images/logo-light.png";
 
-import applogo from "../../../assets/images/KDM_app_logo.png";
 const FooterLink = () => {
   return (
     <React.Fragment>

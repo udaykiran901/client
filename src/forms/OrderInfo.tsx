@@ -32,9 +32,11 @@ import {
   getBranches,
   getCompleteOrderDetails,
   getCustomersList,
+  convertToTaxRequested,
 } from "slices/thunk";
 import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
+import { ONLINE } from "common/tokens";
 
 export const formatSelectOptions = (options: any) => {
   return [
@@ -97,6 +99,21 @@ export const renderParameterDetails = (
   );
 };
 
+const getTaxRelatedColumns = (orderDetails: Orders) => {
+  return (
+    <>
+      <tr>
+        <th> Tax Converted Date</th>
+        <td>{getDateAndTime(orderDetails.tax_converted_date)}</td>
+      </tr>
+      <tr>
+        <th> Tax Number</th>
+        <td>Invoice - {orderDetails.tax_number}</td>
+      </tr>
+    </>
+  );
+};
+
 const OrderInfo = (props: any) => {
   const params = props.router.params;
   const dispatch: any = useDispatch();
@@ -121,17 +138,14 @@ const OrderInfo = (props: any) => {
     (state: any) => state.hrAndAdmin,
     (hrAndAdmin) => ({
       branches: hrAndAdmin.branches,
-      loading2: hrAndAdmin.loading,
+      loadingHR: hrAndAdmin,
     })
   );
 
   const { orderInfo, loading, step2loader, customers }: any =
     useSelector(selectedProperties);
-
-  const { branches, loading2 } = useSelector(hrSelectedProperties);
-
+  const { branches } = useSelector(hrSelectedProperties);
   const order: Orders = orderInfo;
-
   const readOnlyForm = order.registration_done ? true : false;
 
   useEffect(() => {
@@ -142,9 +156,50 @@ const OrderInfo = (props: any) => {
     dispatch(getBranches());
   }, [dispatch, readOnlyForm]);
 
-  const [parentRef, setParentRef] = useState<boolean>(false);
-  const [nhaiBool, setNhaiBool] = useState<boolean>(false);
-  //select customer variable
+  useEffect(() => {
+    if (branches.length > 0) {
+      const initialLab = branches.find(
+        (option: Branch) => option.branch_id === order.lab
+      );
+
+      setselectedGroup2(
+        initialLab
+          ? { value: initialLab.branch_id, label: initialLab.branch }
+          : null
+      );
+    }
+  }, [branches, order.lab]);
+
+  useEffect(() => {
+    //initialising customer's details
+    if (customers.length > 0) {
+      const initCustomer = customers.find(
+        (option: Customer) => option.customer_id === order.customer_id
+      );
+
+      setselectedGroup(
+        initCustomer
+          ? {
+              value: initCustomer.customer_id,
+              label: `${initCustomer.name} - ${initCustomer.contact} - ${initCustomer.pan_number}`,
+            }
+          : null
+      );
+    }
+  }, [branches, order.lab]);
+
+  const [parent_ref_bool, setParentRef] = useState<boolean>(false);
+  const [nhai_bool, setNhaiBool] = useState<boolean>(false);
+  // select customer variable
+
+  useEffect(() => {
+    setParentRef(order.parent_ref_bool);
+  }, [parent_ref_bool, order.parent_ref_bool]);
+
+  useEffect(() => {
+    setNhaiBool(order.nhai_bool);
+  }, [nhai_bool, order.nhai_bool]);
+
   const [selectedGroup, setselectedGroup] = useState(null) as any[];
   const [selectedGroup2, setselectedGroup2] = useState(null) as any[];
 
@@ -172,20 +227,20 @@ const OrderInfo = (props: any) => {
       letter: null,
       due_date: (order && order.due_date) || "",
       ref: (order && order.ref) || "", //this is not parent ref PMN
-      discount: 0,
-      transportation_fee: 0,
+      discount: (order && order.discount) || 0,
+      transportation_fee: (order && order.transportation_fee) || 0,
 
       //samples info
       samples: (order.samplesList || []).map((eachSample) => ({
         sample_id: eachSample.sample_id,
-        source: eachSample.source || "",
-        quantity: eachSample.quantity || "",
-        grade: eachSample.grade || "",
-        brandName: eachSample.brandName || "",
-        week_no: eachSample.week_no || "",
-        ref_code: eachSample.ref_code || "",
-        sample_id_optional_field: eachSample.sample_id_optional_field || "",
-        site_name: "", //update sitename in data base
+        source: eachSample.source || null,
+        quantity: eachSample.quantity || null,
+        grade: eachSample.grade || null,
+        brandName: eachSample.brandName || null,
+        week_no: eachSample.week_no || null,
+        ref_code: eachSample.ref_code || null,
+        sample_id_optional_field: eachSample.sample_id_optional_field || null,
+        site_name: null, //update sitename in data base
       })),
 
       samples_address: (order && order.samples_collection_address) || "",
@@ -224,8 +279,8 @@ const OrderInfo = (props: any) => {
     onSubmit: (values: any) => {
       const data = {
         ...values,
-        nhai_bool: nhaiBool,
-        parent_ref_bool: parentRef,
+        nhai_bool,
+        parent_ref_bool,
       };
       dispatch(completeRegistration(data));
     },
@@ -238,6 +293,7 @@ const OrderInfo = (props: any) => {
       </td>
       <td className="p-1">
         <Input
+          readOnly={readOnlyForm}
           name={`samples[${index}].${key}`}
           type="text"
           onChange={validation.handleChange}
@@ -277,7 +333,13 @@ const OrderInfo = (props: any) => {
   const optionsList = formatSelectOptions(formattedCustomersRecords);
   const labOptions = formatSelectOptions(formattedLabs);
 
-  console.log(validation.errors);
+  const convertToTaxClicked = (id: number) => {
+    console.log("id : ", id);
+
+    dispatch(
+      convertToTaxRequested({ order_number: id, orderId: order.order_id })
+    );
+  };
 
   return (
     <React.Fragment>
@@ -285,7 +347,6 @@ const OrderInfo = (props: any) => {
         <Container fluid>
           <Row>
             <Col>
-              {loading && <Spinner />}
               <Form
                 onSubmit={(e: any) => {
                   e.preventDefault();
@@ -293,35 +354,87 @@ const OrderInfo = (props: any) => {
                   return false;
                 }}
               >
-                <p className="text-danger">
-                  Please note: Completing this form is a one-time process.
-                  However, should you need to make any changes, you can submit a
-                  request to edit the form.
-                </p>
+                <Card className="p-3">
+                  <p className="text-danger">
+                    Please note: Completing this form is a one-time process.
+                    However, should you need to make any changes, you can submit
+                    a request to edit the form.
+                  </p>
 
-                <div className="table-responsive">
-                  <Table
-                    className="table table-bordered"
-                    style={{ borderColor: "#eff2f7" }}
-                  >
-                    <tbody>
-                      <tr>
-                        <th>Order Id</th>
-                        <td>
-                          <code>{order.order_id}</code>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th>Razorpay Id</th>
-                        <code>{order.razorpay_payment_id}</code>
-                      </tr>
-                      <tr>
-                        <th>Order Placed On</th>
-                        <td>{getDateAndTime(order.placedOn)}</td>
-                      </tr>
-                    </tbody>
-                  </Table>
-                </div>
+                  <div className="table-responsive">
+                    <Table
+                      className="table table-bordered"
+                      style={{ borderColor: "#eff2f7" }}
+                    >
+                      <tbody>
+                        {order.mode === ONLINE && (
+                          <tr>
+                            <th style={{ maxWidth: "100px" }}> Razorpay Id</th>
+                            <code>{order.razorpay_payment_id}</code>
+                          </tr>
+                        )}
+
+                        <tr>
+                          <th style={{ maxWidth: "100px" }}> Order Number</th>
+                          <td>ORD-{order.order_number}</td>
+                        </tr>
+
+                        <tr>
+                          <th style={{ maxWidth: "100px" }}>Order Placed On</th>
+                          <td>{getDateAndTime(order.created_at)}</td>
+                        </tr>
+                        {order.registration_done && (
+                          <tr>
+                            <th style={{ maxWidth: "100px" }}>
+                              Proforma Invoice , Work Order{" "}
+                              {order.converted_to_tax ? ", Tax Invoice" : null}
+                            </th>
+                            <td>
+                              <a href={order.proforma} target="_blank">
+                                <i className="bx bxs-file-pdf fs-1 align-middle text-danger me-2"></i>
+                              </a>
+                              <a href={order.client_letter} target="_blank">
+                                <i className="bx bxs-file-blank fs-1 align-middle text-success me-2"></i>
+                              </a>
+
+                              {order.converted_to_tax && (
+                                <a href={order.tax_invoice} target="_blank">
+                                  <i className="bx bxs-file-pdf fs-1 align-middle text-primary me-2"></i>
+                                </a>
+                              )}
+                            </td>
+                          </tr>
+                        )}
+                        {!order.converted_to_tax && order.registration_done && (
+                          <tr>
+                            <th style={{ maxWidth: "100px" }}>
+                              Convert to tax
+                            </th>
+                            <td>
+                              {" "}
+                              <button
+                                type="button"
+                                className="btn btn-primary"
+                                onClick={() =>
+                                  convertToTaxClicked(order.order_number)
+                                }
+                              >
+                                {" "}
+                                Convert to Tax{" "}
+                                {loading ? (
+                                  <i className="bx bx-loader bx-spin "></i>
+                                ) : null}
+                              </button>
+                            </td>
+                          </tr>
+                        )}
+
+                        {order.converted_to_tax && getTaxRelatedColumns(order)}
+                      </tbody>
+                    </Table>
+                  </div>
+                </Card>
+                {loading && <Spinner />}
 
                 <Card className="p-3">
                   <h5 className="text-primary mb-2">Order Info</h5>
@@ -395,6 +508,7 @@ const OrderInfo = (props: any) => {
                             );
                           }}
                           options={labOptions}
+                          isDisabled={readOnlyForm}
                           className="select2-selection"
                         />
                         {validation.touched.lab && validation.errors.lab && (
@@ -409,6 +523,7 @@ const OrderInfo = (props: any) => {
                       <div className="mb-3">
                         <Label for="basicpill-ref-input1">Ref</Label>
                         <Input
+                          readOnly={readOnlyForm}
                           type="text"
                           name="ref"
                           className="form-control"
@@ -429,12 +544,12 @@ const OrderInfo = (props: any) => {
                     <Col xl={6}>
                       <div className="form-check ml-3">
                         <input
-                          readOnly={readOnlyForm}
+                          disabled={readOnlyForm}
                           id="perentRef"
                           type="checkbox"
-                          checked={parentRef}
+                          checked={parent_ref_bool || order.parent_ref_bool}
                           className="form-check-input"
-                          onChange={() => setParentRef(!parentRef)}
+                          onChange={() => setParentRef(!parent_ref_bool)}
                         />
                         <Label htmlFor="perentRef">Note Parent Ref</Label>
                       </div>
@@ -442,17 +557,17 @@ const OrderInfo = (props: any) => {
                     <Col xl={6}>
                       <div className="form-check ml-3">
                         <input
-                          readOnly={readOnlyForm}
+                          disabled={readOnlyForm}
                           id="nhai_Letter"
                           type="checkbox"
-                          checked={nhaiBool}
+                          checked={nhai_bool || order.nhai_bool}
                           className="form-check-input"
-                          onChange={() => setNhaiBool(!nhaiBool)}
+                          onChange={() => setNhaiBool(!nhai_bool)}
                         />
                         <Label htmlFor="nhai_Letter">Note NHAI HQ</Label>
                       </div>
                     </Col>
-                    {parentRef && (
+                    {parent_ref_bool && (
                       <Col xl={6}>
                         <div className="mb-3">
                           <Label>Parent Reference</Label>
@@ -468,7 +583,7 @@ const OrderInfo = (props: any) => {
                         </div>
                       </Col>
                     )}
-                    {nhaiBool && (
+                    {nhai_bool && (
                       <Col xl={6}>
                         <div className="mb-3">
                           <Label>NHAI HQ Letter</Label>
@@ -689,6 +804,7 @@ const OrderInfo = (props: any) => {
                         <div className="mb-3">
                           <Label>Select Customer</Label>
                           <Select
+                            isDisabled={readOnlyForm}
                             onBlur={() =>
                               validation.setFieldTouched("customer_id", true)
                             }

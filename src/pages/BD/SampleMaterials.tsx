@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { Col, Container, Row, Card, CardBody, CardTitle } from "reactstrap";
+import { Col, Container, Row, Card, CardBody } from "reactstrap";
 
 import { useSelector, useDispatch } from "react-redux";
 

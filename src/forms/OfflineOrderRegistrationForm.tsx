@@ -32,7 +32,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import { useDispatch } from "react-redux";
-import { Branch, Customer, EcoActionBD, OrderSamples } from "pages/BD/types";
+import { Branch, Customer, EcoActionBD } from "pages/BD/types";
 
 import {
   getBranches,
@@ -84,6 +84,7 @@ export const initialSampleDetails: NextedState = {
   chemicalParams: [],
   physicalParams: [],
   isOffer: false,
+  prefix: "",
   offer: 0,
 };
 
@@ -310,6 +311,7 @@ const OfflineOrderRegistrationForm = () => {
           physicalParams: physicalParams,
           isOffer: sample[0].isOffer,
           offer: sample[0].offer,
+          prefix: sample[0].prefix,
         };
       }
       return row;
@@ -384,12 +386,6 @@ const OfflineOrderRegistrationForm = () => {
   const handleSelectGroup2 = (setselectedGroup2: any, selectedOption: any) => {
     setselectedGroup2(selectedOption);
     validation.setFieldValue("lab", selectedOption.value);
-  };
-
-  const calculateFinalPrice = (price: number) => {
-    const taxRate = 0.18;
-    const finalPrice = price + price * taxRate;
-    return finalPrice;
   };
 
   //end of this fucking variables
@@ -786,7 +782,6 @@ const OfflineOrderRegistrationForm = () => {
     <Container fluid>
       <Row>
         <Col>
-          {(loadingEcommerceState || loadingBdState) && <Spinner />}
           <Form
             onSubmit={(e: any) => {
               e.preventDefault();
@@ -794,6 +789,11 @@ const OfflineOrderRegistrationForm = () => {
               return false;
             }}
           >
+            {(loadingEcommerceState || loadingBdState || loadingHRstate) && (
+              <div className="text-center">
+                <Spinner />
+              </div>
+            )}
             <Card className="p-3">
               <h5 className="text-primary mb-4">
                 Offline Order Registration Form
@@ -1180,7 +1180,13 @@ const OfflineOrderRegistrationForm = () => {
               className="save-customer"
               // disabled={!validation.isValid || validation.isSubmitting}
             >
-              Register Order <i className="bx bx-loader bx-spin "></i>
+              {!loadingBdState ? (
+                " Register Order"
+              ) : (
+                <>
+                  Please Wait <i className="bx bx-loader bx-spin "></i>
+                </>
+              )}
             </Button>
           </Form>
         </Col>

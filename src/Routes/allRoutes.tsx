@@ -44,6 +44,7 @@ import OrderInfo from "forms/OrderInfo";
 import OfflineOrdersRegistration from "pages/BD/OfflineOrdersRegistration";
 import MaterialTesting from "pages/Welcome/Quotes/MaterialTesting";
 import Quotations from "pages/BD/Quotations";
+import LabHome from "pages/Laboratory/LabHome";
 
 const BDRoutes = [
   { path: "/bd/product", component: <UserLoginForm /> },
@@ -76,7 +77,10 @@ const BDRoutes = [
     path: "/bd/quotations",
     component: <Quotations />,
   },
+  { path: "/lab", component: <LabHome /> },
 ];
+
+const LaboratoryRoutes = [];
 
 const HRandAdminRoutes = [
   { path: "/hr/add-emp", component: <AddEmp /> },
@@ -113,4 +117,4 @@ const publicRoutes = [
   { path: "/candidate-list", component: <CandidateList /> },
   { path: "/candidate-overview", component: <CandidateOverview /> },
 ];
-export { BDRoutes, publicRoutes, HRandAdminRoutes };
+export { BDRoutes, publicRoutes, HRandAdminRoutes, LaboratoryRoutes };

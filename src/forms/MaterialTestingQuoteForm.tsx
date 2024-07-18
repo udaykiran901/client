@@ -53,6 +53,7 @@ export interface NextedState {
   isOffer: boolean;
   offer: number;
   sample_image?: string;
+  prefix: string;
 }
 
 export const getClassifiedParams = (
@@ -80,6 +81,7 @@ const MaterialTestingQuoteForm = () => {
       physicalParams: [],
       isOffer: false,
       offer: 0,
+      prefix: "",
     },
   ]);
 
@@ -189,6 +191,7 @@ const MaterialTestingQuoteForm = () => {
       physicalParams: [],
       isOffer: false,
       offer: 0,
+      prefix: "",
     };
     setrows1([...rows1, newRow]);
   };
@@ -226,6 +229,7 @@ const MaterialTestingQuoteForm = () => {
           physicalParams: physicalParams,
           isOffer: sample[0].isOffer,
           offer: sample[0].offer,
+          prefix: sample[0].prefix,
         };
       }
       return row;
@@ -322,8 +326,7 @@ const MaterialTestingQuoteForm = () => {
   const { productPartialInfo, loading, allParams, materialTestingQuotation } =
     useSelector(selectProperties);
 
-  const { mtqLoading, error, link, quotation_generated } =
-    materialTestingQuotation;
+  const { mtqLoading, link, quotation_generated } = materialTestingQuotation;
 
   const dispatch: any = useDispatch();
 
@@ -377,14 +380,6 @@ const MaterialTestingQuoteForm = () => {
                   , Please check it
                 </p>
                 <code>This Quotation is valid upto 05.08.2024</code>
-
-                {/* <div>
-                  <img
-                    src={feature1}
-                    alt=""
-                    className="img-fluid mx-auto d-block"
-                  />
-                </div> */}
 
                 <div className="mt-4">
                   <button
@@ -459,228 +454,225 @@ const MaterialTestingQuoteForm = () => {
         </div>
         {loading && <Spinners />}
         {quotation_generated && quotationLinkPopUp()}
-        {!quotation_generated && (
-          <React.Fragment>
-            <Form
-              className="outer-repeater mt-3"
-              onSubmit={nestedformik.handleSubmit}
-            >
-              <div data-repeater-list="outer-group" className="outer">
-                <div data-repeater-item className="outer">
-                  <h6 className="text-primary mb-3">Personnel Info</h6>
+        <React.Fragment>
+          <Form
+            className="outer-repeater mt-3"
+            onSubmit={nestedformik.handleSubmit}
+          >
+            <div data-repeater-list="outer-group" className="outer">
+              <div data-repeater-item className="outer">
+                <h6 className="text-primary mb-3">Personnel Info</h6>
 
-                  <Row>
-                    <Col md="5" sm="10">
-                      <div className="mr-5">
-                        <img
-                          src={feature1}
-                          alt=""
-                          className="img-fluid mx-auto d-block"
+                <Row>
+                  <Col md="5" sm="10">
+                    <div className="mr-5">
+                      <img
+                        src={feature1}
+                        alt=""
+                        className="img-fluid mx-auto d-block"
+                      />
+                    </div>
+                  </Col>
+                  <Col sm={12} md={7}>
+                    <div>
+                      <div className="form-check form-switch mb-3">
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          id="customSwitch1"
+                          onChange={() => setOfferApplied(!offerApplied)}
+                          checked={offerApplied}
                         />
+                        <label
+                          className="form-check-label"
+                          htmlFor="customSwitch1"
+                        >
+                          I have placed morethan 5 Orders before
+                        </label>
+                        <br />
+                        {offerApplied ? (
+                          <small className="text-success">
+                            <i>
+                              <b>
+                                You may eligible for discount, Please Contact
+                                9988998899 to avail discount
+                              </b>
+                            </i>
+                          </small>
+                        ) : (
+                          <p></p>
+                        )}
                       </div>
-                    </Col>
-                    <Col sm={12} md={7}>
-                      <div>
-                        <div className="form-check form-switch mb-3">
-                          <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="customSwitch1"
-                            onChange={() => setOfferApplied(!offerApplied)}
-                            checked={offerApplied}
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="customSwitch1"
-                          >
-                            I have placed morethan 5 Orders before
-                          </label>
-                          <br />
-                          {offerApplied ? (
-                            <small className="text-success">
-                              <i>
-                                <b>
-                                  You may eligible for discount, Please Contact
-                                  9988998899 to avail discount
-                                </b>
-                              </i>
-                            </small>
-                          ) : (
-                            <p></p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="mb-3">
-                        <Label for="name">Enter your name</Label>
-                        <Input
-                          type="text"
-                          name="name"
-                          className="form-control"
-                          id="name"
-                          placeholder="Enter Your name"
-                          value={nestedformik.values.name}
-                          onChange={nestedformik.handleChange}
-                          onBlur={nestedformik.handleBlur}
-                        />
-                        {nestedformik.errors.name &&
-                        nestedformik.touched.name ? (
-                          <span className="text-danger">
-                            {nestedformik.errors.name}
-                          </span>
-                        ) : null}
-                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <Label for="name">Enter your name</Label>
+                      <Input
+                        type="text"
+                        name="name"
+                        className="form-control"
+                        id="name"
+                        placeholder="Enter Your name"
+                        value={nestedformik.values.name}
+                        onChange={nestedformik.handleChange}
+                        onBlur={nestedformik.handleBlur}
+                      />
+                      {nestedformik.errors.name && nestedformik.touched.name ? (
+                        <span className="text-danger">
+                          {nestedformik.errors.name}
+                        </span>
+                      ) : null}
+                    </div>
 
-                      <div className="mb-3">
-                        <Label for="mobile">Enter your contact</Label>
-                        <Input
-                          type="number"
-                          name="mobile"
-                          className="form-control"
-                          id="mobile"
-                          placeholder="Enter Your Contact number"
-                          value={nestedformik.values.mobile}
-                          onChange={nestedformik.handleChange}
-                          onBlur={nestedformik.handleBlur}
-                        />
-                        {nestedformik.errors.mobile &&
-                        nestedformik.touched.mobile ? (
-                          <span className="text-danger">
-                            {nestedformik.errors.mobile}
-                          </span>
-                        ) : null}
-                      </div>
+                    <div className="mb-3">
+                      <Label for="mobile">Enter your contact</Label>
+                      <Input
+                        type="number"
+                        name="mobile"
+                        className="form-control"
+                        id="mobile"
+                        placeholder="Enter Your Contact number"
+                        value={nestedformik.values.mobile}
+                        onChange={nestedformik.handleChange}
+                        onBlur={nestedformik.handleBlur}
+                      />
+                      {nestedformik.errors.mobile &&
+                      nestedformik.touched.mobile ? (
+                        <span className="text-danger">
+                          {nestedformik.errors.mobile}
+                        </span>
+                      ) : null}
+                    </div>
 
-                      <div className="mb-3">
-                        <Label for="email">Enter your Email (Optional)</Label>
-                        <Input
-                          type="text"
-                          name="email"
-                          className="form-control"
-                          id="email"
-                          placeholder="Enter Your email"
-                          value={nestedformik.values.email}
-                          onChange={nestedformik.handleChange}
-                          onBlur={nestedformik.handleBlur}
-                        />
-                        {nestedformik.errors.email &&
-                        nestedformik.touched.email ? (
-                          <span className="text-danger">
-                            {nestedformik.errors.email}
-                          </span>
-                        ) : null}
-                      </div>
-                    </Col>
-                  </Row>
+                    <div className="mb-3">
+                      <Label for="email">Enter your Email (Optional)</Label>
+                      <Input
+                        type="text"
+                        name="email"
+                        className="form-control"
+                        id="email"
+                        placeholder="Enter Your email"
+                        value={nestedformik.values.email}
+                        onChange={nestedformik.handleChange}
+                        onBlur={nestedformik.handleBlur}
+                      />
+                      {nestedformik.errors.email &&
+                      nestedformik.touched.email ? (
+                        <span className="text-danger">
+                          {nestedformik.errors.email}
+                        </span>
+                      ) : null}
+                    </div>
+                  </Col>
+                </Row>
 
-                  <h6 className="text-primary mb-3">Samples Info</h6>
-                  {(rows1 || []).map((formRow, key) => (
-                    <Row key={formRow.row_id} className="mt-3">
-                      <Card>
-                        <Row>
-                          <Col lg={6}>
-                            <div className="mb-3">
-                              <Input
-                                type="select"
-                                id="select_sample"
-                                className="form-control-lg"
-                                // value={formRow.sampleName}
-                                onChange={(e) =>
-                                  handleInputChangeNested(
-                                    formRow.row_id,
-                                    parseInt(e.target.value)
-                                  )
-                                }
-                              >
-                                <option value="" selected>
-                                  Select From below
-                                </option>
-                                {(productPartialInfo || []).map((each) => (
-                                  <option value={each.id} key={each.id}>
-                                    {each.name}
-                                  </option>
-                                ))}
-                              </Input>
-                            </div>
-                          </Col>
-                          <Col lg={2}>
-                            <div className="mb-3">
-                              <button
-                                className="btn btn-danger"
-                                id="unknown-btn"
-                                onClick={() => handleRemoveRow(formRow.row_id)}
-                              >
-                                <i className="mdi mdi-delete " /> Delete
-                              </button>
-                            </div>
-                          </Col>
-                        </Row>
-
-                        <Col lg={12}>
-                          <div className="table-responsive">
-                            <Table
-                              className="table table-bordered "
-                              style={{ borderColor: "#eff2f7" }}
+                <h6 className="text-primary mb-3">Samples Info</h6>
+                {(rows1 || []).map((formRow, key) => (
+                  <Row key={formRow.row_id} className="mt-3">
+                    <Card>
+                      <Row>
+                        <Col lg={6}>
+                          <div className="mb-3">
+                            <Input
+                              type="select"
+                              id="select_sample"
+                              className="form-control-lg"
+                              // value={formRow.sampleName}
+                              onChange={(e) =>
+                                handleInputChangeNested(
+                                  formRow.row_id,
+                                  parseInt(e.target.value)
+                                )
+                              }
                             >
-                              <tbody>
-                                {formRow.chemicalParams.map(
-                                  (eachTest: BackendParams) =>
-                                    selectTestBox(
-                                      eachTest,
-                                      formRow.row_id,
-                                      formRow.isOffer,
-                                      formRow.offer
-                                    )
-                                )}
-
-                                {formRow.physicalParams.map(
-                                  (eachTest: BackendParams) =>
-                                    selectTestBox(
-                                      eachTest,
-                                      formRow.row_id,
-                                      formRow.isOffer,
-                                      formRow.offer
-                                    )
-                                )}
-                              </tbody>
-                            </Table>
+                              <option value="" selected>
+                                Select From below
+                              </option>
+                              {(productPartialInfo || []).map((each) => (
+                                <option value={each.id} key={each.id}>
+                                  {each.name}
+                                </option>
+                              ))}
+                            </Input>
                           </div>
                         </Col>
-                      </Card>
-                    </Row>
-                  ))}
+                        <Col lg={2}>
+                          <div className="mb-3">
+                            <button
+                              className="btn btn-danger"
+                              id="unknown-btn"
+                              onClick={() => handleRemoveRow(formRow.row_id)}
+                            >
+                              <i className="mdi mdi-delete " /> Delete
+                            </button>
+                          </div>
+                        </Col>
+                      </Row>
 
-                  <div className="d-flex">
-                    <button
-                      disabled={mtqLoading || loading}
-                      type="button"
-                      className="btn btn-success mt-3 mr-4"
-                      onClick={() => {
-                        handleAddRowNested();
-                      }}
-                    >
-                      Add Sample
-                    </button>
-                    <button
-                      disabled={mtqLoading || loading}
-                      type="submit"
-                      className="btn btn-warning mt-3"
-                    >
-                      {!mtqLoading ? (
-                        "Get Quote"
-                      ) : (
-                        <>
-                          {" "}
-                          <i className="bx bx-loader bx-spin "></i> Preparing
-                          Quotation
-                        </>
-                      )}
-                    </button>
-                  </div>
+                      <Col lg={12}>
+                        <div className="table-responsive">
+                          <Table
+                            className="table table-bordered "
+                            style={{ borderColor: "#eff2f7" }}
+                          >
+                            <tbody>
+                              {formRow.chemicalParams.map(
+                                (eachTest: BackendParams) =>
+                                  selectTestBox(
+                                    eachTest,
+                                    formRow.row_id,
+                                    formRow.isOffer,
+                                    formRow.offer
+                                  )
+                              )}
+
+                              {formRow.physicalParams.map(
+                                (eachTest: BackendParams) =>
+                                  selectTestBox(
+                                    eachTest,
+                                    formRow.row_id,
+                                    formRow.isOffer,
+                                    formRow.offer
+                                  )
+                              )}
+                            </tbody>
+                          </Table>
+                        </div>
+                      </Col>
+                    </Card>
+                  </Row>
+                ))}
+
+                <div className="d-flex">
+                  <button
+                    disabled={mtqLoading || loading}
+                    type="button"
+                    className="btn btn-success mt-3 mr-4"
+                    onClick={() => {
+                      handleAddRowNested();
+                    }}
+                  >
+                    Add Sample
+                  </button>
+                  <button
+                    disabled={mtqLoading || loading}
+                    type="submit"
+                    className="btn btn-warning mt-3"
+                  >
+                    {!mtqLoading ? (
+                      "Get Quote"
+                    ) : (
+                      <>
+                        {" "}
+                        <i className="bx bx-loader bx-spin "></i> Preparing
+                        Quotation
+                      </>
+                    )}
+                  </button>
                 </div>
               </div>
-            </Form>
-          </React.Fragment>
-        )}
+            </div>
+          </Form>
+        </React.Fragment>
       </CardBody>
     </Card>
   );

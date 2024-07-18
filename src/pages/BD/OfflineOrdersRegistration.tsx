@@ -1,6 +1,5 @@
 import React from "react";
 import withRouter from "../../Components/Common/withRouter";
-import { Container } from "reactstrap";
 import "nouislider/distribute/nouislider.css";
 import OfflineOrderRegistrationForm from "forms/OfflineOrderRegistrationForm";
 

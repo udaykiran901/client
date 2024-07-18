@@ -17,11 +17,12 @@ export interface Employee {
   branch?: Branch | null;
   reporting_manager?: string | null;
   profile_pic?: string | null;
-  department?: Department | null;
+  department: string;
   username: string;
   hashed_password?: string | null;
   role?: Role | null;
   access_key?: AccessKey | null;
+  profile_photo: string | null;
 }
 
 export interface Role {

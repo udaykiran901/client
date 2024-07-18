@@ -20,7 +20,7 @@ import { isEmpty } from "lodash";
 import { EcoAction, ProductPartialInfo } from "./type";
 
 import Spinners from "Components/Common/Spinner";
-import { handleSearchData } from "Components/Common/SearchFile";
+
 //Import Star Ratings
 import StarRatings from "react-star-ratings";
 

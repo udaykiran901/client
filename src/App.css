@@ -83,11 +83,6 @@ body::-webkit-scrollbar-thumb {
 }
 
 /* mine */
-input[readonly] {
-  background-color: #f4f4f4;
-  color: #000;
-  cursor: not-allowed;
-}
 
 .z-0 {
   z-index: 1;

@@ -32,6 +32,7 @@ interface CurrentLoggedInUser {
   reporting_manager: string;
   access_key: string;
   username: string;
+  profile_photo: string;
 }
 
 interface CurrentUser {

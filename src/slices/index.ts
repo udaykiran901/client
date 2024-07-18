@@ -15,6 +15,7 @@ import BDslice from "./BD/reducer";
 import EmployeeSlice from "./Employee/reducer";
 import CurrentUserSlice from "./CurrentUser/reducer";
 import JobsReducer from "./jobs/reducer";
+import LabReducer from "./Lab/reducer";
 
 const rootReducer = combineReducers({
   Layout: LayoutReducer,
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   EmployeeSlice: EmployeeSlice,
   CurrentUserSlice: CurrentUserSlice,
   jobs: JobsReducer,
+  lab: LabReducer,
 });
 
 export default rootReducer;

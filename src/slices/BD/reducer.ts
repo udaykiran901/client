@@ -26,6 +26,7 @@ import {
   getDailyQuotationCount,
   getMonthlyQuotationsCount,
   getAllQuotations,
+  getAllSampleMaterials,
 } from "./thunk";
 import {
   CallBacks,
@@ -68,6 +69,7 @@ interface InitialState {
   quotations: Quotation[];
   quotationsDaily: CountGraph[];
   quotationsMonthly: CountGraph[];
+  allOrderSamples: Orders[];
 }
 
 export const initialState: InitialState = {
@@ -99,6 +101,9 @@ export const initialState: InitialState = {
   quotations: [],
   quotationsDaily: [],
   quotationsMonthly: [],
+
+  //all samples screen
+  allOrderSamples: [],
 };
 
 const BDslice = createSlice({
@@ -154,6 +159,13 @@ const BDslice = createSlice({
     builder.addCase(getAllOrders.fulfilled, (state: any, action: any) => {
       state.orders = action.payload.data;
     });
+
+    builder.addCase(
+      getAllSampleMaterials.fulfilled,
+      (state: any, action: any) => {
+        state.allOrderSamples = action.payload.data;
+      }
+    );
 
     builder.addCase(getCustomersList.fulfilled, (state: any, action: any) => {
       state.customers = action.payload.data;
@@ -296,6 +308,14 @@ const BDslice = createSlice({
         state.orderInfo = action.payload.data;
       }
     );
+
+    //tax conversion
+    // builder.addCase(
+    //   convertToTaxRequested.pending,
+    //   (state: any, action: any) => {
+    //     // state.orderInfo = action.payload.data;
+    //   }
+    // );
 
     //quotations
     builder.addCase(getAllQuotations.fulfilled, (state: any, action: any) => {

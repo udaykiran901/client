@@ -21,8 +21,8 @@ export interface Employee {
   username: string;
   hashed_password?: string | null;
   role?: Role | null;
-  access_key?: AccessKey | null;
-  profile_photo: string | null;
+  access_key?: string;
+  profile_photo: string;
 }
 
 export interface Role {

@@ -2,6 +2,8 @@
 
 export const GET_PENDING_ASSIGNING_JOBS = "/lab/get-pending-Assigned-samples";
 export const GET_ALL_ANALYSTS = "/lab/get-all-analysts";
+export const ASSIGN_PARAMS_TO_ANALYST = "/lab/assign-samples-to-analyst";
+export const GET_MY_JOBS = "/lab/get-my-jobs";
 
 //REGISTER
 export const POST_FAKE_REGISTER = "/post-fake-register";

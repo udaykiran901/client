@@ -20,15 +20,16 @@ import { useSelector } from "react-redux";
 import { KDM_ECOMMERCE_USER_JWT_TOKEN, LOGGED_IN_USER } from "common/tokens";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getProfile } from "slices/auth/profile/reducer";
+import { getProfile, ProfileInitState } from "slices/auth/profile/reducer";
 import { getCart } from "slices/thunk";
+import { RootState } from "slices";
 
 const ProfileMenu = (props: any) => {
   const [menu, setMenu] = useState(false);
 
   const selectProfileProperties = createSelector(
-    (state: any) => state.Profile,
-    (profile) => ({
+    (state: RootState) => state.Profile,
+    (profile: any) => ({
       user: profile.user,
     })
   );

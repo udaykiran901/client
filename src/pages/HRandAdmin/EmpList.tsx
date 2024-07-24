@@ -102,22 +102,9 @@ const EmpList = () => {
                 </Link>
               </h5> */}
               <p className="text-muted mb-0">
-                {cellProps.row.original.first_name}
-              </p>
-            </>
-          );
-        },
-      },
-      {
-        header: "Last Name",
-        accessorKey: "last_name",
-        enableColumnFilter: false,
-        enableSorting: true,
-        cell: (cellProps: any) => {
-          return (
-            <>
-              <p className="text-muted mb-0">
-                {cellProps.row.original.last_name}
+                {cellProps.row.original.first_name +
+                  " " +
+                  cellProps.row.original.last_name}
               </p>
             </>
           );
@@ -223,10 +210,6 @@ const EmpList = () => {
     navigate("/hr/add-emp");
   };
 
-  console.log("Showing employees list");
-
-  console.log(employees);
-
   return (
     <React.Fragment>
       <DeleteModal
@@ -252,7 +235,7 @@ const EmpList = () => {
                       isCustomPageSize={true}
                       isAddButton={true}
                       handleUserClick={handleUserClicks}
-                      buttonClass="btn btn-success btn-rounded waves-effect waves-light addContact-modal mb-2"
+                      buttonClass=" waves-effect waves-light  mb-2 btn btn-primary"
                       buttonName="Add Employee"
                       tableClass="align-middle table-nowrap table-hover dt-responsive nowrap w-100 dataTable no-footer dtr-inline"
                       theadClass="table-light"

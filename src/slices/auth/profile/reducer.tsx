@@ -2,7 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import { LOGGED_IN_USER } from "common/tokens";
 
-export const initialState = {
+export interface ProfileInitState {
+  error: string;
+  success: string;
+  user: {};
+}
+
+export const initialState: ProfileInitState = {
   error: "",
   success: "",
   user: {},

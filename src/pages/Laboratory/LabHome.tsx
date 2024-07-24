@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import undefinedProfile from "../../assets/images/undefined-profile.jpg";
 import React from "react";
 import {
   Container,
@@ -20,81 +21,128 @@ import Spinners from "Components/Common/Spinner";
 import { renderSamplesTable } from "pages/BD/TrackSample";
 import { Link } from "react-router-dom";
 import { Assign } from "./Modals/Assign";
-import { Params } from "pages/Ecommerce/type";
-import { Employee } from "pages/HRandAdmin/types";
 
-export const renderOrderBasicDetails = (order: Orders) => {
+import { Employee } from "pages/HRandAdmin/types";
+import { CHEMICAL, PHYSICAL } from "common/tokens";
+
+export const renderSampleBasicInfo = (sample: Samples, due_date: string) => {
   return (
-    <Alert className="alert-primary mb-3" role="alert">
-      <div className="table-responsive ">
-        <Table
-          className="table table-bordered"
-          style={{ borderColor: "transparent" }}
-        >
-          <tbody style={{ borderColor: "transparent" }}>
-            <tr style={{ borderColor: "transparent" }}>
-              <th style={{ borderColor: "transparent" }}>Order ID</th>
-              <td style={{ borderColor: "transparent" }}>
-                <a href={`/bd/orders/${order.order_id}`}>
-                  {`KDMEI/${order.lab}/${order.order_number}`}
-                </a>
-              </td>
+    <div className="table-responsive">
+      <Table
+        className="table table-bordered"
+        style={{ borderColor: "#eff2f7", display: "inline-block" }}
+      >
+        <tbody>
+          <tr>
+            <th>Sample ID</th>
+            <td>
+              <code className="text-danger">{sample.sample_code}</code>
+            </td>
+          </tr>
+          <tr>
+            <th style={{ width: "200px" }}> Source </th>
+            <td>{sample.source}</td>
+          </tr>
+
+          <tr>
+            <th style={{ width: "200px" }}> Quantity </th>
+            <td>{sample.quantity}</td>
+          </tr>
+
+          {sample.grade && (
+            <tr>
+              <th style={{ width: "200px" }}> Grade </th>
+              <td>{sample.grade}</td>
             </tr>
-            <tr style={{ borderColor: "transparent" }}>
-              <th style={{ borderColor: "transparent" }}>Project Name</th>
-              <td style={{ borderColor: "transparent" }}>
-                {order.project_name}
-              </td>
-            </tr>
-            <tr style={{ borderColor: "transparent" }}>
-              <th style={{ width: "200px", borderColor: "transparent" }}>
-                {" "}
-                Subject{" "}
-              </th>
-              <td style={{ borderColor: "transparent" }}>{order.subject}</td>
-            </tr>
-          </tbody>
-        </Table>
-      </div>
-    </Alert>
+          )}
+
+          {sample.job_assigned && (
+            <>
+              <tr>
+                <th>Job Assigned on </th>
+                <td>
+                  <code className="text-danger">
+                    {sample.doa.substring(0, 10)}
+                  </code>
+                </td>
+              </tr>
+
+              <tr>
+                <th>Due Date </th>
+                <td>
+                  This sample reports are expected to be delivered to client on
+                  or before{" "}
+                  <code className="text-danger">
+                    {due_date.substring(0, 10)}
+                  </code>
+                </td>
+              </tr>
+            </>
+          )}
+        </tbody>
+      </Table>
+    </div>
   );
 };
 
-export const renderSampleBasicInfo = (sample: Samples) => {
+function checkDisciplineSample(
+  params: Param[],
+  discipline: string
+): Param | undefined {
+  const analyst = params.filter(
+    (eachPram: Param) => eachPram.param.discipline === discipline
+  )[0];
+
+  return analyst;
+}
+
+export const renderJobAssignedScreen = (eachSample: Samples) => {
+  const chemist: Param | undefined = checkDisciplineSample(
+    eachSample.params,
+    CHEMICAL
+  );
+  const physicist: Param | undefined = checkDisciplineSample(
+    eachSample.params,
+    PHYSICAL
+  );
+
   return (
-    <React.Fragment>
-      <div className="table-responsive">
-        <Table
-          className="table table-bordered w-lg-50"
-          style={{ borderColor: "#eff2f7", display: "inline-block" }}
-        >
-          <tbody>
-            <tr>
-              <th>Sample ID</th>
-              <td>
-                <code className="text-danger">{sample.sample_code}</code>
-              </td>
-            </tr>
-            <tr>
-              <th style={{ width: "200px" }}> Source </th>
-              <td>{sample.source}</td>
-            </tr>
-
-            <tr>
-              <th style={{ width: "200px" }}> Quantity </th>
-              <td>{sample.quantity}</td>
-            </tr>
-
-            {sample.grade && (
-              <tr>
-                <th style={{ width: "200px" }}> Grade </th>
-                <td>{sample.grade}</td>
-              </tr>
-            )}
-          </tbody>
-        </Table>
-      </div>
-    </React.Fragment>
+    <div className="d-flex flex-column">
+      {chemist && (
+        <div>
+          <span> Chemical Tests Assigned to : </span>
+          <br />
+          <Link to="#" className="mt-2 mb-lg-0">
+            <img
+              src={
+                chemist.employee.profile_photo
+                  ? chemist.employee.profile_photo
+                  : undefinedProfile
+              }
+              alt=""
+              className="rounded avatar-lg"
+            />
+          </Link>
+        </div>
+      )}
+      <br />
+      {physicist && (
+        <div>
+          <span>Mechanical Tests Assigned to :</span> <br />
+          <Link to="#" className="mt-2 mb-lg-0 ">
+            <img
+              src={
+                physicist.employee.profile_photo
+                  ? physicist.employee.profile_photo
+                  : undefinedProfile
+              }
+              alt=""
+              className="rounded avatar-lg"
+            />
+          </Link>
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -113,6 +161,7 @@ const LabHome = () => {
     status: false,
     sampleId: "",
     parameters: [],
+    labStaff: [],
   });
 
   const selectPropertiesLAB = createSelector(
@@ -141,6 +190,10 @@ const LabHome = () => {
     }
   }, [labStaff]);
 
+  useEffect(() => {
+    setAssignModal({ ...assignModal, status: false });
+  }, [sampleAllocationPending]);
+
   const renderSampleNotAssigned = (
     sampleId: string,
     sampleParameters: Param[]
@@ -156,9 +209,10 @@ const LabHome = () => {
           to="#"
           onClick={() =>
             setAssignModal({
-              status: true,
+              status: !assignModal.status,
               sampleId: sampleId,
               parameters: sampleParameters,
+              labStaff: labStaff,
             })
           }
           className="alert-link"
@@ -176,69 +230,73 @@ const LabHome = () => {
         <Container fluid>
           <Row>
             <Col>
-              {loadingLab && <Spinners />}
-              {!loadingLab &&
-                (sampleAllocationPending || []).map((eachOrder: Orders) => (
-                  <Card
-                    key={eachOrder.order_id}
-                    className="p-3 mb-5 w-100 shadow-lg"
-                    style={{
-                      borderLeft: "4px solid #2a3042",
-                      display: "inline-block",
-                    }}
-                  >
-                    <a
-                      className="mb-4"
-                      href={`/bd/orders/${eachOrder.order_id}`}
-                    >
-                      View Order
-                    </a>
+              {loadingLab && !assignModal.status && <Spinners />}
+              {(sampleAllocationPending || []).map((eachOrder: Orders) => (
+                <Card
+                  key={eachOrder.order_id}
+                  className="p-3 mb-5 w-100 shadow-lg"
+                  style={{
+                    borderLeft: `4px solid #2a3042`,
+                    display: "inline-block",
+                  }}
+                >
+                  <a className="mb-4" href={`/bd/orders/${eachOrder.order_id}`}>
+                    View Order
+                  </a>
 
-                    {eachOrder.samples.map((eachSample: Samples) => (
-                      <div key={eachSample.sample_id}>
-                        {!eachSample.job_assigned &&
-                          renderSampleNotAssigned(
-                            eachSample.sample_id,
-                            eachSample.params
+                  {eachOrder.samples.map((eachSample: Samples) => (
+                    <div key={eachSample.sample_id}>
+                      {!eachSample.job_assigned &&
+                        renderSampleNotAssigned(
+                          eachSample.sample_id,
+                          eachSample.params
+                        )}
+                      <Row>
+                        <Col lg={6}>
+                          {renderSampleBasicInfo(
+                            eachSample,
+                            eachOrder.due_date as string
                           )}
-                        {renderSampleBasicInfo(eachSample)}
-                        <div className="table-responsive">
-                          <Table
-                            className="table table-bordered w-100"
-                            style={{ borderColor: "#eff2f7" }}
+                        </Col>
+                        <Col lg={5}>
+                          {eachSample.job_assigned
+                            ? renderJobAssignedScreen(eachSample)
+                            : null}
+                        </Col>
+                      </Row>
+                      <div className="table-responsive">
+                        <Table
+                          className="table table-bordered w-100"
+                          style={{ borderColor: "#eff2f7" }}
+                        >
+                          <thead
+                            style={{
+                              backgroundColor: "#2a3042",
+                            }}
                           >
-                            <thead
-                              style={{
-                                backgroundColor: "#2a3042",
-                              }}
-                            >
-                              <tr>
-                                <td style={{ color: "#a6b0cf" }}>Parameters</td>
-                                <td style={{ color: "#a6b0cf" }}>Discipline</td>
-                                <td
-                                  style={{ color: "#a6b0cf", width: "300px" }}
-                                >
-                                  Status
-                                </td>
-                                <td
-                                  style={{ color: "#a6b0cf", width: "300px" }}
-                                >
-                                  Bench Record
-                                </td>
-                              </tr>
-                            </thead>
+                            <tr>
+                              <td style={{ color: "#a6b0cf" }}>Parameters</td>
+                              <td style={{ color: "#a6b0cf" }}>Discipline</td>
+                              <td style={{ color: "#a6b0cf", width: "300px" }}>
+                                Status
+                              </td>
+                              <td style={{ color: "#a6b0cf", width: "300px" }}>
+                                Bench Record
+                              </td>
+                            </tr>
+                          </thead>
 
-                            <tbody>
-                              {eachSample.params.map((eachParam: Param) =>
-                                renderSamplesTable(eachParam, true)
-                              )}
-                            </tbody>
-                          </Table>
-                        </div>
+                          <tbody>
+                            {eachSample.params.map((eachParam: Param) =>
+                              renderSamplesTable(eachParam, true)
+                            )}
+                          </tbody>
+                        </Table>
                       </div>
-                    ))}
-                  </Card>
-                ))}
+                    </div>
+                  ))}
+                </Card>
+              ))}
             </Col>
           </Row>
           <ToastContainer />
@@ -246,6 +304,7 @@ const LabHome = () => {
       </div>
 
       <Modal
+        size="lg"
         isOpen={assignModal.status}
         toggle={() => {
           setAssignModal({
@@ -253,7 +312,6 @@ const LabHome = () => {
             status: !assignModal.status,
           });
         }}
-        centered
       >
         <ModalHeader
           toggle={() => {
@@ -263,7 +321,7 @@ const LabHome = () => {
             });
           }}
         >
-          <div className="modal-title mt-0 h5">Assign Sample to Analyst</div>
+          <div className="modal-title mt-0 h4">Assign Sample to Analyst</div>
         </ModalHeader>
         <div className="modal-body">
           <Assign assignModal={assignModal} />

@@ -57,7 +57,9 @@ const EcommerceCart = () => {
       eachSample.parameters.reduce((paramDiscount, eachParam) => {
         return (
           paramDiscount +
-          (eachParam.price - (eachParam.price * eachSample.offer) / 100)
+          (eachSample.isOffer
+            ? eachParam.price - (eachParam.price * eachSample.offer) / 100
+            : eachParam.price)
         );
       }, 0)
     );
@@ -231,7 +233,28 @@ const EcommerceCart = () => {
                                         index: number
                                       ) => (
                                         <div key={index} className="mt-2">
-                                          {eachParam.params.map(
+                                          <div className="d-flex">
+                                            <i
+                                              className={`mdi mdi-circle-medium align-middle text-${
+                                                index % 2 !== 0
+                                                  ? "success"
+                                                  : "warning"
+                                              } me-1`}
+                                            />
+                                            <p>
+                                              {eachParam.params.map(
+                                                (eachTest, index) => (
+                                                  <span key={index}>
+                                                    {eachTest.testName}
+                                                    {index <
+                                                      eachParam.params.length -
+                                                        1 && <br />}
+                                                  </span>
+                                                )
+                                              )}
+                                            </p>
+                                          </div>
+                                          {/* {eachParam.params.map(
                                             (eachTest: TestParams) => (
                                               <div className="d-flex">
                                                 <i
@@ -246,7 +269,7 @@ const EcommerceCart = () => {
                                                 </p>
                                               </div>
                                             )
-                                          )}
+                                          )} */}
                                           <hr />
                                         </div>
                                       )
@@ -389,85 +412,86 @@ const EcommerceCart = () => {
                   </Card>
                 </CardBody>
               </Card> */}
-              <Card>
-                <CardBody>
-                  {/* <CardTitle className="mb-3">Order Summary</CardTitle> */}
-                  <div className="table-responsive">
-                    <Table className="table mb-0">
-                      <thead>
-                        <tr>
-                          <th className="align-top">Order Summary</th>
-                          <th className="align-top">Price (INR)</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Bag Price :</td>
-                          <td>{total}</td>
-                        </tr>
-                        <tr>
-                          <td>Discount : </td>
-                          <td className="text-success">
-                            - {total - discountAmount || ""}
-                          </td>
-                        </tr>
+              {(cart || []).length > 0 && (
+                <Card>
+                  <CardBody>
+                    {/* <CardTitle className="mb-3">Order Summary</CardTitle> */}
+                    <div className="table-responsive">
+                      <Table className="table mb-0">
+                        <thead>
+                          <tr>
+                            <th className="align-top">Order Summary</th>
+                            <th className="align-top">Price (INR)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Bag Price :</td>
+                            <td>{total}</td>
+                          </tr>
+                          <tr>
+                            <td>Discount : </td>
+                            <td className="text-success">
+                              - {total - discountAmount || ""}
+                            </td>
+                          </tr>
 
-                        <tr>
-                          <td>Final Price : </td>
-                          <td> {discountAmount || ""}</td>
-                        </tr>
-                        <tr>
-                          <td>Shipping Charge (Fixed) :</td>
-                          <td>{shippingCharges || ""}</td>
-                        </tr>
-                        <tr>
-                          <td>Estimated Tax (18% of final Price): </td>
-                          <td>{taxAmount}</td>
-                        </tr>
-                        <tr>
-                          <th>Total :</th>
-                          <th>
-                            {Math.floor(
-                              discountAmount + shippingCharges + taxAmount
+                          <tr>
+                            <td>Final Price : </td>
+                            <td> {discountAmount || ""}</td>
+                          </tr>
+                          <tr>
+                            <td>Shipping Charge (Fixed) :</td>
+                            <td>{shippingCharges || ""}</td>
+                          </tr>
+                          <tr>
+                            <td>Estimated Tax (18% of final Price): </td>
+                            <td>{taxAmount}</td>
+                          </tr>
+                          <tr>
+                            <th>Total :</th>
+                            <th>
+                              {Math.floor(
+                                discountAmount + shippingCharges + taxAmount
+                              )}
+                            </th>
+                          </tr>
+                          <tr>
+                            {cart && cart.length > 0 && (
+                              <Col>
+                                <div className="mt-2">
+                                  <button
+                                    className="btn btn-primary"
+                                    id="rzp-button1"
+                                    type="button"
+                                    disabled={paymentLoading}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      onCartCheckout(
+                                        Math.floor(
+                                          // discountAmount +
+                                          shippingCharges + taxAmount + total
+                                        )
+                                      );
+                                    }}
+                                  >
+                                    {paymentLoading ? (
+                                      <i className="bx bx-loader bx-spin "></i>
+                                    ) : (
+                                      <i className="mdi mdi-cart-arrow-right me-1" />
+                                    )}{" "}
+                                    Proceed to Pay{" "}
+                                  </button>
+                                </div>
+                              </Col>
                             )}
-                          </th>
-                        </tr>
-                        <tr>
-                          {cart && cart.length > 0 && (
-                            <Col>
-                              <div className="mt-2">
-                                <button
-                                  className="btn btn-primary"
-                                  id="rzp-button1"
-                                  type="button"
-                                  disabled={paymentLoading}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    onCartCheckout(
-                                      Math.floor(
-                                        discountAmount +
-                                          shippingCharges +
-                                          taxAmount
-                                      )
-                                    );
-                                  }}
-                                >
-                                  {paymentLoading ? (
-                                    <i className="bx bx-loader bx-spin "></i>
-                                  ) : (
-                                    <i className="mdi mdi-cart-arrow-right me-1" />
-                                  )}{" "}
-                                  Proceed to Pay{" "}
-                                </button>
-                              </div>
-                            </Col>
-                          )}
-                        </tr>
-                      </tbody>
-                    </Table>
-                  </div>
-                </CardBody>
-              </Card>
+                          </tr>
+                        </tbody>
+                      </Table>
+                    </div>
+                  </CardBody>
+                </Card>
+              )}
             </Col>
           </Row>
           <ToastContainer />

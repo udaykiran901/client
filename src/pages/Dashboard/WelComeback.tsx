@@ -2,7 +2,7 @@ import React from "react";
 
 import { Row, Col, Card, CardBody } from "reactstrap";
 
-import undefinedProfile from "../../assets/images/undefined-profile.svg";
+import undefinedProfile from "../../assets/images/undefined-profile.jpg";
 import profileImg from "../../assets/images/profile-img.png";
 
 import { useSelector } from "react-redux";
@@ -19,7 +19,7 @@ const WelComeback: React.FC = () => {
   );
 
   const { employee } = useSelector(selectedProperties);
-  const { first_name, last_name, profile_pic } = employee;
+  const { first_name, last_name, profile_photo } = employee;
   return (
     <React.Fragment>
       <Card className="overflow-hidden">
@@ -39,9 +39,9 @@ const WelComeback: React.FC = () => {
         <CardBody className="pt-0">
           <Row>
             <Col sm={6}>
-              <div className="avatar-md profile-user-wid mb-4">
+              <div className="avatar-xl profile-user-wid mb-4">
                 <img
-                  src={profile_pic ? profile_pic : undefinedProfile}
+                  src={profile_photo ? profile_photo : undefinedProfile}
                   alt=""
                   className="img-thumbnail rounded-circle"
                 />

@@ -34,7 +34,7 @@ import {
 import Spinners from "Components/Common/Spinner";
 import { Col } from "reactstrap";
 
-const renderParameter = (arr: OrderSampleSelectedParams[]) => {
+export const renderParameter = (arr: OrderSampleSelectedParams[]) => {
   return arr.map((eachTest) => (
     <div className="d-flex" key={eachTest.test_id}>
       <i className="mdi mdi-circle-medium align-middle text-primary me-1" />
@@ -51,7 +51,7 @@ const renderParameter = (arr: OrderSampleSelectedParams[]) => {
   ));
 };
 
-const renderParamText = (status: string): ReactElement => {
+export const renderParamText = (status: string): ReactElement => {
   let statusText: ReactElement;
   switch (status) {
     case NOT_YET_ASSIGNED:

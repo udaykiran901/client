@@ -1,50 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { EMPLOYEE_LOCAL_STORAGE_KEY } from "common/tokens";
 import Cookies from "js-cookie";
+import { Employee } from "pages/HRandAdmin/types";
 
-interface CurrentLoggedInUser {
-  jwt_token: string;
-  emp_id: string;
-  first_name: string;
-  last_name: string;
-  phone_number: string;
-  email: string;
-  address: string;
-  gender: string;
-  married: boolean;
-  spouse_name: string;
-  spouse_contact: string;
-  father_name: string;
-  emergency_contact: string;
-  blood: string;
-  aadhar: string | null;
-  pan: string | null;
-  ssc: string | null;
-  intermediate: string | null;
-  degree: string | null;
-  bankbook: string | null;
-  department: string | null;
-  role: number;
-  doa: string;
-  dob: string;
-  salary: string;
-  branch: string;
-  reporting_manager: string;
-  access_key: string;
-  username: string;
-  profile_photo: string;
-}
-
-interface CurrentUser {
+export interface CurrentUser {
   error: object;
   loading?: boolean;
-  employee: CurrentLoggedInUser;
+  employee: Employee;
 }
 
 export const initialState: CurrentUser = {
   error: {},
   loading: false,
-  employee: {} as CurrentLoggedInUser,
+  employee: {} as Employee,
 };
 
 const CurrentUserSlice = createSlice({
@@ -63,10 +31,12 @@ const CurrentUserSlice = createSlice({
 
     restoreCurrentUserInfo(state) {
       const loggedInUser = Cookies.get(EMPLOYEE_LOCAL_STORAGE_KEY);
-
       if (loggedInUser) {
         const userData = JSON.parse(loggedInUser);
-        state.employee = userData;
+
+        state.employee = { ...userData };
+      } else {
+        state.employee = {} as Employee;
       }
     },
   },

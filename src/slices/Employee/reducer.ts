@@ -14,7 +14,7 @@ import {
   AccessKey,
 } from "pages/HRandAdmin/types";
 
-interface InitialState {
+export interface EmployeeInitialState {
   error: object;
   loading?: boolean;
 
@@ -25,7 +25,7 @@ interface InitialState {
   accessKeys: AccessKey[];
 }
 
-export const initialState: InitialState = {
+export const initialState: EmployeeInitialState = {
   employees: [],
   roles: [],
   departments: [],

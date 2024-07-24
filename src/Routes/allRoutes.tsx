@@ -45,8 +45,12 @@ import OfflineOrdersRegistration from "pages/BD/OfflineOrdersRegistration";
 import MaterialTesting from "pages/Welcome/Quotes/MaterialTesting";
 import Quotations from "pages/BD/Quotations";
 import LabHome from "pages/Laboratory/LabHome";
+import MyJobs from "pages/Laboratory/Analyst/MyJobs";
+
+const commonRoutes = [{ path: "/profile", component: <Profile /> }];
 
 const BDRoutes = [
+  ...commonRoutes,
   { path: "/bd/product", component: <UserLoginForm /> },
   { path: "/bd/orders-list", component: <UserLoginForm /> },
   { path: "/bd/add-product", component: <AddProduct /> },
@@ -77,17 +81,19 @@ const BDRoutes = [
     path: "/bd/quotations",
     component: <Quotations />,
   },
-  { path: "/lab", component: <LabHome /> },
+  // { path: "/lab", component: <LabHome /> },
 ];
 
-const LaboratoryRoutes = [];
+const LaboratoryRoutes = [
+  { path: "/lab", component: <LabHome /> },
+  ...commonRoutes,
+];
 
 const HRandAdminRoutes = [
   { path: "/hr/add-emp", component: <AddEmp /> },
   { path: "/hr/emp-list", component: <EmpList /> },
-  { path: "/profile", component: <Profile /> },
   { path: "/hr/job-list", component: <JobList /> },
-  // { path: "/hr/job-overview", component: <JobDetails /> },
+  ...commonRoutes,
 ];
 
 const publicRoutes = [
@@ -117,4 +123,17 @@ const publicRoutes = [
   { path: "/candidate-list", component: <CandidateList /> },
   { path: "/candidate-overview", component: <CandidateOverview /> },
 ];
-export { BDRoutes, publicRoutes, HRandAdminRoutes, LaboratoryRoutes };
+
+const analystRoutes = [
+  { path: "/analyst/my-jobs", component: <MyJobs /> },
+  ...commonRoutes,
+];
+
+export {
+  BDRoutes,
+  publicRoutes,
+  HRandAdminRoutes,
+  LaboratoryRoutes,
+  analystRoutes,
+  commonRoutes,
+};

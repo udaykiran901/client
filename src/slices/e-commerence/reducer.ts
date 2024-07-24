@@ -24,7 +24,7 @@ import {
   MyOrder,
 } from "pages/Ecommerce/type";
 
-interface InitialState {
+export interface EcommerceInitialState {
   products?: Product[];
   productDetail?: Product[];
   orders?: ProductOrder[];
@@ -50,7 +50,7 @@ interface InitialState {
   };
 }
 
-export const initialState: InitialState = {
+export const initialState: EcommerceInitialState = {
   products: [],
   productDetail: [],
   orders: [],

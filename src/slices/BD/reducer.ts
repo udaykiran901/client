@@ -41,7 +41,7 @@ import {
 } from "pages/BD/types";
 import { completeRegistration } from "slices/thunk";
 
-interface InitialState {
+export interface BDInitialState {
   error: object;
   loading?: boolean;
   showSubscribeModal: boolean;
@@ -72,7 +72,7 @@ interface InitialState {
   allOrderSamples: Orders[];
 }
 
-export const initialState: InitialState = {
+export const initialState: BDInitialState = {
   error: {},
   loading: false,
   showSubscribeModal: false,
@@ -247,7 +247,7 @@ const BDslice = createSlice({
 
     builder.addCase(
       completeRegistration.fulfilled,
-      (state: InitialState, action) => {
+      (state: BDInitialState, action) => {
         state.step2loader = false;
         const { order_id, project_name, subject, registration_done } =
           action.payload;

@@ -7,6 +7,8 @@ import {
   DropdownItem,
 } from "reactstrap";
 
+import undefinedProfile from "../../../assets/images/undefined-profile.jpg";
+
 //i18n
 import { withTranslation } from "react-i18next";
 // Redux
@@ -59,11 +61,7 @@ const EmployeeProfileMenu = (props: any) => {
           <i className="mdi mdi-chevron-down d-none d-xl-inline-block" />
 
           <img
-            src={
-              profile_photo
-                ? profile_photo
-                : "https://keka-pavan.s3.ap-south-1.amazonaws.com/steel-lg.40629e92cf9019a54fa2.png"
-            }
+            src={profile_photo ? profile_photo : undefinedProfile}
             alt=""
             className="rounded avatar-sm"
           />

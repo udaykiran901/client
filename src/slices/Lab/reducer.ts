@@ -1,20 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAnalysts, getPendingAssigningJobs } from "./thunk";
+import { getAnalysts, getMyJobs, getPendingAssigningJobs } from "./thunk";
 import { Orders } from "pages/BD/types";
 import { Employee } from "pages/HRandAdmin/types";
+import { Job } from "pages/Laboratory/type";
 
-interface InitialState {
+export interface LabInitialState {
   error: object;
   loading?: boolean;
   sampleAllocationPending: Orders[];
   labStaff: Employee[];
+  myJobs: Job[];
 }
 
-export const initialState: InitialState = {
+export const initialState: LabInitialState = {
   error: {},
   loading: false,
   sampleAllocationPending: [],
   labStaff: [],
+  myJobs: [],
 };
 
 const LabSlice = createSlice({
@@ -44,6 +47,10 @@ const LabSlice = createSlice({
 
     builder.addCase(getAnalysts.fulfilled, (state: any, action: any) => {
       state.labStaff = action.payload.data;
+    });
+
+    builder.addCase(getMyJobs.fulfilled, (state: any, action: any) => {
+      state.myJobs = action.payload.data;
     });
 
     //end of quotations

@@ -49,6 +49,11 @@ export const onGettingPendingAssigningSamplesAPI = () =>
 
 export const getAllAnalystAPI = () => api.get(url.GET_ALL_ANALYSTS, null);
 
+export const assigningParamsToAnlystsAPI = (data: any) =>
+  api.create(url.ASSIGN_PARAMS_TO_ANALYST, data);
+
+export const getMyJobsAPI = () => api.get(url.GET_MY_JOBS, null);
+
 // Login Method
 export const postFakeLogin = (data: any) =>
   api.create(url.POST_FAKE_LOGIN, data);

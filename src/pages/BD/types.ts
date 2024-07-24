@@ -177,6 +177,7 @@ export interface Samples {
   params: Param[];
   product: Product;
   job_assigned: boolean;
+  doa: string;
 }
 
 export interface Param {
@@ -186,6 +187,11 @@ export interface Param {
   status: string;
   param: {
     discipline: string;
+  };
+  employee: {
+    emp_id: string;
+    username: string;
+    profile_photo: string;
   };
 }
 

@@ -15,7 +15,6 @@ import {
 import {
   BackendParams,
   EComShop,
-  Product,
   ProductCustomer,
   ProductOrder,
   ProductPartialInfo,
@@ -23,6 +22,7 @@ import {
   CartProduct,
   MyOrder,
 } from "pages/Ecommerce/type";
+import { Product } from "pages/BD/types";
 
 export interface EcommerceInitialState {
   products?: Product[];

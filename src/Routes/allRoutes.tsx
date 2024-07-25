@@ -46,6 +46,7 @@ import MaterialTesting from "pages/Welcome/Quotes/MaterialTesting";
 import Quotations from "pages/BD/Quotations";
 import LabHome from "pages/Laboratory/LabHome";
 import MyJobs from "pages/Laboratory/Analyst/MyJobs";
+import Scope from "pages/BD/Scope";
 
 const commonRoutes = [{ path: "/profile", component: <Profile /> }];
 
@@ -81,6 +82,7 @@ const BDRoutes = [
     path: "/bd/quotations",
     component: <Quotations />,
   },
+  { path: "/bd/scope", component: <Scope /> },
   // { path: "/lab", component: <LabHome /> },
 ];
 
@@ -126,6 +128,7 @@ const publicRoutes = [
 
 const analystRoutes = [
   { path: "/analyst/my-jobs", component: <MyJobs /> },
+  { path: "/analyst/my-jobs/:jobId", component: <LabHome /> },
   ...commonRoutes,
 ];
 

@@ -75,6 +75,8 @@ export const GET_ALL_PARAMS = "/bd/get-all-params";
 
 //BD Module
 
+export const GET_SCOPE = "/bd/get-scope";
+
 export const REQUEST_CALLBACK = "/bd/on-request-callback";
 export const ON_SUBSCRIBE = "/bd/subscribe";
 export const ON_ADDING_NEW_PRODUCT = "/bd/adding-new-product";

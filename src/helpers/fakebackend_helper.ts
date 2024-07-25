@@ -174,6 +174,8 @@ export const getMyOrdersPartialData = () =>
   api.get(url.GET_MY_ORDERS_PARTIAL, null);
 
 //BD Module
+
+export const getScopeAPI = () => api.get(url.GET_SCOPE, null);
 export const getAllParamsApi = () => api.get(url.GET_ALL_PARAMS, null);
 
 export const onGettingCompleteOrderDetails = (id: any) =>

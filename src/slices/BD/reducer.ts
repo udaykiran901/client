@@ -27,6 +27,7 @@ import {
   getMonthlyQuotationsCount,
   getAllQuotations,
   getAllSampleMaterials,
+  getScope,
 } from "./thunk";
 import {
   CallBacks,
@@ -40,6 +41,7 @@ import {
   Quotation,
 } from "pages/BD/types";
 import { completeRegistration } from "slices/thunk";
+import { Product } from "pages/BD/types";
 
 export interface BDInitialState {
   error: object;
@@ -70,6 +72,7 @@ export interface BDInitialState {
   quotationsDaily: CountGraph[];
   quotationsMonthly: CountGraph[];
   allOrderSamples: Orders[];
+  scope: Product[];
 }
 
 export const initialState: BDInitialState = {
@@ -104,6 +107,7 @@ export const initialState: BDInitialState = {
 
   //all samples screen
   allOrderSamples: [],
+  scope: [],
 };
 
 const BDslice = createSlice({
@@ -308,6 +312,10 @@ const BDslice = createSlice({
         state.orderInfo = action.payload.data;
       }
     );
+
+    builder.addCase(getScope.fulfilled, (state, action) => {
+      state.scope = action.payload.data;
+    });
 
     //tax conversion
     // builder.addCase(

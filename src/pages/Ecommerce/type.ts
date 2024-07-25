@@ -1,3 +1,4 @@
+import { Product } from "pages/BD/types";
 export interface EcoAction {
   ecommerce: {
     products?: Product[];
@@ -88,30 +89,6 @@ export interface BackendProductDes {
   image_lg: string;
   features: string;
   rating: number | null;
-}
-
-export interface Product {
-  id: number;
-  image: string;
-  image_lg: string;
-  name: string;
-  link: string;
-  category: string;
-  rating: number;
-  prefix: string;
-  completePack: boolean;
-
-  basePrice: number;
-  isOffer?: boolean;
-  offer: number;
-  reviews: number;
-
-  params: Params[];
-
-  recentProducts?: RecentProducts[];
-  comments?: Comment[];
-  additionalInfo: KeyValue[];
-  description?: string;
 }
 
 export interface Tests {

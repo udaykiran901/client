@@ -160,6 +160,7 @@ export interface Orders {
   tax_converted_date: string;
 
   samples: Samples[];
+  scope: Product[];
 }
 
 export interface Samples {
@@ -195,10 +196,43 @@ export interface Param {
   };
 }
 
-interface Product {
+interface Feature {
+  short_feature: string;
+  description: string;
+}
+
+export interface Parameter {
+  param_id: string;
+  is_nabl: boolean;
+  common_req: boolean;
+  popular: number;
+  price: number;
+  subgroup: number;
+  params: OrderSampleSelectedParams[];
+  available: boolean;
+  additional_info: string;
+  discipline: string;
+  requirements: string;
+}
+
+export interface Product {
   id: number;
-  name: string;
   image: string;
+  image_lg: string;
+  name: string;
+  category: string;
+  rating: number | null;
+  base_price: number;
+  isOffer: boolean;
+  offer: number;
+  prefix: string;
+  complete_pack: boolean;
+  description: string;
+  no_of_days: number;
+  interim_report: boolean;
+  interim_report_days: number;
+  features: Feature[];
+  params: Parameter[];
 }
 
 export interface Customer {

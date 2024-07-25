@@ -45,7 +45,7 @@ const MyJobs = () => {
       }}
     >
       <Row>
-        <Col lg={2}>
+        <Col lg={3}>
           <code>Sample ID</code>
           <p> {eachJob.sample.sample_code}</p>
         </Col>
@@ -70,7 +70,7 @@ const MyJobs = () => {
         <Col lg={1}>
           <Link to={`/analyst/my-jobs/${eachJob.param_pk}`}>
             <code>
-              <i className="mdi mdi-arrow-right"></i>
+              <i className="mdi mdi-arrow-right"></i> Navigate
             </code>
           </Link>
         </Col>

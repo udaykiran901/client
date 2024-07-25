@@ -243,24 +243,8 @@ const SidebarContent = (props: any) => {
                     <span>{props.t("Samples")}</span>
                   </Link>
                 </li>
-                <li>
-                  <Link to="/bd/add-product">
-                    <i className="mdi mdi-plus-circle-outline"></i>
 
-                    <span>{props.t("Add Product")}</span>
-                  </Link>
-                </li>
                 <li>
-                  <Link to="/bd/add-param">
-                    <i className="mdi mdi-plus-circle-outline"></i>
-                    <span>{props.t("Add Parameter")}</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link to="#" className="has-arrow">
-                    <i className="bx bx-store"></i>
-                    <span>{props.t("Admin")}</span>
-                  </Link>
                   {/* <ul className="sub-menu">
                 <li>
                   <Link to="#">{props.t("All Dashboards")}</Link>
@@ -285,6 +269,13 @@ const SidebarContent = (props: any) => {
                   <Link to="#">{props.t("Orders Info")}</Link>
                 </li>
               </ul> */}
+                </li>
+
+                <li>
+                  <Link to="/bd/scope">
+                    <i className="mdi mdi-target"></i>
+                    <span>{props.t("Scope")}</span>
+                  </Link>
                 </li>
               </React.Fragment>
             )}

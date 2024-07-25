@@ -31,6 +31,7 @@ import {
   onGettingQuotationsAPI,
   onRequestingConversionToTax,
   onGettingAllSamplesAPI,
+  getScopeAPI,
 } from "../../helpers/fakebackend_helper";
 
 import { toast } from "react-toastify";
@@ -68,7 +69,17 @@ import {
   GET_MONTHLY_QUOTATIONS_COUNT,
   TAX_CONVERSION_REQUESTED,
   GET_ALL_SAMPLES,
+  GET_SCOPE,
 } from "../../helpers/url_helper";
+
+export const getScope = createAsyncThunk(GET_SCOPE, async () => {
+  try {
+    const response = await getScopeAPI();
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+});
 
 export const onRequestCallbackThunk = createAsyncThunk(
   REQUEST_CALLBACK,

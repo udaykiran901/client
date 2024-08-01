@@ -44,7 +44,7 @@ const Scope = () => {
       <>
         <tr>
           <td style={{ width: "50px" }} rowSpan={params.length}>
-            {index + 1} {""}
+            {index + 1} {""}.
           </td>
           <td style={{ width: "100px" }} rowSpan={params.length}>
             <img src={image} alt="" className="rounded avatar-lg" />
@@ -84,6 +84,7 @@ const Scope = () => {
 
           <td>{params.length > 0 && params[0].price}</td>
         </tr>
+
         {params.slice(1).map((param, paramIndex) => (
           <tr key={paramIndex}>
             <td style={{ width: "250px" }}>{renderParameter(param.params)}</td>

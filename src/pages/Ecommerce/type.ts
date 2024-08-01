@@ -28,12 +28,6 @@ export interface EcoAction {
   };
 }
 
-export interface FilterClothes {
-  id: number;
-  name: string;
-  link: string;
-}
-
 export interface Discount {
   label: string;
   value: number;

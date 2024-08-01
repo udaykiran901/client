@@ -82,7 +82,7 @@ const AddParam = () => {
       discipline: "",
       additional_info: "",
       subgroup: "",
-      requirements: "20 Kg's / Sample",
+      requirements: "",
     },
 
     validationSchema: Yup.object({
@@ -120,7 +120,7 @@ const AddParam = () => {
     dispatch(onGetProducts());
   }, [dispatch]);
 
-  const [common_req, setCommon_req] = useState(false);
+  const [common_req, setCommon_req] = useState(true);
 
   return (
     <React.Fragment>

@@ -85,7 +85,7 @@ export const ADD_PARAM = "/bd/add-param";
 export const GET_REQUEST_CALLBACKS = "/bd/get-request-callbacks";
 export const UPLOAD_CUSTOMER_REQUEST_AUDIO =
   "/bd/upload-customer-request-audio";
-export const GET_ALL_ECOMMERCE_ORDERS = "/bd/get-ecommerce-orders";
+export const GET_ALL_ORDERS = "/bd/get-all-orders";
 export const COMPLETE_REGISTRATION =
   "/bd/complete-ecommerce-order-registration";
 

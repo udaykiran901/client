@@ -334,8 +334,6 @@ const OrderInfo = (props: any) => {
   const labOptions = formatSelectOptions(formattedLabs);
 
   const convertToTaxClicked = (id: number) => {
-    console.log("id : ", id);
-
     dispatch(
       convertToTaxRequested({ order_number: id, orderId: order.order_id })
     );
@@ -394,7 +392,7 @@ const OrderInfo = (props: any) => {
                                 <i className="bx bxs-file-pdf fs-1 align-middle text-danger me-2"></i>
                               </a>
                               <a href={order.client_letter} target="_blank">
-                                <i className="bx bxs-file-blank fs-1 align-middle text-success me-2"></i>
+                                <i className="bx bxs-file-pdf fs-1 align-middle text-success me-2"></i>
                               </a>
 
                               {order.converted_to_tax && (
@@ -644,6 +642,7 @@ const OrderInfo = (props: any) => {
                             type="file"
                             id="letter"
                             name="letter"
+                            accept=".png, .jpg, .jpeg"
                             onChange={(event) => {
                               const file =
                                 event.currentTarget.files &&
@@ -830,6 +829,7 @@ const OrderInfo = (props: any) => {
                         <div className="mb-3">
                           <Label htmlFor="discount">Discount :</Label>
                           <Input
+                            disabled={readOnlyForm}
                             type="number"
                             name="discount"
                             id="discount"
@@ -859,6 +859,7 @@ const OrderInfo = (props: any) => {
                             transportation_fee:
                           </Label>
                           <Input
+                            disabled={readOnlyForm}
                             type="number"
                             name="transportation_fee"
                             id="transportation_fee"

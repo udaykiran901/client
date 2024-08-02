@@ -256,11 +256,11 @@ const OrdersList = () => {
 
       {
         header: "Placed On",
-        accessorKey: "placedOn",
+        accessorKey: "created_at",
         enableColumnFilter: false,
         enableSorting: false,
         cell: (cellProps: any) => {
-          return <p>{getDateAndTime(cellProps.row.original.placedOn)}</p>;
+          return <p>{getDateAndTime(cellProps.row.original.created_at)}</p>;
         },
       },
 

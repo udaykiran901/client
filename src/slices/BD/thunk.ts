@@ -41,7 +41,7 @@ import {
   ADD_PARAM,
   CUSTOMERS_MONTHLY_GRAPH,
   CUSTOMER_LAST_30_RECORDS,
-  GET_ALL_ECOMMERCE_ORDERS,
+  GET_ALL_ORDERS,
   GET_CUSTOMERS_LIST,
   GET_REQUEST_CALLBACKS,
   GET_SUBSCRIBERS_GRAPH,
@@ -189,17 +189,14 @@ export const uploadCustomerRequestAudio = createAsyncThunk(
   }
 );
 
-export const getAllOrders = createAsyncThunk(
-  GET_ALL_ECOMMERCE_ORDERS,
-  async () => {
-    try {
-      const response = await onGetAllOrdersApi();
-      return response.data;
-    } catch (error) {
-      return error;
-    }
+export const getAllOrders = createAsyncThunk(GET_ALL_ORDERS, async () => {
+  try {
+    const response = await onGetAllOrdersApi();
+    return response.data;
+  } catch (error) {
+    return error;
   }
-);
+});
 
 export const getAllSampleMaterials = createAsyncThunk(
   GET_ALL_SAMPLES,

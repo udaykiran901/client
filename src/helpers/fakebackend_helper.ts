@@ -209,7 +209,7 @@ export const onCompleteRegistration = (data: any) =>
 export const getRequestCallbacks = () =>
   api.get(url.GET_REQUEST_CALLBACKS, null);
 
-export const ongetAllOrders = () => api.get(url.GET_ALL_ECOMMERCE_ORDERS, null);
+export const ongetAllOrders = () => api.get(url.GET_ALL_ORDERS, null);
 
 export const onGettingAllSamplesAPI = (data: string) =>
   api.get(`${url.GET_ALL_SAMPLES}`, { data });

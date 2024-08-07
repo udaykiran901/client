@@ -13,7 +13,7 @@ import Welcome from "pages/Welcome";
 import EcommerenceProducts from "../pages/Ecommerce/EcommerceProduct";
 import EcommerceProductDetail from "pages/Ecommerce/EcommerceProductDetail";
 import EcommerceCart from "pages/Ecommerce/EcommerceCart";
-import EcommerceCheckout from "pages/Ecommerce/EcommerceCheckout";
+
 import UserLoginForm from "../pages/Authentication/UserLoginForm";
 import UserRegister from "pages/Authentication/UserRegister";
 import AppLogin from "pages/Authentication/AppLogin";
@@ -24,13 +24,7 @@ import EmpList from "pages/HRandAdmin/EmpList";
 import AddProduct from "forms/AddProduct";
 
 //jobs
-import JobList from "pages/JobPages/JobList";
-import ApplyJobs from "pages/JobPages/ApplyJobs";
-import JobGrid from "pages/JobPages/JobGrid";
-import JobDetails from "pages/JobPages/JobDetails";
-import JobCategories from "pages/JobPages/JobCategories";
-import CandidateList from "pages/JobPages/CandidateList";
-import CandidateOverview from "pages/JobPages/CandidateOverview";
+
 import AddParam from "forms/AddParam";
 import MyOrders from "pages/Ecommerce/MyOrders";
 import CallBacksList from "pages/BD/CallBacksList";
@@ -94,7 +88,6 @@ const LaboratoryRoutes = [
 const HRandAdminRoutes = [
   { path: "/hr/add-emp", component: <AddEmp /> },
   { path: "/hr/emp-list", component: <EmpList /> },
-  { path: "/hr/job-list", component: <JobList /> },
   ...commonRoutes,
 ];
 
@@ -112,18 +105,9 @@ const publicRoutes = [
     component: <EcommerenceProducts />,
   },
   { path: "/ecommerce-cart", component: <EcommerceCart /> },
-  { path: "/ecommerce-checkout", component: <EcommerceCheckout /> },
   { path: "/app", component: <AppLogin /> },
   { path: "/myorders", component: <MyOrders /> },
   { path: "/material-testing-quote", component: <MaterialTesting /> },
-
-  //jobs
-  { path: "/job-apply", component: <ApplyJobs /> },
-  { path: "/job-grid", component: <JobGrid /> },
-  { path: "/job-details", component: <JobDetails /> },
-  { path: "/job-categories", component: <JobCategories /> },
-  { path: "/candidate-list", component: <CandidateList /> },
-  { path: "/candidate-overview", component: <CandidateOverview /> },
 ];
 
 const analystRoutes = [

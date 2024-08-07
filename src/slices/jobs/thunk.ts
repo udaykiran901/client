@@ -9,7 +9,7 @@ import {
   updateJobList as updateJobListApi,
   getJobGrid as getJobGridApi,
   getJobCandidateList as getJobCandidateListApi,
-} from "../../helpers/fakebackend_helper";
+} from "../../helpers/be_helpers";
 import { toast } from "react-toastify";
 
 export const getJobList = createAsyncThunk("jobs/getJobsList", async () => {

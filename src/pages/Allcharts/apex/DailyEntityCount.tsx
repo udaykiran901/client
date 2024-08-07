@@ -4,7 +4,6 @@ import getChartColorsArray from "../../../Components/Common/ChartDynamicColor";
 import { DailyGraphAllTntities } from "pages/BD/types";
 
 const DailyEntityCount = ({ data, dataColors }: any) => {
-  console.log(data);
   const dailyCountAllEntities: DailyGraphAllTntities[] = data;
 
   const apaexlineChartColors = getChartColorsArray(dataColors);

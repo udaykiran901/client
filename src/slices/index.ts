@@ -17,6 +17,8 @@ import CurrentUserSlice from "./CurrentUser/reducer";
 // import JobsReducer from "./jobs/reducer";
 import LabReducer from "./Lab/reducer";
 
+import AccountReducer from "./auth/register/reducer";
+
 import { LayoutState } from "./layouts/reducer";
 import { LoginInitState } from "./auth/login/reducer";
 import { ProfileInitState } from "./auth/profile/reducer";
@@ -26,6 +28,7 @@ import { HRInitialState } from "./HRandAdmin/reducer";
 import { EmployeeInitialState } from "./Employee/reducer";
 import { CurrentUser } from "./CurrentUser/reducer";
 import { LabInitialState } from "./Lab/reducer";
+import { RegisterSlice } from "./auth/register/reducer";
 
 const rootReducer = combineReducers({
   Layout: LayoutReducer,
@@ -37,6 +40,7 @@ const rootReducer = combineReducers({
   EmployeeSlice: EmployeeSlice,
   CurrentUserSlice: CurrentUserSlice,
   lab: LabReducer,
+  Account: AccountReducer,
 });
 
 export default rootReducer;
@@ -51,4 +55,5 @@ export interface RootState {
   EmployeeSlice: EmployeeInitialState;
   CurrentUserSlice: CurrentUser;
   lab: LabInitialState;
+  Account: RegisterSlice;
 }

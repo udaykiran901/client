@@ -24,11 +24,7 @@ import profile from "../../assets/images/profile-img.png";
 import logo from "../../assets/images/logo-light.png";
 
 //import thunk
-import {
-  loginuser,
-  resetLoginMsgFlag,
-  socialLogin,
-} from "slices/auth/login/thunk";
+import { loginuser, resetLoginMsgFlag } from "slices/auth/login/thunk";
 
 import withRouter from "Components/Common/withRouter";
 import { createSelector } from "reselect";
@@ -71,7 +67,7 @@ const UserLoginForm = (props: any) => {
   });
 
   const signIn = (type: any) => {
-    dispatch(socialLogin(type, props.router.navigate));
+    //SOCIAL LOGIN
   };
 
   const socialResponse = (type: any) => {

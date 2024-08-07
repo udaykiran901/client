@@ -10,9 +10,6 @@ export * from "./auth/profile/thunk";
 // Register
 export * from "./auth/register/thunk";
 
-// Forget Password
-export * from "./auth/forgetpwd/thunk";
-
 //ecommerse
 export * from "./e-commerence/thunk";
 

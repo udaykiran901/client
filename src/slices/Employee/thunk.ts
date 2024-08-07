@@ -1,4 +1,4 @@
-import { onEmployeeLogin as onLoginApi } from "../../helpers/fakebackend_helper";
+import { onEmployeeLogin as onLoginApi } from "../../helpers/be_helpers";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { employeeLoginSuccess } from "slices/CurrentUser/reducer";

@@ -505,7 +505,7 @@ const MaterialTestingQuoteForm = () => {
                       </div>
                     </div>
                     <div className="mb-3">
-                      <Label for="name">Enter your name</Label>
+                      <Label for="name">Name</Label>
                       <Input
                         type="text"
                         name="name"
@@ -524,7 +524,7 @@ const MaterialTestingQuoteForm = () => {
                     </div>
 
                     <div className="mb-3">
-                      <Label for="mobile">Enter your contact</Label>
+                      <Label for="mobile">Contact</Label>
                       <Input
                         type="number"
                         name="mobile"
@@ -544,7 +544,7 @@ const MaterialTestingQuoteForm = () => {
                     </div>
 
                     <div className="mb-3">
-                      <Label for="email">Enter your Email (Optional)</Label>
+                      <Label for="email">Email (Optional)</Label>
                       <Input
                         type="text"
                         name="email"

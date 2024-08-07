@@ -318,10 +318,6 @@ const EcommerceCart = () => {
                                       </Link>
                                     </div>
                                   </>
-
-                                  {/* {product.isOffer && (
-                                  <p className="text-success"> Offer Applied</p>
-                                )} */}
                                 </td>
 
                                 <td>

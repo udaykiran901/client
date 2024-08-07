@@ -1,4 +1,4 @@
-import { postJwtRegister } from "../../../helpers/fakebackend_helper";
+import { postJwtRegister } from "../../../helpers/be_helpers";
 import Cookies from "js-cookie";
 
 // action

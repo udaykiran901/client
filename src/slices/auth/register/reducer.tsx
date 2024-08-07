@@ -1,6 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const initialState = {
+export interface RegisterSlice {
+  registrationError: null | string;
+  message: null | string;
+  loading: boolean;
+  user: null | string;
+  success: boolean | string;
+  error: boolean | string;
+  isUserLogout: boolean | string;
+}
+
+export const initialState: RegisterSlice = {
   registrationError: null,
   message: null,
   loading: false,

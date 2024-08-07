@@ -29,13 +29,14 @@ import profileImg from "../../assets/images/profile-img.png";
 // import logoImg from "../../assets/images/logo.svg";
 import { createSelector } from "reselect";
 import logo from "../../assets/images/logo-light.png";
+import { RootState } from "slices";
+import { RegisterSlice } from "slices/auth/register/reducer";
 
 const UserRegister = () => {
   //meta title
   document.title = "Register | KDM Engineers Group";
 
   const dispatch = useDispatch<any>();
-  const history = useNavigate();
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
@@ -61,8 +62,8 @@ const UserRegister = () => {
   });
 
   const selectProperties = createSelector(
-    (state: any) => state.Account,
-    (account) => ({
+    (state: RootState) => state.Account,
+    (account: RegisterSlice) => ({
       user: account.user,
       registrationError: account.registrationError,
       loading: account.loading,

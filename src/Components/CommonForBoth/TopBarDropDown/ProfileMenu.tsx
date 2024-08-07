@@ -14,14 +14,15 @@ import withRouter from "../../Common/withRouter";
 import { createSelector } from "reselect";
 
 // users
-import user1 from "../../../assets/images/users/avatar-1.jpg";
+
+import user1 from "../../../assets/images/undefined-profile.jpg";
 
 import { useSelector } from "react-redux";
 import { KDM_ECOMMERCE_USER_JWT_TOKEN, LOGGED_IN_USER } from "common/tokens";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getProfile, ProfileInitState } from "slices/auth/profile/reducer";
-import { getCart } from "slices/thunk";
+import { getProfile } from "slices/auth/profile/reducer";
+
 import { RootState } from "slices";
 
 const ProfileMenu = (props: any) => {

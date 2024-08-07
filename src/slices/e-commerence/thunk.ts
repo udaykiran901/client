@@ -22,7 +22,7 @@ import {
   onCompleteRegistration as completeRegistrationAPI,
   getAllParamsApi,
   generateMaterialTestingServiceAPI,
-} from "../../helpers/fakebackend_helper";
+} from "../../helpers/be_helpers";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {

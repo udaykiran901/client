@@ -58,11 +58,6 @@ const EcommerceProducts = (props: any) => {
 
   const { productPartialInfo, loading } = useSelector(selectProperties);
   const { navigate } = props.router;
-  // const [productList, setProductList] = useState<ProductPartialInfo[]>();
-
-  // useEffect(() => {
-  //   setProductList(productPartialInfo);
-  // }, [productPartialInfo]);
 
   useEffect(() => {
     dispatch(onGetProducts());
@@ -71,17 +66,6 @@ const EcommerceProducts = (props: any) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [dispatch]);
-
-  // search
-  // const handleSearch = (ele: any) => {
-  //   const query = ele.value.toLowerCase();
-  // console.log(ele.value);
-  // handleSearchData({
-  //   setState: setProductList,
-  //   data: productList,
-  //   item: query,
-  // });
-  // };
 
   return (
     <React.Fragment>
@@ -179,34 +163,7 @@ const EcommerceProducts = (props: any) => {
                                     starSpacing="1px"
                                   />
                                 </div>
-                                {/* {product.isOffer && (
-                                  <small>
-                                    Limited Offer{" "}
-                                    <b className="text-success">
-                                      {" " + product.offer} % Off
-                                    </b>
-                                  </small>
-                                )} */}
-                                {/* <h6 className="my-0 mb-4">
-                                  {product.isOffer ? (
-                                    <>
-                                      <span className="text-muted me-2">
-                                        <small className="text-muted me-2">
-                                          <del>Rs.{product.base_price} /-</del>
-                                        </small>
-                                      </span>
-                                      <span>
-                                        Rs.
-                                        {product.base_price -
-                                          (product.base_price * product.offer) /
-                                            100}
-                                        /-
-                                      </span>
-                                    </>
-                                  ) : (
-                                    <span>Rs.{product.base_price}/-</span>
-                                  )}
-                                </h6> */}
+
                                 <p className="text-success mt-3">
                                   Benifits of this Test
                                 </p>

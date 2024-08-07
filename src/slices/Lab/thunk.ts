@@ -4,7 +4,7 @@ import {
   getAllAnalystAPI,
   assigningParamsToAnlystsAPI,
   getMyJobsAPI,
-} from "../../helpers/fakebackend_helper";
+} from "../../helpers/be_helpers";
 
 import "react-toastify/dist/ReactToastify.css";
 import {

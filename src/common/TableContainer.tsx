@@ -222,11 +222,10 @@ const TableContainer = ({
                     <th
                       key={header.id}
                       colSpan={header.colSpan}
-                      className={`${
-                        header.column.columnDef.enableSorting
+                      className={`${header.column.columnDef.enableSorting
                           ? "sorting sorting_desc"
                           : ""
-                      }`}
+                        }`}
                     >
                       {header.isPlaceholder ? null : (
                         <React.Fragment>
@@ -293,9 +292,8 @@ const TableContainer = ({
             <div className={paginationWrapper}>
               <ul className={pagination}>
                 <li
-                  className={`paginate_button page-item previous ${
-                    !getCanPreviousPage() ? "disabled" : ""
-                  }`}
+                  className={`paginate_button page-item previous ${!getCanPreviousPage() ? "disabled" : ""
+                    }`}
                 >
                   <Link to="#" className="page-link" onClick={previousPage}>
                     <i className="mdi mdi-chevron-left"></i>
@@ -304,9 +302,8 @@ const TableContainer = ({
                 {getPageOptions().map((item: any, key: number) => (
                   <li
                     key={key}
-                    className={`paginate_button page-item ${
-                      getState().pagination.pageIndex === item ? "active" : ""
-                    }`}
+                    className={`paginate_button page-item ${getState().pagination.pageIndex === item ? "active" : ""
+                      }`}
                   >
                     <Link
                       to="#"
@@ -318,9 +315,8 @@ const TableContainer = ({
                   </li>
                 ))}
                 <li
-                  className={`paginate_button page-item next ${
-                    !getCanNextPage() ? "disabled" : ""
-                  }`}
+                  className={`paginate_button page-item next ${!getCanNextPage() ? "disabled" : ""
+                    }`}
                 >
                   <Link to="#" className="page-link" onClick={nextPage}>
                     <i className="mdi mdi-chevron-right"></i>

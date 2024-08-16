@@ -31,14 +31,14 @@ import {
   onGettingQuotationsAPI,
   onRequestingConversionToTax,
   onGettingAllSamplesAPI,
-  getScopeAPI,
+  getScopeAPI, getAllParamsApi
 } from "../../helpers/be_helpers";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import {
-  ADD_PARAM,
+  ADD_PARAM, GET_ALL_PARAMS,
   CUSTOMERS_MONTHLY_GRAPH,
   CUSTOMER_LAST_30_RECORDS,
   GET_ALL_ORDERS,
@@ -75,6 +75,15 @@ import {
 export const getScope = createAsyncThunk(GET_SCOPE, async () => {
   try {
     const response = await getScopeAPI();
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+});
+
+export const getParams = createAsyncThunk(GET_ALL_PARAMS, async () => {
+  try {
+    const response = await getAllParamsApi();
     return response.data;
   } catch (error) {
     return error;

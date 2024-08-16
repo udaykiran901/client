@@ -38,10 +38,14 @@ import { getDateAndTime } from "./CallBacksList";
 import CustomerRecordsLast30Count from "../../pages/Allcharts/apex/CustomerRecordsLast30Count";
 import CustomersMonthlyGraph from "../../pages/Allcharts/apex/CustomersMonthlyGraph";
 
+import { Link, useNavigate } from "react-router-dom";
+
 const CustomersList = () => {
   document.title = "Customers list | KDM Engineers Group";
 
   const [modal, setModal] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const selectedProperties = createSelector(
     (state: EcoActionBD) => state.bd,
@@ -70,45 +74,45 @@ const CustomersList = () => {
     dispatch(getCustomersLast30records());
   }, [dispatch]);
 
-  const validation: any = useFormik({
-    enableReinitialize: true,
-    initialValues: {
-      name: "",
-      email: "",
-      mobile: "",
-      gst: "",
-      pan: "",
-      customer_address: "",
-    },
+  // const validation: any = useFormik({
+  //   enableReinitialize: true,
+  //   initialValues: {
+  //     name: "",
+  //     email: "",
+  //     mobile: "",
+  //     gst: "",
+  //     pan: "",
+  //     customer_address: "",
+  //   },
 
-    validationSchema: Yup.object({
-      name: Yup.string().required("Please Enter Customer Name"),
-      mobile: Yup.string()
-        .matches(/^[0-9]{10}$/)
-        .required("Please Enter Customer's Phone No"),
+  //   validationSchema: Yup.object({
+  //     name: Yup.string().required("Please Enter Customer Name"),
+  //     mobile: Yup.string()
+  //       .matches(/^[0-9]{10}$/)
+  //       .required("Please Enter Customer's Phone No"),
 
-      gst: Yup.string()
-        .matches(/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}[Z]{1}[0-9]{1}$/)
-        .required("Please Enter a valid GST Number"),
-      pan: Yup.string()
-        .matches(/^[A-Z]{5}[0-9]{4}[A-Z]$/)
-        .required("Please Enter a valid PAN Numebr"),
-      customer_address: Yup.string().required("Please Customer's Address"),
-    }),
-    // onSubmit: (values: any) => {
-    //   console.log(values);
-    //   dispatch(registerCustomer(values));
-    // },
+  //     gst: Yup.string()
+  //       .matches(/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}[Z]{1}[0-9]{1}$/)
+  //       .required("Please Enter a valid GST Number"),
+  //     pan: Yup.string()
+  //       .matches(/^[A-Z]{5}[0-9]{4}[A-Z]$/)
+  //       .required("Please Enter a valid PAN Numebr"),
+  //     customer_address: Yup.string().required("Please Customer's Address"),
+  //   }),
+  //   // onSubmit: (values: any) => {
+  //   //   console.log(values);
+  //   //   dispatch(registerCustomer(values));
+  //   // },
 
-    onSubmit: async (values, { resetForm }) => {
-      try {
-        console.log(values);
-        await dispatch(registerCustomer(values));
-        resetForm();
-        toggle();
-      } catch (error) {}
-    },
-  });
+  //   onSubmit: async (values, { resetForm }) => {
+  //     try {
+  //       console.log(values);
+  //       await dispatch(registerCustomer(values));
+  //       resetForm();
+  //       // toggle();
+  //     } catch (error) { }
+  //   },
+  // });
 
   const columns = useMemo(
     () => [
@@ -194,6 +198,7 @@ const CustomersList = () => {
         enableColumnFilter: false,
         enableSorting: true,
         cell: (cellProps: any) => {
+
           return (
             <div
               className="address-column"
@@ -210,20 +215,47 @@ const CustomersList = () => {
           );
         },
       },
+
+      {
+        header: "Edit",
+        accessorKey: "edit",
+        enableColumnFilter: false,
+        enableSorting: true,
+        cell: (cellProps: any) => {
+          // console.log(cellProps, 'cellProps')
+          return (
+            <div
+              className="address-column"
+              style={{
+                maxWidth: "200px",
+                whiteSpace: "normal",
+                wordBreak: "break-word",
+              }}
+            >
+              <Link to={`/bd/cust/${cellProps.row.original.customer_id}`}>
+                <i className="mdi mdi-pencil-outline"></i>
+              </Link>
+            </div>
+          );
+        },
+      },
+
+
     ],
     []
   );
 
-  const toggle = useCallback(() => {
-    if (modal) {
-      setModal(false);
-    } else {
-      setModal(true);
-    }
-  }, [modal]);
+  // const toggle = useCallback(() => {
+  //   if (modal) {
+  //     setModal(false);
+  //   } else {
+  //     setModal(true);
+  //   }
+  // }, [modal]);
 
   const onClickAddCustomer = () => {
-    toggle();
+    // toggle();
+    navigate('/bd/cust')
   };
 
   return (
@@ -285,7 +317,7 @@ const CustomersList = () => {
             </Col>
           </Row>
 
-          <Modal size="lg" isOpen={modal} toggle={toggle}>
+          {/* <Modal size="lg" isOpen={modal} toggle={toggle}>
             <ModalBody>
               <Form
                 onSubmit={(e: any) => {
@@ -331,7 +363,7 @@ const CustomersList = () => {
                           value={validation.values.mobile || ""}
                         />
                         {validation.touched.mobile &&
-                        validation.errors.mobile ? (
+                          validation.errors.mobile ? (
                           <span className="text-danger">
                             {validation.errors.mobile}
                           </span>
@@ -414,13 +446,13 @@ const CustomersList = () => {
                           placeholder="Any additional Info"
                           invalid={
                             validation.touched.customer_address &&
-                            validation.errors.customer_address
+                              validation.errors.customer_address
                               ? true
                               : false
                           }
                         />
                         {validation.touched.customer_address &&
-                        validation.errors.customer_address ? (
+                          validation.errors.customer_address ? (
                           <span className="text-danger">
                             {validation.errors.customer_address}
                           </span>
@@ -438,7 +470,7 @@ const CustomersList = () => {
                 </Row>
               </Form>
             </ModalBody>
-          </Modal>
+          </Modal> */}
           <ToastContainer />
         </Container>
       </div>

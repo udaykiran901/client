@@ -27,7 +27,7 @@ import {
   getMonthlyQuotationsCount,
   getAllQuotations,
   getAllSampleMaterials,
-  getScope,
+  getScope, getParams
 } from "./thunk";
 import {
   CallBacks,
@@ -73,6 +73,7 @@ export interface BDInitialState {
   quotationsMonthly: CountGraph[];
   allOrderSamples: Orders[];
   scope: Product[];
+  params?: any[]
 }
 
 export const initialState: BDInitialState = {
@@ -108,6 +109,7 @@ export const initialState: BDInitialState = {
   //all samples screen
   allOrderSamples: [],
   scope: [],
+  params: []
 };
 
 const BDslice = createSlice({
@@ -315,6 +317,10 @@ const BDslice = createSlice({
 
     builder.addCase(getScope.fulfilled, (state, action) => {
       state.scope = action.payload.data;
+    });
+
+    builder.addCase(getParams.fulfilled, (state, action) => {
+      state.params = action.payload.data;
     });
 
     //tax conversion

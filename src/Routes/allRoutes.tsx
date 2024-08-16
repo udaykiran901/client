@@ -41,15 +41,20 @@ import Quotations from "pages/BD/Quotations";
 import LabHome from "pages/Laboratory/LabHome";
 import MyJobs from "pages/Laboratory/Analyst/MyJobs";
 import Scope from "pages/BD/Scope";
+import AddCustomer from "forms/AddCustomer";
 
 const commonRoutes = [{ path: "/profile", component: <Profile /> }];
 
 const BDRoutes = [
   ...commonRoutes,
+  { path: "/bd/cust", component: <AddCustomer /> },
+  { path: `/bd/cust/:id`, component: <AddCustomer /> },
   { path: "/bd/product", component: <UserLoginForm /> },
   { path: "/bd/orders-list", component: <UserLoginForm /> },
   { path: "/bd/add-product", component: <AddProduct /> },
+  { path: '/bd/add-product/:id', component: <AddProduct /> },
   { path: "/bd/add-param", component: <AddParam /> },
+  { path: "/bd/add-param/:id", component: <AddParam /> },
   { path: "/bd/call-backs", component: <CallBacksList /> },
   { path: "/bd/orders", component: <OrdersList /> },
   { path: "/bd/subscribers", component: <SubscribersList /> },

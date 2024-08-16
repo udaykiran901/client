@@ -5,7 +5,7 @@ import { RootState } from "slices";
 import { BDInitialState } from "slices/BD/reducer";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { getScope } from "slices/thunk";
+import { getScope, getParams } from "slices/thunk";
 import Spinners from "Components/Common/Spinner";
 import { Table, Col, Row, Container, Card, Button } from "reactstrap";
 import { Product, Parameter } from "./types";
@@ -25,16 +25,25 @@ const Scope = () => {
     })
   );
 
+
+
   const { scope, loading } = useSelector(selectedProperties);
 
   const dispatch = useDispatch<any>();
 
+  console.log(scope, 'scope data in scope screen')
+
   useEffect(() => {
     dispatch(getScope());
+    dispatch(getParams());
   }, [dispatch]);
 
   const renderEachRow = (rowData: Product, index: number) => {
-    const { name, image, category, params } = rowData;
+    const { id, name, image, category, params } = rowData;
+    // const navigate = useNavigate();
+    console.log(rowData, 'rowData in scope');
+    console.log(params, 'material params');
+    // console.log(index, ' idex')
 
     if (params.length <= 0) {
       return <tr></tr>;
@@ -44,7 +53,7 @@ const Scope = () => {
       <>
         <tr>
           <td style={{ width: "50px" }} rowSpan={params.length}>
-            {index + 1} {""}.
+            {index + 1} {""}
           </td>
           <td style={{ width: "100px" }} rowSpan={params.length}>
             <img src={image} alt="" className="rounded avatar-lg" />
@@ -55,7 +64,7 @@ const Scope = () => {
           </td>
 
           <td style={{ width: "50px" }} rowSpan={params.length}>
-            <Link to={"#"}>
+            <Link to={`/bd/add-product/${id}`}>
               {" "}
               <i className="mdi mdi-pencil-outline"></i>
             </Link>
@@ -70,8 +79,7 @@ const Scope = () => {
           </td>
 
           <td style={{ width: "50px" }}>
-            <Link to={"#"}>
-              {" "}
+            <Link to={`/bd/add-param/${params[0].param_id}`}>
               <i className="mdi mdi-pencil-outline"></i>
             </Link>
           </td>
@@ -84,13 +92,11 @@ const Scope = () => {
 
           <td>{params.length > 0 && params[0].price}</td>
         </tr>
-
         {params.slice(1).map((param, paramIndex) => (
           <tr key={paramIndex}>
             <td style={{ width: "250px" }}>{renderParameter(param.params)}</td>
             <td style={{ width: "50px" }}>
-              <Link to={"#"}>
-                {" "}
+              <Link to={`/bd/add-param/${params[paramIndex + 1].param_id}`}>
                 <i className="mdi mdi-pencil-outline"></i>
               </Link>
             </td>

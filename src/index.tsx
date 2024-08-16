@@ -12,11 +12,13 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 const store = configureStore({ reducer: rootReducer, devTools: true });
+export type AppDispatch = typeof store.dispatch;
+
 root.render(
   <Provider store={store}>
     <React.Fragment>
       <BrowserRouter basename={process.env.PUBLIC_URL}>
-      <App />
+        <App />
       </BrowserRouter>
     </React.Fragment>
   </Provider>

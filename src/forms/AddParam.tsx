@@ -14,6 +14,8 @@ import {
   FormFeedback,
 } from "reactstrap";
 
+import { useParams } from "react-router-dom";
+
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { createSelector } from "reselect";
@@ -21,7 +23,8 @@ import { EcoAction, ProductPartialInfo } from "pages/Ecommerce/type";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 // import { getProductsNameId } from "../slices/e-commerence/thunk";
-import { getProducts as onGetProducts } from "../slices/e-commerence/thunk";
+import { onGetAllParams, getProducts as onGetProducts } from "../slices/e-commerence/thunk";
+import { getParams } from '../slices/BD/thunk'
 import { addingParam } from "slices/thunk";
 
 export const generateUniqueID = () => {
@@ -95,14 +98,19 @@ const AddParam = () => {
     }),
 
     onSubmit: (value: any) => {
+      const installedParam = id ? id : null;
       const formattedData = {
         ...value,
         params: JSON.stringify(rows1),
-        common_req: common_req,
+        common_req: common_req, installedParam: installedParam
       };
       dispatch(addingParam(formattedData));
     },
   });
+
+  const { id } = useParams();
+
+
 
   const selectProperties = createSelector(
     (state: EcoAction) => state.ecommerce,
@@ -116,9 +124,41 @@ const AddParam = () => {
 
   const dispatch: any = useDispatch();
 
+  const selectedProperties = createSelector((state: any) => state.bd, (bd) => ({ allParams: bd.params, scopeLoading: bd.loading }));
+
+  const { allParams, scopeLoading } = useSelector(selectedProperties);
+
+  console.log(allParams, 'All possible params in the add-params form')
+
   useEffect(() => {
     dispatch(onGetProducts());
-  }, [dispatch]);
+
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+
+
+      const paramsToBeUpdated = allParams.find((eachParam: any) => eachParam.paramId == (id));
+      console.log(paramsToBeUpdated, 'paramsToBeUpdated')
+      const { params, subgroup, discipline, isNabl, requirements, price } = paramsToBeUpdated;
+      const parsedUpdatedParams = JSON.parse(params);
+      console.log(parsedUpdatedParams, 'parsedUpdatedParams');
+
+      nestedformik.setValues({
+        id: id,
+        isNabl: isNabl,
+        price: price,
+        discipline: discipline,
+        additional_info: "",
+        subgroup: subgroup,
+        requirements: requirements,
+      })
+
+      setrows1(parsedUpdatedParams)
+
+    }
+  }, [id])
 
   const [common_req, setCommon_req] = useState(true);
 
@@ -168,7 +208,7 @@ const AddParam = () => {
                                   )}
                                 </select>
                                 {nestedformik.errors.subgroup &&
-                                nestedformik.touched.subgroup ? (
+                                  nestedformik.touched.subgroup ? (
                                   <span className="text-danger">
                                     {nestedformik.errors.blood}
                                   </span>
@@ -210,7 +250,7 @@ const AddParam = () => {
                                 }
                               />
                               {nestedformik.errors.price &&
-                              nestedformik.touched.price ? (
+                                nestedformik.touched.price ? (
                                 <FormFeedback type="invalid">
                                   {nestedformik.errors.price}
                                 </FormFeedback>
@@ -243,7 +283,7 @@ const AddParam = () => {
                                 <option value="PHYSICAL">Physical</option>
                               </Input>
                               {nestedformik.errors.discipline &&
-                              nestedformik.touched.discipline ? (
+                                nestedformik.touched.discipline ? (
                                 <FormFeedback type="invalid">
                                   {nestedformik.errors.discipline}
                                 </FormFeedback>
@@ -274,7 +314,7 @@ const AddParam = () => {
                                 <option value={"false"}>NON NABL</option>
                               </Input>
                               {nestedformik.errors.isNabl &&
-                              nestedformik.touched.isNabl ? (
+                                nestedformik.touched.isNabl ? (
                                 <FormFeedback type="invalid">
                                   {nestedformik.errors.isNabl}
                                 </FormFeedback>
@@ -297,7 +337,7 @@ const AddParam = () => {
                                 onBlur={nestedformik.handleBlur}
                               />
                               {nestedformik.errors.additional_info &&
-                              nestedformik.touched.additional_info ? (
+                                nestedformik.touched.additional_info ? (
                                 <span className="text-danger">
                                   {nestedformik.errors.additional_info}
                                 </span>
@@ -347,7 +387,7 @@ const AddParam = () => {
                                   }
                                 />
                                 {nestedformik.errors.requirements &&
-                                nestedformik.touched.requirements ? (
+                                  nestedformik.touched.requirements ? (
                                   <FormFeedback type="invalid">
                                     {nestedformik.errors.requirements}
                                   </FormFeedback>
@@ -449,7 +489,7 @@ const AddParam = () => {
                         </div>
 
                         <Button type="submit" color="primary">
-                          Submit
+                          {id ? 'Update Details' : 'Submit'}
                         </Button>
                       </div>
                     </div>

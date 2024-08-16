@@ -32,6 +32,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -51,14 +52,17 @@
 
 body {
   overflow-x: hidden;
-  scrollbar-width: thin; /* For Firefox */
-  scrollbar-color: transparent transparent; /* For Firefox */
+  scrollbar-width: thin;
+  /* For Firefox */
+  scrollbar-color: transparent transparent;
+  /* For Firefox */
   overflow-y: scroll;
 }
 
 /* WebKit browsers (Chrome, Safari) */
 body::-webkit-scrollbar {
-  width: 1px; /* Adjust the width as needed */
+  width: 1px;
+  /* Adjust the width as needed */
 }
 
 body::-webkit-scrollbar-thumb {
@@ -124,6 +128,8 @@ body::-webkit-scrollbar-thumb {
   outline: none;
   color: red;
 }
+
+
 
 /*  */
 

@@ -73,6 +73,10 @@ const BDRoutes = [
     component: <OfflineOrdersRegistration />,
   },
   {
+    path: "/bd/order/edit/:orderId",
+    component: <OfflineOrdersRegistration />,
+  },
+  {
     path: "/bd/quotations",
     component: <Quotations />,
   },

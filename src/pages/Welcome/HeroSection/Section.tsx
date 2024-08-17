@@ -278,76 +278,75 @@ const Section = () => {
   };
 
   return (
-    <React.Fragment>
-      <section className="section hero-section bg-ico-hero" id="home">
-        <div className="bg-overlay bg-primary"></div>
-        <Container>
-          <Row className="align-items-center">
-            {showCallbackForm && renderModal()}
-            <Col lg={6}>
-              <div className="text-white-50">
-                <h3>Welcome to</h3>
-                <h1 className="text-white fw-semibold mb-3 hero-title">
-                  KDM Engineers Group
-                </h1>
-                <p className="font-size-14">
-                  Where innovation meets excellence in the world of civil
-                  engineering. We are dedicated to creating sustainable
-                  solutions that not only shape skylines but also transform
-                  communities. With a passion for precision and a commitment to
-                  quality, we take pride in every project we undertake. Explore
-                  the possibilities with us as we build a future that stands the
-                  test of time.
-                </p>
+    <section className="section hero-section bg-ico-hero" id="home">
+      <div className="bg-overlay bg-primary"></div>
+      <Container>
+        <Row className="align-items-center">
+          {showCallbackForm && renderModal()}
+          <Col lg={6}>
+            <div className="text-white-50">
+              <h3>Welcome to </h3>
+              <h1 className="text-white fw-semibold mb-3 hero-title">
+                KDM Engineers Group
+              </h1>
+              <p className="font-size-14">
+                Where innovation meets excellence in the world of civil
+                engineering. We are dedicated to creating sustainable solutions
+                that not only shape skylines but also transform communities.
+                With a passion for precision and a commitment to quality, we
+                take pride in every project we undertake. Explore the
+                possibilities with us as we build a future that stands the test
+                of time.
+              </p>
 
-                <div className="d-flex flex-wrap gap-2 mt-4">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      tog_standard();
-                    }}
-                    className="btn btn-success"
-                    data-dismiss="modal"
-                  >
-                    Request a Phone call
-                  </button>
+              <div className="d-flex flex-wrap gap-2 mt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    tog_standard();
+                  }}
+                  className="btn btn-success"
+                  data-dismiss="modal"
+                >
+                  Request a Phone call
+                </button>
 
-                  <ButtonDropdown
-                    isOpen={drp_warning1}
-                    toggle={() => setDrp_warning1(!drp_warning1)}
+                <ButtonDropdown
+                  isOpen={drp_warning1}
+                  toggle={() => setDrp_warning1(!drp_warning1)}
+                >
+                  <Button id="caret" color="warning">
+                    Get Quote for
+                  </Button>
+                  <DropdownToggle
+                    caret
+                    color="warning"
+                    className="dropdown-toggle-split"
                   >
-                    <Button id="caret" color="warning">
-                      Get Quote for
-                    </Button>
-                    <DropdownToggle
-                      caret
-                      color="warning"
-                      className="dropdown-toggle-split"
+                    <i className="mdi mdi-chevron-down" />
+                  </DropdownToggle>
+                  <DropdownMenu className="bg-warning">
+                    <DropdownItem onClick={materialTestingQuote}>
+                      Material Testing
+                    </DropdownItem>
+                    <DropdownItem>Structural Health Monitoring</DropdownItem>
+                    <DropdownItem>Traffic Surveys</DropdownItem>
+                    <DropdownItem>Geo Technical</DropdownItem>
+                    <DropdownItem>Topo Surveys</DropdownItem>
+                    <div className="dropdown-divider"></div>
+                    <DropdownItem
+                      onClick={() => {
+                        tog_standard();
+                      }}
                     >
-                      <i className="mdi mdi-chevron-down" />
-                    </DropdownToggle>
-                    <DropdownMenu className="bg-warning">
-                      <DropdownItem onClick={materialTestingQuote}>
-                        Material Testing
-                      </DropdownItem>
-                      <DropdownItem>Structural Health Monitoring</DropdownItem>
-                      <DropdownItem>Traffic Surveys</DropdownItem>
-                      <DropdownItem>Geo Technical</DropdownItem>
-                      <DropdownItem>Topo Surveys</DropdownItem>
-                      <div className="dropdown-divider"></div>
-                      <DropdownItem
-                        onClick={() => {
-                          tog_standard();
-                        }}
-                      >
-                        Directly talk to an executive
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </ButtonDropdown>
-                </div>
+                      Directly talk to an executive
+                    </DropdownItem>
+                  </DropdownMenu>
+                </ButtonDropdown>
               </div>
-            </Col>
-            {/* <Col lg={5} md={8} sm={10} className="ms-lg-auto">
+            </div>
+          </Col>
+          {/* <Col lg={5} md={8} sm={10} className="ms-lg-auto">
               <Card className="overflow-hidden mb-0 mt-5 mt-lg-0">
                 <CardHeader className="text-center">
                   <h5 className="mb-0">ICO Countdown time</h5>
@@ -392,10 +391,9 @@ const Section = () => {
                 </CardBody>
               </Card>
             </Col> */}
-          </Row>
-        </Container>
-      </section>
-    </React.Fragment>
+        </Row>
+      </Container>
+    </section>
   );
 };
 

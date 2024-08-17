@@ -98,7 +98,6 @@ const EcommerceSlice = createSlice({
     });
 
     builder.addCase(onGetAllParams.fulfilled, (state: any, action: any) => {
-      console.log("In reducer");
       state.allParams = action.payload.data;
     });
 

@@ -32,16 +32,29 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import { useDispatch } from "react-redux";
-import { Branch, Customer, EcoActionBD } from "pages/BD/types";
+import {
+  Branch,
+  Customer,
+  EcoActionBD,
+  OrderSampleParams,
+  OrderSamples,
+  Samples,
+} from "pages/BD/types";
 
 import {
   getBranches,
+  getCompleteOrderDetails,
   getCustomersList,
   offlineOrderRegistration,
 } from "slices/thunk";
 import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
-import { EcoAction, TestParams, BackendParams } from "pages/Ecommerce/type";
+import {
+  EcoAction,
+  TestParams,
+  BackendParams,
+  ProductPartialInfo,
+} from "pages/Ecommerce/type";
 
 import {
   NextedState,
@@ -49,7 +62,40 @@ import {
   getClassifiedParams,
 } from "./MaterialTestingQuoteForm";
 import { generateUniqueID } from "./AddParam";
-import { formatSelectOptions } from "./OrderInfo";
+import { RootState } from "slices";
+import { BDInitialState } from "slices/BD/reducer";
+
+export const formatSelectOptions = (options: any) => {
+  return [
+    {
+      label: "Select From Below",
+      options: (options || []).map((eachOption: any) => ({
+        label: eachOption.label,
+        value: eachOption.id,
+      })),
+    },
+  ];
+};
+
+const markingSelectedUnmarkingLeftParamArray = (
+  disciplineParamArray: BackendParams[],
+  selectedParamArray: OrderSampleParams[]
+): BackendParams[] => {
+  const res = (disciplineParamArray || []).map((eachParam: BackendParams) => {
+    if (
+      (selectedParamArray || []).some(
+        (eachSelectedSample: OrderSampleParams) =>
+          eachSelectedSample.param_id.toString() ===
+          eachParam.paramId.toString()
+      )
+    )
+      return { ...eachParam, selected: true };
+
+    return { ...eachParam, selected: false };
+  });
+
+  return res;
+};
 
 export interface SampleFields {
   sample_id: string;
@@ -141,18 +187,14 @@ export const calculateDiscountedPrice = (
 ) => {
   const discountAmount = (originalPrice * discountPercentage) / 100;
   const discountedPrice = originalPrice - discountAmount;
-
   return discountedPrice;
 };
 
-const OfflineOrderRegistrationForm = () => {
+const OfflineOrderRegistrationForm = (props) => {
   const dispatch: any = useDispatch();
-
-  //step-1 samples picking, step-2 registering details
+  const { orderId } = props.router.params;
   const [col1, setcol1] = useState(true);
   const [col2, setcol2] = useState(false);
-
-  //dynamically adding rows samples
   const [rows1, setrows1] = useState<NextedState[]>([]);
 
   const toggleSelectTestBox = (row_id: string, paramId: string) => {
@@ -276,6 +318,7 @@ const OfflineOrderRegistrationForm = () => {
       (row: NextedState) => row.row_id !== id
     );
     setrows1(updatedRows);
+
     const updatedSamples: SampleFields[] = validation.values.samples.filter(
       (sample: SampleFields) => sample.sample_id !== id
     );
@@ -288,13 +331,18 @@ const OfflineOrderRegistrationForm = () => {
     );
 
     const filteredParams = (allParams || []).filter(
-      (eachParam: BackendParams) => eachParam.subgroup === productId
+      (eachParam: BackendParams) => {
+        if (eachParam.subgroup === productId) {
+          return { ...eachParam, selected: true };
+        }
+      }
     );
 
     const chemicalParams: BackendParams[] = getClassifiedParams(
       filteredParams,
       CHEMICAL
     );
+
     const physicalParams: BackendParams[] = getClassifiedParams(
       filteredParams,
       PHYSICAL
@@ -348,9 +396,11 @@ const OfflineOrderRegistrationForm = () => {
       allParams: ecommerce.allParams,
     })
   );
+
   const { productPartialInfo, allParams, loadingEcommerceState } = useSelector(
     selectedPropertiesFromEcommerce
   );
+
   useEffect(() => {
     dispatch(onGetProducts());
   }, [dispatch]);
@@ -369,7 +419,6 @@ const OfflineOrderRegistrationForm = () => {
   const { branches, loadingHRstate } = useSelector(selectedPropertiesFromHR);
 
   //end of getting states
-  //////////////////////////////////////////////////////////////////////////////////////////////////
 
   const [parentRef, setParentRef] = useState<boolean>(false);
   const [nhaiBool, setNhaiBool] = useState<boolean>(false);
@@ -389,23 +438,43 @@ const OfflineOrderRegistrationForm = () => {
   };
 
   //end of this fucking variables
+
+  //order edit case
+
+  const selectedProperties = createSelector(
+    (state: RootState) => state.bd,
+    (bd: BDInitialState) => ({
+      orderInfo: bd.orderInfo,
+      loading: bd.loading,
+      step2loader: bd.step2loader,
+      customers: bd.customers,
+    })
+  );
+
+  const { orderInfo } = useSelector(selectedProperties);
+
+  useEffect(() => {
+    if (orderId) {
+      dispatch(getCompleteOrderDetails(orderId));
+    }
+  }, [dispatch]);
+
   const validation: any = useFormik({
     enableReinitialize: true,
     initialValues: {
-      order_id: "",
-      project_name: "some project name goes here ",
-      subject: "some subject hoes gerw",
-      parent_ref: "hello world",
-      nhai_hq_letter: "hello soelw",
-      additional_info: "some additional information",
+      order_id: orderId ? orderInfo.order_id : "",
+      project_name: orderId ? orderInfo.project_name : "",
+      subject: orderId ? orderInfo.subject : "",
+      parent_ref: orderId ? orderInfo.parent_ref : "",
+      nhai_hq_letter: orderId ? orderInfo.nhai_hq_letter : "",
+      additional_info: orderId ? orderInfo.additional_info : "",
       letter: null,
       due_date: "",
-      discount: 0,
+      discount: orderId ? orderInfo.discount : 0,
       transportation_fee: 0,
-
       // samples info
       samples: [],
-      samples_address: "some sample address goes here",
+      samples_address: orderId ? orderInfo.samples_collection_address : "",
 
       //customers info
       customer_id: "",
@@ -413,7 +482,7 @@ const OfflineOrderRegistrationForm = () => {
       //lab details
       lab: "",
 
-      ref: "",
+      ref: orderId ? orderInfo.ref : "",
     },
 
     validationSchema: Yup.object({
@@ -444,6 +513,7 @@ const OfflineOrderRegistrationForm = () => {
       //branch Info
       lab: Yup.string().required("Please assign the lab"),
     }),
+
     onSubmit: (values: any) => {
       const prices = rows1.map((eachRow: NextedState) => {
         const physicalSum = eachRow.physicalParams.reduce(
@@ -451,7 +521,10 @@ const OfflineOrderRegistrationForm = () => {
             return (
               accum +
               (eachRow.isOffer
-                ? calculateDiscountedPrice(eachParam.price || 0, eachRow.offer)
+                ? calculateDiscountedPrice(
+                    eachParam.price || 0,
+                    eachRow.offer as number
+                  )
                 : eachParam.price || 0)
             );
           },
@@ -463,7 +536,10 @@ const OfflineOrderRegistrationForm = () => {
             return (
               accum +
               (eachRow.isOffer
-                ? calculateDiscountedPrice(eachParam.price || 0, eachRow.offer)
+                ? calculateDiscountedPrice(
+                    eachParam.price || 0,
+                    eachRow.offer as number
+                  )
                 : eachParam.price || 0)
             );
           },
@@ -562,7 +638,6 @@ const OfflineOrderRegistrationForm = () => {
                     type="select"
                     id="select_sample"
                     className="form-control-lg"
-                    // value={formRow.sampleName}
                     onChange={(e) =>
                       handleInputChangeNested(
                         formRow.row_id,
@@ -570,11 +645,15 @@ const OfflineOrderRegistrationForm = () => {
                       )
                     }
                   >
-                    <option value="" selected>
-                      Select From below
-                    </option>
+                    <option value="">Select From below</option>
                     {(productPartialInfo || []).map((each) => (
-                      <option value={each.id} key={each.id}>
+                      <option
+                        value={each.id}
+                        key={each.id}
+                        selected={
+                          orderId && formRow.sampleId === each.id.toString()
+                        }
+                      >
                         {each.name}
                       </option>
                     ))}
@@ -605,8 +684,8 @@ const OfflineOrderRegistrationForm = () => {
                       selectTestBox(
                         eachTest,
                         formRow.row_id,
-                        formRow.isOffer,
-                        formRow.offer
+                        formRow.isOffer as boolean,
+                        formRow.offer as number
                       )
                     )}
 
@@ -614,8 +693,8 @@ const OfflineOrderRegistrationForm = () => {
                       selectTestBox(
                         eachTest,
                         formRow.row_id,
-                        formRow.isOffer,
-                        formRow.offer
+                        formRow.isOffer as boolean,
+                        formRow.offer as number
                       )
                     )}
                   </tbody>
@@ -667,7 +746,6 @@ const OfflineOrderRegistrationForm = () => {
                 <div className="flex-grow-1">
                   <p className="mb-lg-0">
                     <code>Sample - {index + 1 + "   "}</code>
-                    <code>(hello world)</code>
                   </p>
                   <h6 className="mt-2">{eachSample.sampleName}</h6>
                   {renderParameterDetails(eachSample, index)}
@@ -724,6 +802,7 @@ const OfflineOrderRegistrationForm = () => {
             </div>
           )
         )}
+
         <Col xl={12}>
           <div className="mb-3">
             <Label>Sample Collection Address</Label>
@@ -775,8 +854,75 @@ const OfflineOrderRegistrationForm = () => {
     setcol1(false);
   };
 
-  console.log(!validation.isValid, validation.isSubmitting);
-  console.log("Form contains errors:", validation.errors);
+  //editing
+  useEffect(() => {
+    if (orderId) {
+      const availableSamples: NextedState[] = (orderInfo.samplesList || []).map(
+        (eachSample: OrderSamples) => {
+          const filteredParams = (allParams || []).filter(
+            (eachParam: BackendParams) =>
+              eachParam.subgroup === eachSample.product_id
+          );
+
+          const chemicalParams: BackendParams[] = getClassifiedParams(
+            filteredParams,
+            CHEMICAL
+          );
+          const physicalParams: BackendParams[] = getClassifiedParams(
+            filteredParams,
+            PHYSICAL
+          );
+
+          const selectingUnselectingChemicalParams: BackendParams[] =
+            markingSelectedUnmarkingLeftParamArray(
+              chemicalParams,
+              eachSample.chemicalParams
+            );
+
+          const selectingUnselectingPhysicalParams: BackendParams[] =
+            markingSelectedUnmarkingLeftParamArray(
+              physicalParams,
+              eachSample.physicalParams
+            );
+
+          return {
+            row_id: eachSample.sample_id,
+            sampleId: eachSample.product_id.toString(),
+            sampleName: (productPartialInfo || []).find(
+              (eachProduct: ProductPartialInfo) =>
+                eachProduct.id === eachSample.product_id
+            )?.name as string,
+            chemicalParams: selectingUnselectingChemicalParams,
+            physicalParams: selectingUnselectingPhysicalParams,
+            offer: 0,
+            isOffer: false,
+            prefix: "",
+            sample_image: eachSample.image,
+          };
+        }
+      );
+
+      const formattedSampleInfos = (orderInfo.samplesList || []).map(
+        (eachSample: OrderSamples) => {
+          return {
+            sample_id: eachSample.sample_id,
+            source: eachSample.source,
+            quantity: eachSample.quantity,
+            grade: eachSample.grade || "",
+            brandName: eachSample.brandName || "",
+            week_no: eachSample.brandName || "",
+            ref_code: eachSample.ref_code || "",
+            sample_id_optional_field: eachSample.sample_id_optional_field || "",
+            site_name: eachSample.site_name || "",
+            product_id: eachSample.product_id || "",
+          };
+        }
+      );
+
+      setrows1(availableSamples);
+      validation.setFieldValue("samples", formattedSampleInfos);
+    }
+  }, [orderId, orderInfo, allParams]);
 
   return (
     <Container fluid>
@@ -907,6 +1053,7 @@ const OfflineOrderRegistrationForm = () => {
                     <Label htmlFor="perentRef">Note Parent Ref</Label>
                   </div>
                 </Col>
+
                 <Col xl={6}>
                   <div className="form-check ml-3">
                     <input
@@ -920,6 +1067,7 @@ const OfflineOrderRegistrationForm = () => {
                     <Label htmlFor="nhai_Letter">Note NHAI HQ</Label>
                   </div>
                 </Col>
+
                 {parentRef && (
                   <Col xl={6}>
                     <div className="mb-3">
@@ -936,6 +1084,7 @@ const OfflineOrderRegistrationForm = () => {
                     </div>
                   </Col>
                 )}
+
                 {nhaiBool && (
                   <Col xl={6}>
                     <div className="mb-3">
@@ -985,6 +1134,7 @@ const OfflineOrderRegistrationForm = () => {
                       )}
                   </div>
                 </Col>
+
                 {!false && (
                   <Col lg={6}>
                     <div className="mb-3">
@@ -1012,6 +1162,7 @@ const OfflineOrderRegistrationForm = () => {
                     </div>
                   </Col>
                 )}
+
                 <Col xl={12}>
                   <div className="mb-3">
                     <Label>Additional Information</Label>

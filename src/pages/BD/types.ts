@@ -110,6 +110,7 @@ export interface OrderSamples {
   sample_id_optional_field: string;
   source: string;
   week_no: string;
+  site_name: string;
 }
 
 export interface OrderCustomerInfo {

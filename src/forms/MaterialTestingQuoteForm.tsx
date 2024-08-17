@@ -30,6 +30,7 @@ import { CHEMICAL, PHYSICAL } from "common/data/ecommerce";
 import { greenBadge, infoBadge, redBadge } from "pages/BD/OrdersList";
 import { generateMaterialTestingServiceQuote } from "../slices/e-commerence/thunk";
 import { resetPopup } from "slices/e-commerence/reducer";
+import { OrderSampleParams } from "pages/BD/types";
 
 export const extractSelectedTests = (rows1: NextedState[]) =>
   (rows1 || [])
@@ -45,15 +46,15 @@ export const extractSelectedTests = (rows1: NextedState[]) =>
     }));
 
 export interface NextedState {
-  row_id: string;
-  sampleId: string;
+  row_id: string; // id used to figureout in UI generated using uuid
+  sampleId: string; // actual id of sample
   sampleName: string;
   chemicalParams: BackendParams[];
   physicalParams: BackendParams[];
-  isOffer: boolean;
-  offer: number;
+  isOffer?: boolean;
+  offer?: number;
   sample_image?: string;
-  prefix: string;
+  prefix?: string;
 }
 
 export const getClassifiedParams = (
@@ -63,10 +64,11 @@ export const getClassifiedParams = (
   const classified: BackendParams[] = params.filter(
     (eachParam: BackendParams) => {
       if (eachParam.discipline === DISCIPLINE) {
-        return { ...eachParam, selected: false };
+        return { ...eachParam };
       }
     }
   );
+
   return classified;
 };
 
@@ -620,8 +622,8 @@ const MaterialTestingQuoteForm = () => {
                                   selectTestBox(
                                     eachTest,
                                     formRow.row_id,
-                                    formRow.isOffer,
-                                    formRow.offer
+                                    formRow.isOffer as boolean,
+                                    formRow.offer as number
                                   )
                               )}
 
@@ -630,8 +632,8 @@ const MaterialTestingQuoteForm = () => {
                                   selectTestBox(
                                     eachTest,
                                     formRow.row_id,
-                                    formRow.isOffer,
-                                    formRow.offer
+                                    formRow.isOffer as boolean,
+                                    formRow.offer as number
                                   )
                               )}
                             </tbody>

@@ -135,9 +135,9 @@ const AddCustomer = () => {
                                         onSubmit={validation.handleSubmit}
                                     >
                                         <Row>
-                                            <h6 className="text-primary text-center mb-4">
+                                            {/* <h6 className="text-primary text-center mb-4">
                                                 Fill the form and hit submit button
-                                            </h6>
+                                            </h6> */}
                                             <Row>
                                                 <Col xl={6}>
                                                     <div className="mb-3">

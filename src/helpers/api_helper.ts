@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { KDM_ECOMMERCE_USER_JWT_TOKEN } from "common/tokens";
 
 // export const url = "http://65.1.64.186:8081";
-export const url = "http://localhost:8082";
+export const url = "http://localhost:8081";
 
 axios.defaults.baseURL = url;
 

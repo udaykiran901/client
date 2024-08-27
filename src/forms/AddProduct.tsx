@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import withRouter from "Components/Common/withRouter";
 
-import './forms.css'
+import "./forms.css";
 
 import Spinners from "Components/Common/Spinner";
 import { createSelector } from "reselect";
@@ -70,22 +70,20 @@ const AddProduct = () => {
 
   const navigate = useNavigate();
   const selectedProperties = createSelector(
-    (state: RootState) => state.bd, (bd: any) => ({
-      scope: bd.scope, loading: bd.loading
+    (state: RootState) => state.bd,
+    (bd: any) => ({
+      scope: bd.scope,
+      loading: bd.loading,
     })
   );
 
   const { scope, loading } = useSelector(selectedProperties);
 
-  const [img1, setImg1] = useState('');
-  const [img2, setImg2] = useState('');
+  const [img1, setImg1] = useState("");
+  const [img2, setImg2] = useState("");
 
   // console.log(loading, 'loading')
   // console.log(scope, ' scope in add pro')
-
-
-
-
 
   function toggleTabVertical(tab: any) {
     if (activeTabVartical !== tab) {
@@ -97,8 +95,6 @@ const AddProduct = () => {
       }
     }
   }
-
-
 
   const verticalformik: any = useFormik({
     initialValues: {
@@ -125,7 +121,9 @@ const AddProduct = () => {
         { short_feature: "", description: "" },
         { short_feature: "", description: "" },
       ],
-      id: '', old_image: null, old_image_lg: null
+      id: "",
+      old_image: null,
+      old_image_lg: null,
     },
 
     validationSchema: Yup.object({
@@ -176,32 +174,29 @@ const AddProduct = () => {
         Yup.object().shape({
           short_feature: Yup.string().required("Short feature is required"),
           description: Yup.string().required("Description is required"),
-        }),
+        })
       ),
 
-      id: Yup.string()
-
-
+      id: Yup.string(),
     }),
 
     onSubmit: async (values, { resetForm }) => {
       // console.log(values, 'values in formik')
-      await dispatch(onAddingNewProduct(values
-      ));
+      await dispatch(onAddingNewProduct(values));
       resetForm();
-      setImg1('');
-      setImg2('');
+      setImg1("");
+      setImg2("");
     },
   });
 
-
-
   useEffect(() => {
     if (id) {
-      const materialToBeUpdated = scope.find((need: any) => need.id === parseInt(id));
+      const materialToBeUpdated = scope.find(
+        (need: any) => need.id === parseInt(id)
+      );
       const materialRequirement = materialToBeUpdated;
       // console.log(materialToBeUpdated, 'bla');
-      console.log(materialRequirement, 'bla2');
+      console.log(materialRequirement, "bla2");
       // console.log(parser, 'bla3');
       setImg1(materialRequirement.image);
       setImg2(materialRequirement.image_lg);
@@ -222,7 +217,8 @@ const AddProduct = () => {
         interim_report_days: materialRequirement.interim_report_days,
         // image: materialRequirement.image,
         // image_lg: materialRequirement.image_lg,
-        features: parsedFeatures, id: id,
+        features: parsedFeatures,
+        id: id,
         old_image: materialRequirement.image,
         old_image_lg: materialRequirement.image_lg,
       });
@@ -235,12 +231,9 @@ const AddProduct = () => {
   //   }
   // }, [loading]);
 
-
   return (
     <React.Fragment>
       <div className="page-content">
-
-
         <Container fluid={true}>
           <Row>
             <Col lg="12">
@@ -339,8 +332,6 @@ const AddProduct = () => {
                             <Row>
                               <Col lg="6">
                                 <FormGroup className="mb-3">
-
-
                                   <Label htmlFor="basicpill-firstname-input12">
                                     Name of the Material
                                   </Label>
@@ -355,7 +346,7 @@ const AddProduct = () => {
                                     onBlur={verticalformik.handleBlur}
                                   />
                                   {verticalformik.errors.name &&
-                                    verticalformik.touched.name ? (
+                                  verticalformik.touched.name ? (
                                     <span className="text-danger">
                                       {verticalformik.errors.name}
                                     </span>
@@ -389,7 +380,7 @@ const AddProduct = () => {
                                       ))}
                                     </select>
                                     {verticalformik.errors.category &&
-                                      verticalformik.touched.category ? (
+                                    verticalformik.touched.category ? (
                                       <span className="text-danger">
                                         {verticalformik.errors.category}
                                       </span>
@@ -397,8 +388,6 @@ const AddProduct = () => {
                                   </div>
                                 </div>
                               </Col>
-
-
 
                               <Col lg={12}>
                                 <FormGroup className="mb-3">
@@ -416,7 +405,7 @@ const AddProduct = () => {
                                     onBlur={verticalformik.handleBlur}
                                   />
                                   {verticalformik.errors.description &&
-                                    verticalformik.touched.description ? (
+                                  verticalformik.touched.description ? (
                                     <span className="text-danger">
                                       {verticalformik.errors.description}
                                     </span>
@@ -493,7 +482,7 @@ const AddProduct = () => {
                                         onBlur={verticalformik.handleBlur}
                                       />
                                       {verticalformik.errors.offer &&
-                                        verticalformik.touched.offer ? (
+                                      verticalformik.touched.offer ? (
                                         <span className="text-danger">
                                           {verticalformik.errors.offer}
                                         </span>
@@ -521,8 +510,8 @@ const AddProduct = () => {
                                         />
                                         {verticalformik.errors
                                           .interim_report_days &&
-                                          verticalformik.touched
-                                            .interim_report_days ? (
+                                        verticalformik.touched
+                                          .interim_report_days ? (
                                           <span className="text-danger">
                                             {
                                               verticalformik.errors
@@ -551,7 +540,7 @@ const AddProduct = () => {
                                     onBlur={verticalformik.handleBlur}
                                   />
                                   {verticalformik.errors.prefix &&
-                                    verticalformik.touched.prefix ? (
+                                  verticalformik.touched.prefix ? (
                                     <span className="text-danger">
                                       {verticalformik.errors.prefix}
                                     </span>
@@ -572,7 +561,7 @@ const AddProduct = () => {
                                     onBlur={verticalformik.handleBlur}
                                   />
                                   {verticalformik.errors.base_price &&
-                                    verticalformik.touched.base_price ? (
+                                  verticalformik.touched.base_price ? (
                                     <span className="text-danger">
                                       {verticalformik.errors.base_price}
                                     </span>
@@ -597,7 +586,7 @@ const AddProduct = () => {
                                     onBlur={verticalformik.handleBlur}
                                   />
                                   {verticalformik.errors.no_of_days &&
-                                    verticalformik.touched.no_of_days ? (
+                                  verticalformik.touched.no_of_days ? (
                                     <span className="text-danger">
                                       {verticalformik.errors.no_of_days}
                                     </span>
@@ -610,12 +599,25 @@ const AddProduct = () => {
                             <Row>
                               <Col lg={6}>
                                 <FormGroup className="mb-3">
-                                  {img1 ? <img alt="IMAGE"
-                                    src={img1} style={{ height: "auto", marginBottom: 10 }}
-                                    className="d-block w-100 div-h-200" /> : null}
+                                  {img1 ? (
+                                    <img
+                                      alt="IMAGE"
+                                      src={img1}
+                                      style={{
+                                        height: "auto",
+                                        marginBottom: 10,
+                                      }}
+                                      className="d-block w-100 div-h-200"
+                                    />
+                                  ) : null}
 
                                   <Label htmlFor="image">Image</Label>
-                                  {id ? <p> - Choose file to update the above image</p> : null}
+                                  {id ? (
+                                    <p>
+                                      {" "}
+                                      - Choose file to update the above image
+                                    </p>
+                                  ) : null}
                                   <Input
                                     type="file"
                                     id="image"
@@ -634,7 +636,7 @@ const AddProduct = () => {
                                     onBlur={verticalformik.handleBlur}
                                   />
                                   {verticalformik.errors.image &&
-                                    verticalformik.touched.image ? (
+                                  verticalformik.touched.image ? (
                                     <span className="text-danger">
                                       {verticalformik.errors.image}
                                     </span>
@@ -643,11 +645,24 @@ const AddProduct = () => {
                               </Col>
                               <Col lg={6}>
                                 <FormGroup className="mb-3">
-                                  {img2 ? <img alt="IMAGE"
-                                    src={img2} style={{ height: "auto", marginBottom: 10 }}
-                                    className="d-block w-100 div-h-200" /> : null}
+                                  {img2 ? (
+                                    <img
+                                      alt="IMAGE"
+                                      src={img2}
+                                      style={{
+                                        height: "auto",
+                                        marginBottom: 10,
+                                      }}
+                                      className="d-block w-100 div-h-200"
+                                    />
+                                  ) : null}
                                   <Label htmlFor="image_lg">Large Image</Label>
-                                  {id ? <p> - Choose file to update the above image</p> : null}
+                                  {id ? (
+                                    <p>
+                                      {" "}
+                                      - Choose file to update the above image
+                                    </p>
+                                  ) : null}
                                   <Input
                                     type="file"
                                     id="image_lg"
@@ -666,7 +681,7 @@ const AddProduct = () => {
                                     onBlur={verticalformik.handleBlur}
                                   />
                                   {verticalformik.errors.image_lg &&
-                                    verticalformik.touched.image_lg ? (
+                                  verticalformik.touched.image_lg ? (
                                     <span className="text-danger">
                                       {verticalformik.errors.image_lg}
                                     </span>
@@ -699,12 +714,12 @@ const AddProduct = () => {
                                               onBlur={verticalformik.handleBlur}
                                             />
                                             {verticalformik.errors.features &&
-                                              verticalformik.errors.features[
+                                            verticalformik.errors.features[
                                               index
-                                              ] &&
-                                              verticalformik.errors.features[
-                                                index
-                                              ].short_feature ? (
+                                            ] &&
+                                            verticalformik.errors.features[
+                                              index
+                                            ].short_feature ? (
                                               <span className="text-danger">
                                                 {
                                                   verticalformik.errors
@@ -734,12 +749,12 @@ const AddProduct = () => {
                                               onBlur={verticalformik.handleBlur}
                                             />
                                             {verticalformik.errors.features &&
-                                              verticalformik.errors.features[
+                                            verticalformik.errors.features[
                                               index
-                                              ] &&
-                                              verticalformik.errors.features[
-                                                index
-                                              ].description ? (
+                                            ] &&
+                                            verticalformik.errors.features[
+                                              index
+                                            ].description ? (
                                               <span className="text-danger">
                                                 {
                                                   verticalformik.errors
@@ -762,10 +777,8 @@ const AddProduct = () => {
                                 color="success"
                                 className="w-md"
                               >
-                                {id ? 'Update Product' : 'Add Product'}
+                                {id ? "Update Product" : "Add Product"}
                               </Button>
-
-
                             </div>
                           </TabPane>
                           {/* <TabPane tabId={3}>
@@ -936,13 +949,15 @@ const AddProduct = () => {
                               : "previous"
                           }
                         >
-                          <Link
-                            to="#"
-                          >
-                            <button className="clearfix addProBt" onClick={() => {
-                              toggleTabVertical(activeTabVartical - 1);
-                            }}>Previous</button>
-
+                          <Link to="#">
+                            <button
+                              className="clearfix addProBt"
+                              onClick={() => {
+                                toggleTabVertical(activeTabVartical - 1);
+                              }}
+                            >
+                              Previous
+                            </button>
                           </Link>
                         </li>
                         <li
@@ -950,13 +965,16 @@ const AddProduct = () => {
                             activeTabVartical >= 2 ? "next disabled" : "next"
                           }
                         >
-                          <Link
-                            to="#"
-                          >
-                            <button disabled={activeTabVartical >= 2 ? true : false} className=" addProBt"
+                          <Link to="#">
+                            <button
+                              disabled={activeTabVartical >= 2 ? true : false}
+                              className=" addProBt"
                               onClick={() => {
-                                toggleTabVertical(activeTabVartical + 1)
-                              }}  >Next</button>
+                                toggleTabVertical(activeTabVartical + 1);
+                              }}
+                            >
+                              Next
+                            </button>
                           </Link>
                         </li>
                       </ul>
@@ -969,7 +987,7 @@ const AddProduct = () => {
           <ToastContainer />
         </Container>
       </div>
-    </React.Fragment >
+    </React.Fragment>
   );
 };
 

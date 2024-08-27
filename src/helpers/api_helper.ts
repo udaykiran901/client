@@ -2,8 +2,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { KDM_ECOMMERCE_USER_JWT_TOKEN } from "common/tokens";
 
-// export const url = "http://65.1.64.186:8081";
-export const url = process.env.REACT_APP_SERVER_API;
+export const url = "http://localhost:8081/api";
+// export const url = process.env.REACT_APP_SERVER_API_LOCAL;
 
 axios.defaults.baseURL = url;
 

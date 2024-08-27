@@ -65,7 +65,9 @@ const AddCustomer = () => {
             customerName: "",
             email: "",
             mobile: "",
-            gst: "",
+            gst_number_1: "",
+            gst_number_2: '',
+            gst_number_3: '',
             pan: "",
             customer_address: "",
         },
@@ -76,9 +78,9 @@ const AddCustomer = () => {
                 .matches(/^[0-9]{10}$/)
                 .required("Please Enter Customer's Phone No"),
 
-            gst: Yup.string()
-                .matches(/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}[Z]{1}[0-9]{1}$/)
-                .required("Please Enter a valid GST Number"),
+            // gst: Yup.string()
+            //     .matches(/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}[Z]{1}[0-9]{1}$/)
+            //     .required("Please Enter a valid GST Number"),
             pan: Yup.string()
                 .matches(/^[A-Z]{5}[0-9]{4}[A-Z]$/)
                 .required("Please Enter a valid PAN Numebr"),
@@ -91,7 +93,7 @@ const AddCustomer = () => {
 
         onSubmit: async (values, { resetForm }) => {
             try {
-                // console.log(values, 'customer final values');
+                console.log(values, 'customer final values');
                 await dispatch(registerCustomer(values));
                 resetForm();
                 // toggle();
@@ -105,13 +107,21 @@ const AddCustomer = () => {
         if (id) {
             const neededCustomer = allCustomers.find((eachCust: any) => eachCust.customer_id === id);
 
-            // console.group(neededCustomer, 'neededCust');
+            const { gst_number_1: gst1 } = neededCustomer.gst1;
+            const { gst_number_2: gst2 } = neededCustomer.gst2;
+            const { gst_number_3: gst3 } = neededCustomer.gst3;
+            console.log(gst1, 'gst1');
+
+
+
             validation.setValues({
                 id: id,
                 customerName: neededCustomer.name,
                 email: neededCustomer.email,
                 mobile: neededCustomer.contact,
-                gst: neededCustomer.gst_number,
+                gst_number_1: gst1,
+                gst_number_2: gst2,
+                gst_number_3: gst3,
                 pan: neededCustomer.pan_number,
                 customer_address: neededCustomer.address,
             })
@@ -205,23 +215,71 @@ const AddCustomer = () => {
 
                                                 <Col xl={6}>
                                                     <div className="mb-3">
-                                                        <Label>GST Number</Label>
+                                                        <Label>GST Number 1</Label>
                                                         <Input
-                                                            name="gst"
+                                                            name="gst_number_1"
                                                             type="text"
                                                             onChange={validation.handleChange}
                                                             onBlur={validation.handleBlur}
-                                                            value={validation.values.gst || ""}
+                                                            value={validation.values.gst_number_1 || ""}
                                                             placeholder="Enter GST - XXABCDEXXXXZXZX Number"
                                                             invalid={
-                                                                validation.touched.gst && validation.errors.gst
+                                                                validation.touched.gst_number_1 && validation.errors.gst_number_1
                                                                     ? true
                                                                     : false
                                                             }
                                                         />
-                                                        {validation.touched.gst && validation.errors.gst ? (
+                                                        {validation.touched.gst_number_1 && validation.errors.gst_number_1 ? (
                                                             <FormFeedback type="invalid">
-                                                                {validation.errors.gst}
+                                                                {validation.errors.gst_number_1}
+                                                            </FormFeedback>
+                                                        ) : null}
+                                                    </div>
+                                                </Col>
+
+                                                <Col xl={6}>
+                                                    <div className="mb-3">
+                                                        <Label>GST Number 2</Label>
+                                                        <Input
+                                                            name="gst_number_2"
+                                                            type="text"
+                                                            onChange={validation.handleChange}
+                                                            onBlur={validation.handleBlur}
+                                                            value={validation.values.gst_number_2 || ""}
+                                                            placeholder="Enter GST - XXABCDEXXXXZXZX Number"
+                                                            invalid={
+                                                                validation.touched.gst_number_2 && validation.errors.gst_number_2
+                                                                    ? true
+                                                                    : false
+                                                            }
+                                                        />
+                                                        {validation.touched.gst_number_2 && validation.errors.gst_number_2 ? (
+                                                            <FormFeedback type="invalid">
+                                                                {validation.errors.gst_number_2}
+                                                            </FormFeedback>
+                                                        ) : null}
+                                                    </div>
+                                                </Col>
+
+                                                <Col xl={6}>
+                                                    <div className="mb-3">
+                                                        <Label>GST Number 3</Label>
+                                                        <Input
+                                                            name="gst_number_3"
+                                                            type="text"
+                                                            onChange={validation.handleChange}
+                                                            onBlur={validation.handleBlur}
+                                                            value={validation.values.gst_number_3 || ""}
+                                                            placeholder="Enter GST - XXABCDEXXXXZXZX Number"
+                                                            invalid={
+                                                                validation.touched.gst_number_3 && validation.errors.gst_number_3
+                                                                    ? true
+                                                                    : false
+                                                            }
+                                                        />
+                                                        {validation.touched.gst_number_3 && validation.errors.gst_number_3 ? (
+                                                            <FormFeedback type="invalid">
+                                                                {validation.errors.gst_number_3}
                                                             </FormFeedback>
                                                         ) : null}
                                                     </div>

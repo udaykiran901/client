@@ -60,6 +60,8 @@ const CustomersList = () => {
   const { customers, loading, customersLast30Recs, customersMonthlyRec }: any =
     useSelector(selectedProperties);
 
+  console.log(customers, 'customers list');
+
   const dispatch = useDispatch<any>();
 
   useEffect(() => {
@@ -176,21 +178,21 @@ const CustomersList = () => {
           );
         },
       },
-      {
-        header: "GST Number",
-        accessorKey: "gst_number",
-        enableColumnFilter: false,
-        enableSorting: true,
-        cell: (cellProps: any) => {
-          return (
-            <>
-              <p className="text-muted mb-0">
-                {cellProps.row.original.gst_number}
-              </p>
-            </>
-          );
-        },
-      },
+      // {
+      //   header: "GST Number",
+      //   accessorKey: "gst_number",
+      //   enableColumnFilter: false,
+      //   enableSorting: true,
+      //   cell: (cellProps: any) => {
+      //     return (
+      //       <>
+      //         <p className="text-muted mb-0">
+      //           {cellProps.row.original.gst_number}
+      //         </p>
+      //       </>
+      //     );
+      //   },
+      // },
 
       {
         header: "Address",

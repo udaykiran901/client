@@ -126,13 +126,13 @@ const EcommerceProducts = (props: any) => {
                           >
                             <div>
                               <div className="product-img position-relative">
-                                {product.isOffer ? (
+                                {/* {product.isOffer ? (
                                   <div className="avatar-xs m-2 product-ribbon">
                                     <span className="product-avatar-title rounded-circle bg-primary">
                                       {`-${product.offer}%`}
                                     </span>
                                   </div>
-                                ) : null}
+                                ) : null} */}
 
                                 <img
                                   style={{ height: "auto" }}

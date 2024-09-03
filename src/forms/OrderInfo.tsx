@@ -33,8 +33,8 @@ export const renderParameterDetails = (
         {eachSample.chemicalParams.length !== 0 && "CHEMICAL PARAMETERS"}
       </small>
       {eachSample.chemicalParams.map((eachParam) =>
-        eachParam.selectedParams.map((eachSelectedParam) => (
-          <p>
+        eachParam.selectedParams.map((eachSelectedParam, idx: number) => (
+          <p key={idx}>
             <i
               className={`mdi mdi-circle-medium align-middle text-${
                 index % 2 !== 0 ? "success" : "warning"
@@ -53,8 +53,8 @@ export const renderParameterDetails = (
         {eachSample.physicalParams.length !== 0 && "PHYSICAL PARAMETERS"}
       </small>
       {eachSample.physicalParams.map((eachParam) =>
-        eachParam.selectedParams.map((eachSelectedParam) => (
-          <p>
+        eachParam.selectedParams.map((eachSelectedParam, idx) => (
+          <p key={idx}>
             <i
               className={`mdi mdi-circle-medium align-middle text-${
                 index % 2 !== 0 ? "success" : "warning"

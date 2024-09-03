@@ -56,10 +56,10 @@ const EcommerceCart = () => {
       discount +
       eachSample.parameters.reduce((paramDiscount, eachParam) => {
         return (
-          paramDiscount +
-          (eachSample.isOffer
-            ? eachParam.price - (eachParam.price * eachSample.offer) / 100
-            : eachParam.price)
+          paramDiscount + eachParam.price
+          // (eachSample.isOffer
+          //   ? eachParam.price - (eachParam.price * eachSample.offer) / 100
+          //   : eachParam.price)
         );
       }, 0)
     );
@@ -280,7 +280,7 @@ const EcommerceCart = () => {
                                 <td>
                                   <>
                                     <div>
-                                      {sample.isOffer ? (
+                                      {/* {sample.isOffer ? (
                                         <>
                                           <span className="text-muted me-2">
                                             <small>
@@ -300,11 +300,11 @@ const EcommerceCart = () => {
                                             )}
                                           </b>
                                         </>
-                                      ) : (
-                                        <b className="text-success">
-                                          Rs. {getPriceOf(sample.parameters)} /-
-                                        </b>
-                                      )}
+                                      ) : ( */}
+                                      <b className="text-success">
+                                        Rs. {getPriceOf(sample.parameters)} /-
+                                      </b>
+                                      {/* )} */}
 
                                       <Link
                                         to={
@@ -425,12 +425,12 @@ const EcommerceCart = () => {
                             <td>Bag Price :</td>
                             <td>{total}</td>
                           </tr>
-                          <tr>
+                          {/* <tr>
                             <td>Discount : </td>
                             <td className="text-success">
                               - {total - discountAmount || ""}
                             </td>
-                          </tr>
+                          </tr> */}
 
                           <tr>
                             <td>Final Price : </td>

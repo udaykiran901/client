@@ -5,7 +5,10 @@ import { KDM_ECOMMERCE_USER_JWT_TOKEN } from "common/tokens";
 // export const url = "http://localhost:8081/api";
 export const url = process.env.REACT_APP_SERVER_API;
 
+// console.log(url);
 axios.defaults.baseURL = url;
+
+console.log(process.env);
 
 // content type
 axios.defaults.headers.post["Content-Type"] = "application/json";

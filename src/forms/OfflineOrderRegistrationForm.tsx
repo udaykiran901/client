@@ -357,7 +357,7 @@ const OfflineOrderRegistrationForm = (props) => {
           sample_image: sample[0].image,
           chemicalParams: chemicalParams,
           physicalParams: physicalParams,
-          isOffer: sample[0].isOffer,
+          // isOffer: sample[0].isOffer,
           offer: sample[0].offer,
           prefix: sample[0].prefix,
         };

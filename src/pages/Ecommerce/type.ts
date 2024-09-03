@@ -183,8 +183,8 @@ export interface CartProduct {
   productName: string;
   productCategory: string;
   img: string;
-  isOffer: boolean;
-  offer: number;
+  // isOffer: boolean;
+  // offer: number;
   parameters: CartProductParameter[];
 }
 

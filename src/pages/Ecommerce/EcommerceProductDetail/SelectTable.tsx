@@ -61,7 +61,7 @@ const SelectTable: React.FC<TableProps> = ({
         cell: (cellProps: any) => {
           return (
             <div>
-              {cellProps.row.original.popular
+              {cellProps.row.original.popular === "1"
                 ? darkGreenBadge("Popular Test")
                 : ""}
               {cellProps.row.original.params.map((eachParam) => (
@@ -116,7 +116,7 @@ const SelectTable: React.FC<TableProps> = ({
         cell: (cellProps: any) => {
           return (
             <div>
-              {offerDetails.isOffer ? (
+              {/* {offerDetails.isOffer ? (
                 <div>
                   <span className="text-muted me-2">
                     <small>
@@ -136,11 +136,11 @@ const SelectTable: React.FC<TableProps> = ({
                     /-
                   </b>
                 </div>
-              ) : (
-                <b className="text-success">
-                  Rs. {cellProps.row.original.price} /-
-                </b>
-              )}
+              ) : ( */}
+              <b className="text-success">
+                Rs. {cellProps.row.original.price} /-
+              </b>
+              {/* )} */}
             </div>
           );
         },

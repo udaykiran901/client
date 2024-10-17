@@ -1,5 +1,6 @@
 import { ReactElement, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { Row, Table } from "reactstrap";
 import { getAllSampleMaterials } from "slices/thunk";
@@ -28,7 +29,7 @@ import {
   REJECTED,
   REJECTED_TEXT,
   UNDER_REVIEW,
-  UNDER_REVIEW_TEXT,
+  UNDER_REVIEW_TEXT, SUBMITTED_TO_HOD, SUBMITTED_TO_HOD_TXT
 } from "common/tokens";
 
 import Spinners from "Components/Common/Spinner";
@@ -54,12 +55,15 @@ export const renderParameter = (arr: OrderSampleSelectedParams[]) => {
 export const renderParamText = (status: string): ReactElement => {
   let statusText: ReactElement;
   switch (status) {
+    case SUBMITTED_TO_HOD:
+      statusText = <p className="text-success">{SUBMITTED_TO_HOD_TXT}</p>;
+      break;
     case NOT_YET_ASSIGNED:
       statusText = <p className="text-danger">{NOT_YET_ASSIGNED_TEXT}</p>;
       break;
 
     case ASSIGNED_TO_ANALYST:
-      statusText = <p className="text-success">{ASSIGNED_TO_ANALYST_TEXT}</p>;
+      statusText = <p className="text-danger">{ASSIGNED_TO_ANALYST_TEXT}</p>;
       break;
 
     case IN_PROGRESS:
@@ -86,8 +90,8 @@ export const renderParamText = (status: string): ReactElement => {
 };
 
 export const renderSamplesTable = (
-  eachParam: Param,
-  complete_info: boolean
+  eachParam: any,
+  complete_info: boolean,
 ) => (
   <React.Fragment key={eachParam.param_id}>
     <tr>
@@ -101,10 +105,16 @@ export const renderSamplesTable = (
       </td>
 
       <td>{renderParamText(eachParam.status)}</td>
-      {complete_info && <td>Bench Record</td>}
+      {complete_info && (
+        <td>
+          <Link to={`/review/test/${eachParam.param_pk}/${eachParam.param_id}`}>Review</Link>
+        </td>
+      )}
     </tr>
   </React.Fragment>
 );
+
+
 
 interface TrackSampleType {
   order_id: string;

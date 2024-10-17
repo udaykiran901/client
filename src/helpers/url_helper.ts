@@ -4,6 +4,10 @@ export const GET_PENDING_ASSIGNING_JOBS = "/lab/get-pending-Assigned-samples";
 export const GET_ALL_ANALYSTS = "/lab/get-all-analysts";
 export const ASSIGN_PARAMS_TO_ANALYST = "/lab/assign-samples-to-analyst";
 export const GET_MY_JOBS = "/lab/get-my-jobs";
+export const GET_SINGLE_JOB = 'lab/get-single-job';
+export const SUBMIT_TEST_DETAILS = 'lab/submit-test-details';
+export const REJECT_TEST_DETAILS = 'lab/reject-test-details';
+
 
 //REGISTER
 export const POST_FAKE_REGISTER = "/post-fake-register";

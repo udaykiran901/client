@@ -23,6 +23,10 @@ import Profile from "pages/Dashboard";
 import EmpList from "pages/HRandAdmin/EmpList";
 import AddProduct from "forms/AddProduct";
 
+// import JobsList from "pages/Laboratory/Analyst/JobsList";
+
+import SingleTest from "pages/Laboratory/Analyst/SingleTest";
+
 //jobs
 
 import AddParam from "forms/AddParam";
@@ -90,7 +94,7 @@ const BDRoutes = [
 ];
 
 const LaboratoryRoutes = [
-  { path: "/lab", component: <LabHome /> },
+  { path: "/lab", component: <LabHome /> }, { path: "/review/test/:jobId/:testId", component: <SingleTest /> },
   ...commonRoutes,
 ];
 
@@ -121,7 +125,9 @@ const publicRoutes = [
 
 const analystRoutes = [
   { path: "/analyst/my-jobs", component: <MyJobs /> },
-  { path: "/analyst/my-jobs/:jobId", component: <LabHome /> },
+  // { path: "/analyst/my-jobs/:jobId", component: <JobsList /> },
+  { path: "test/:jobId/:testId", component: <SingleTest /> },
+
   ...commonRoutes,
 ];
 

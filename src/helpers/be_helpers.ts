@@ -52,7 +52,30 @@ export const getAllAnalystAPI = () => api.get(url.GET_ALL_ANALYSTS, null);
 export const assigningParamsToAnlystsAPI = (data: any) =>
   api.create(url.ASSIGN_PARAMS_TO_ANALYST, data);
 
-export const getMyJobsAPI = () => api.get(url.GET_MY_JOBS, null);
+// export const getMyJobsAPI = (arg: any) => api.get(url.GET_MY_JOBS, null);
+
+export const getMyJobsAPI = (analystId: any) => {
+  return api.get(`${url.GET_MY_JOBS}?analyst=${analystId}`, null);  // sending as query parameter
+};
+
+export const getSingleJobAPI = (jobId: any) => {
+  return api.get(`${url.GET_SINGLE_JOB}?jobId=${jobId}`, null);
+}
+
+export const submitJobData = (testData: any) => {
+  return api.put(`${url.SUBMIT_TEST_DETAILS}`, testData);
+}
+
+export const rejectJobData = (requirement: any) => {
+  return api.put(`${url.REJECT_TEST_DETAILS}`, requirement);
+}
+
+// export const getMyJobsAPI = (arg: any) => api.get(`${url.GET_MY_JOBS}`, { arg: { arg } });
+// export const getMyJobsAPI = (arg: any) => api.get(`${url.GET_MY_JOBS}/${arg}`, null);
+
+
+
+
 
 // Login Method
 export const postFakeLogin = (data: any) =>

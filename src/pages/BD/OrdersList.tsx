@@ -321,7 +321,7 @@ const OrdersList = () => {
                     </DropdownItem>
                   </Link>
 
-                  <DropdownItem href="#" onClick={() => {}}>
+                  <DropdownItem href="#" onClick={() => { }}>
                     <i
                       className="mdi mdi-ambulance font-size-16 text-success me-1 mr-2"
                       id="edittooltip"

@@ -24,6 +24,8 @@ import Spinners from "Components/Common/Spinner";
 import { AssignModalType } from "pages/Laboratory/LabHome";
 import { Param } from "pages/BD/types";
 
+import { useParams } from "react-router-dom";
+
 
 
 //customers data has to display appropriately
@@ -93,7 +95,16 @@ const getTaxRelatedColumns = (orderDetails: Orders) => {
 const OrderInfo = (props: any) => {
   const params = props.router.params;
 
+  const orderId = params.id;
+
+  // const param = useParams();
+  // const { id } = param;
+
   const dispatch: any = useDispatch();
+
+  useEffect(() => {
+    dispatch(getPendingAssigningJobs());
+  }, [dispatch]);
 
   const selectPropertiesLAB = createSelector(
     (state: any) => state.lab,
@@ -108,7 +119,7 @@ const OrderInfo = (props: any) => {
     useSelector(selectPropertiesLAB);
   console.log(sampleAllocationPending, 'sampleAllocationPending')
 
-  const neededSamp = sampleAllocationPending.find((eacher) => eacher.order_id == params.id);
+  const neededSamp = sampleAllocationPending.find((eacher) => eacher.order_id === params.id);
   console.log(neededSamp, 'neededSamp');
 
   const [assignModal, setAssignModal] = useState<AssignModalType>({
@@ -139,9 +150,6 @@ const OrderInfo = (props: any) => {
   }, [dispatch, params]);
 
 
-  useEffect(() => {
-    dispatch(getPendingAssigningJobs());
-  }, [dispatch]);
 
   const selectedProperties = createSelector(
     (state) => state.bd,
@@ -408,14 +416,13 @@ const OrderInfo = (props: any) => {
 
                               <div className="flex-grow-1">
                                 <Row>
-
                                   <Col lg={5}>
                                     <p className="mb-lg-0">
                                       <code>Sample - {index + 1 + "   "}</code>
                                       <code>({eachSample.sample_id})</code>
                                     </p>
-                                    {/* <h6 className="mt-2">{eachSample.name}</h6>
-                                {renderParameterDetails(eachSample, index)} */}
+                                    <h6 className="mt-2">{eachSample.name}</h6>
+                                    {/* {renderParameterDetails(eachSample, index)} */}
 
 
                                     <div className="table-responsive">
@@ -458,7 +465,7 @@ const OrderInfo = (props: any) => {
 
                             <div className="table-responsive">
 
-                              {neededSamp?.samples.map((eachSample: any, ind: number) => (
+                              {/* {neededSamp?.samples.map((eachSample: any, ind: number) => (
                                 <div key={eachSample.sample_id}>
                                   {!eachSample.job_assigned &&
                                     renderSampleNotAssigned(
@@ -466,7 +473,16 @@ const OrderInfo = (props: any) => {
                                       eachSample.params
                                     )}
 
-                                </div>))}
+                                </div>))} */}
+
+                              <div key={neededSamp?.samples[index]?.sample_id}>
+                                {!neededSamp?.samples[index]?.job_assigned &&
+                                  renderSampleNotAssigned(
+                                    neededSamp.samples[index].sample_id,
+                                    neededSamp.samples[index].params
+                                  )}
+                              </div>
+
 
                               <Table
                                 className="table table-bordered w-100"
@@ -484,17 +500,23 @@ const OrderInfo = (props: any) => {
                                       Status
                                     </td>
                                     <td style={{ color: "#a6b0cf", width: "300px" }}>
-                                      Bench Record
+                                      Records
                                     </td>
                                   </tr>
                                 </thead>
 
                                 <tbody>
-                                  {neededSamp?.samples.map((sample: any) =>
+                                  {/* {neededSamp?.samples.map((sample: any) =>
                                     sample.params.map((eachParam: any) =>
                                       renderSamplesTable(eachParam, true)
                                     )
+                                  )} */}
+
+                                  {/* Directly using the first sample's params */}
+                                  {neededSamp.samples[index].params.map((eachParam: any) =>
+                                    renderSamplesTable(eachParam, true)
                                   )}
+
                                 </tbody>
 
                               </Table>

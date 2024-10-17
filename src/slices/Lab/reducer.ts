@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAnalysts, getMyJobs, getPendingAssigningJobs } from "./thunk";
+import { getAnalysts, getMyJobs, getPendingAssigningJobs, getSingleJob, submitTestDetails, rejectTestDetails } from "./thunk";
 import { Orders } from "pages/BD/types";
 import { Employee } from "pages/HRandAdmin/types";
 import { Job } from "pages/Laboratory/type";
@@ -10,6 +10,7 @@ export interface LabInitialState {
   sampleAllocationPending: Orders[];
   labStaff: Employee[];
   myJobs: Job[];
+  singleJob?: any
 }
 
 export const initialState: LabInitialState = {
@@ -18,6 +19,7 @@ export const initialState: LabInitialState = {
   sampleAllocationPending: [],
   labStaff: [],
   myJobs: [],
+  singleJob: []
 };
 
 const LabSlice = createSlice({
@@ -52,6 +54,19 @@ const LabSlice = createSlice({
     builder.addCase(getMyJobs.fulfilled, (state: any, action: any) => {
       state.myJobs = action.payload.data;
     });
+
+    builder.addCase(getSingleJob.fulfilled, (state: any, action: any) => {
+      state.singleJob = action.payload.data;
+    });
+
+    builder.addCase(rejectTestDetails.fulfilled, (state: any, action: any) => {
+      state.singleJob = [];
+    });
+
+    // builder.addCase(submitTestDetails.fulfilled, (state: any, action: any) => {
+    //   console.log('successfully submitted')
+    //   state.singleJob = action.payload.data;
+    // });
 
     //end of quotations
     builder.addMatcher(

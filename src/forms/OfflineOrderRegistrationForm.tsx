@@ -138,9 +138,8 @@ export const renderParameterDetails = (eachSample: any, index: number) => {
   return (
     <div>
       <small
-        className={`mb-5 text-${
-          eachSample.chemicalParams.length === 0 ? "danger" : "warning"
-        }`}
+        className={`mb-5 text-${eachSample.chemicalParams.length === 0 ? "danger" : "warning"
+          }`}
       >
         {eachSample.chemicalParams.length !== 0 && "CHEMICAL PARAMETERS"}
       </small>
@@ -148,9 +147,8 @@ export const renderParameterDetails = (eachSample: any, index: number) => {
         JSON.parse(eachParam.params as string).map((eachSelectedParam) => (
           <p>
             <i
-              className={`mdi mdi-circle-medium align-middle text-${
-                index % 2 !== 0 ? "success" : "warning"
-              } me-1`}
+              className={`mdi mdi-circle-medium align-middle text-${index % 2 !== 0 ? "success" : "warning"
+                } me-1`}
             />
             {eachSelectedParam.testName}
           </p>
@@ -158,9 +156,8 @@ export const renderParameterDetails = (eachSample: any, index: number) => {
       )}
 
       <small
-        className={`mb-5 text-${
-          eachSample.physicalParams.length === 0 ? "danger" : "warning"
-        }`}
+        className={`mb-5 text-${eachSample.physicalParams.length === 0 ? "danger" : "warning"
+          }`}
       >
         {eachSample.physicalParams.length !== 0 && "PHYSICAL PARAMETERS"}
       </small>
@@ -169,9 +166,8 @@ export const renderParameterDetails = (eachSample: any, index: number) => {
         JSON.parse(eachParam.params as string).map((eachSelectedParam) => (
           <p>
             <i
-              className={`mdi mdi-circle-medium align-middle text-${
-                index % 2 !== 0 ? "success" : "warning"
-              } me-1`}
+              className={`mdi mdi-circle-medium align-middle text-${index % 2 !== 0 ? "success" : "warning"
+                } me-1`}
             />
             {eachSelectedParam.testName}
           </p>
@@ -522,9 +518,9 @@ const OfflineOrderRegistrationForm = (props) => {
               accum +
               (eachRow.isOffer
                 ? calculateDiscountedPrice(
-                    eachParam.price || 0,
-                    eachRow.offer as number
-                  )
+                  eachParam.price || 0,
+                  eachRow.offer as number
+                )
                 : eachParam.price || 0)
             );
           },
@@ -537,9 +533,9 @@ const OfflineOrderRegistrationForm = (props) => {
               accum +
               (eachRow.isOffer
                 ? calculateDiscountedPrice(
-                    eachParam.price || 0,
-                    eachRow.offer as number
-                  )
+                  eachParam.price || 0,
+                  eachRow.offer as number
+                )
                 : eachParam.price || 0)
             );
           },
@@ -591,7 +587,7 @@ const OfflineOrderRegistrationForm = (props) => {
           className="border-0 m-0 p-0"
           invalid={
             validation.touched.samples?.[index]?.[key] &&
-            validation.errors.samples?.[index]?.[key]
+              validation.errors.samples?.[index]?.[key]
               ? true
               : false
           }
@@ -752,51 +748,51 @@ const OfflineOrderRegistrationForm = (props) => {
 
                   {(eachSample.physicalParams.length >= 1 ||
                     eachSample.chemicalParams.length >= 1) && (
-                    <div className="table-responsive">
-                      <p className="text-success m-0">
-                        * Please fill the table
-                      </p>
-                      <Table
-                        className="table table-bordered"
-                        style={{ borderColor: "#eff2f7" }}
-                      >
-                        <tbody>
-                          {renderInputField(`source`, "Enter Source *", index)}
-                          {renderInputField(`quantity`, "Enter Qty", index)}
-                          {renderInputField(
-                            `brandName`,
-                            "Brand Name (Optional)",
-                            index
-                          )}
-                          {renderInputField(
-                            `grade`,
-                            "Grade Name (Optional)",
-                            index
-                          )}
-                          {renderInputField(
-                            `week_no`,
-                            "Week Number (Optional)",
-                            index
-                          )}
-                          {renderInputField(
-                            `ref_code`,
-                            "Reference Code (Optional)",
-                            index
-                          )}
-                          {renderInputField(
-                            `sample_id_optional_field`,
-                            "Sample ID (Optional)",
-                            index
-                          )}
-                          {renderInputField(
-                            `site_name`,
-                            "Site Name (Optional)",
-                            index
-                          )}
-                        </tbody>
-                      </Table>
-                    </div>
-                  )}
+                      <div className="table-responsive">
+                        <p className="text-success m-0">
+                          * Please fill the table
+                        </p>
+                        <Table
+                          className="table table-bordered"
+                          style={{ borderColor: "#eff2f7" }}
+                        >
+                          <tbody>
+                            {renderInputField(`source`, "Enter Source *", index)}
+                            {renderInputField(`quantity`, "Enter Qty", index)}
+                            {renderInputField(
+                              `brandName`,
+                              "Brand Name (Optional)",
+                              index
+                            )}
+                            {renderInputField(
+                              `grade`,
+                              "Grade Name (Optional)",
+                              index
+                            )}
+                            {renderInputField(
+                              `week_no`,
+                              "Week Number (Optional)",
+                              index
+                            )}
+                            {renderInputField(
+                              `ref_code`,
+                              "Reference Code (Optional)",
+                              index
+                            )}
+                            {renderInputField(
+                              `sample_id_optional_field`,
+                              "Sample ID (Optional)",
+                              index
+                            )}
+                            {renderInputField(
+                              `site_name`,
+                              "Site Name (Optional)",
+                              index
+                            )}
+                          </tbody>
+                        </Table>
+                      </div>
+                    )}
                 </div>
               </div>
             </div>
@@ -816,13 +812,13 @@ const OfflineOrderRegistrationForm = (props) => {
               placeholder="Any additional Info"
               invalid={
                 validation.touched.samples_address &&
-                validation.errors.samples_address
+                  validation.errors.samples_address
                   ? true
                   : false
               }
             />
             {validation.touched.samples_address &&
-            validation.errors.samples_address ? (
+              validation.errors.samples_address ? (
               <FormFeedback type="invalid">
                 {validation.errors.samples_address}
               </FormFeedback>
@@ -959,13 +955,13 @@ const OfflineOrderRegistrationForm = (props) => {
                       placeholder="Enter Project Name"
                       invalid={
                         validation.touched.project_name &&
-                        validation.errors.project_name
+                          validation.errors.project_name
                           ? true
                           : false
                       }
                     />
                     {validation.touched.project_name &&
-                    validation.errors.project_name ? (
+                      validation.errors.project_name ? (
                       <FormFeedback type="invalid">
                         {validation.errors.project_name}
                       </FormFeedback>
@@ -1287,7 +1283,7 @@ const OfflineOrderRegistrationForm = (props) => {
                         }
                       />
                       {validation.errors.discount &&
-                      validation.touched.discount ? (
+                        validation.touched.discount ? (
                         <FormFeedback type="invalid">
                           {validation.errors.discount}
                         </FormFeedback>
@@ -1314,7 +1310,7 @@ const OfflineOrderRegistrationForm = (props) => {
                         }
                       />
                       {validation.errors.transportation_fee &&
-                      validation.touched.transportation_fee ? (
+                        validation.touched.transportation_fee ? (
                         <FormFeedback type="invalid">
                           {validation.errors.transportation_fee}
                         </FormFeedback>
@@ -1329,7 +1325,7 @@ const OfflineOrderRegistrationForm = (props) => {
               type="submit"
               color="success"
               className="save-customer"
-              // disabled={!validation.isValid || validation.isSubmitting}
+            // disabled={!validation.isValid || validation.isSubmitting}
             >
               {!loadingBdState ? (
                 " Register Order"

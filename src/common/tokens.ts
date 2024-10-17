@@ -19,10 +19,13 @@ export const IN_PROGRESS = "IN_PROGRESS";
 export const UNDER_REVIEW = "UNDER_REVIEW";
 export const ACCEPTED = "ACCEPTED";
 export const REJECTED = "REJECTED";
+export const SUBMITTED_TO_HOD = 'SUBMITTED_BY_ANALYST'
 
 export const NOT_YET_ASSIGNED_TEXT =
   "This parameter is not yet assigned to Analyst";
-export const ASSIGNED_TO_ANALYST_TEXT = "Test is not yet begun";
+
+export const SUBMITTED_TO_HOD_TXT = 'The test has been submitted to HOD'
+export const ASSIGNED_TO_ANALYST_TEXT = "Test hasn't begin yet";
 export const IN_PROGRESS_TEXT = "Test is in progress, Analyst started the test";
 export const UNDER_REVIEW_TEXT =
   "Analyst submitted the text, currently it is under review";

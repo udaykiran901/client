@@ -181,7 +181,7 @@ const AddProduct = () => {
     }),
 
     onSubmit: async (values, { resetForm }) => {
-      // console.log(values, 'values in formik')
+      console.log(values, 'values in formik')
       await dispatch(onAddingNewProduct(values));
       resetForm();
       setImg1("");

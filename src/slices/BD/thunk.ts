@@ -231,20 +231,43 @@ export const getCustomersList = createAsyncThunk(
   }
 );
 
+// export const registerCustomer = createAsyncThunk(
+//   REGISTER_CUSTOMER,
+//   async (data: any) => {
+//     try {
+//       const response = await registerCustomerAPI(data);
+//       toast.success(response.data.message, {
+//         autoClose: 5000,
+//       });
+//       return response.data;
+//     } catch (error: any) {
+//       toast.error(error.data.message, {
+//         autoClose: 10000,
+//       });
+//       return error;
+//     }
+//   }
+// );
+
 export const registerCustomer = createAsyncThunk(
-  REGISTER_CUSTOMER,
-  async (data: any) => {
+  'REGISTER_CUSTOMER', // Action type
+  async (data: any, { rejectWithValue }) => {
     try {
       const response = await registerCustomerAPI(data);
       toast.success(response.data.message, {
         autoClose: 5000,
       });
-      return response.data;
+      // console.log(response.data, 'response.data')
+      return response.data; // Successfully return the data
     } catch (error: any) {
-      toast.error(error.data.message, {
+      // Safely handle error message
+      const errorMessage = error?.response?.data?.message || 'An unexpected error occurred';
+      toast.error(errorMessage, {
         autoClose: 10000,
       });
-      return error;
+
+      // Use rejectWithValue to return a rejected action
+      return rejectWithValue(errorMessage);
     }
   }
 );

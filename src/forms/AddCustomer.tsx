@@ -61,7 +61,7 @@ const AddCustomer = () => {
     const validation: any = useFormik({
         // enableReinitialize: true,
         initialValues: {
-            id: null,
+            cid: null,
             customerName: "",
             email: "",
             mobile: "",
@@ -70,6 +70,9 @@ const AddCustomer = () => {
             gst_number_3: '',
             pan: "",
             customer_address: "",
+            row_id1: '',
+            row_id2: '',
+            row_id3: ''
         },
 
         validationSchema: Yup.object({
@@ -95,6 +98,7 @@ const AddCustomer = () => {
             try {
                 console.log(values, 'customer final values');
                 await dispatch(registerCustomer(values));
+                console.log('successfully posted or updated')
                 resetForm();
                 // toggle();
             } catch (error) { }
@@ -109,21 +113,23 @@ const AddCustomer = () => {
 
     useEffect(() => {
         if (id) {
-            const neededCustomer = allCustomers.find((eachCust: any) => eachCust.customer_id == id);
 
-            console.log(neededCustomer, 'neededCustomer');
+            let neededCustomer;
 
-            if (!neededCustomer) {
+            if (allCustomers && allCustomers.length > 0) {
+                neededCustomer = allCustomers?.find((eachCust: any) => eachCust.customer_id === id);
+            } else {
                 dispatch(getCustomersList());
             }
 
+            console.log(neededCustomer, 'neededCustomer');
+
+
             if (neededCustomer) {
 
+                const gstNumbers = neededCustomer?.gst.map(item => item.gst_number);
 
-
-                const gstNumbers = neededCustomer.gst.map(item => item.gst_number);
-
-                const rowNumbers = neededCustomer.gst.map(item => item.row_id);
+                const rowNumbers = neededCustomer?.gst.map(item => item.row_id);
 
                 console.log(gstNumbers)
 
@@ -162,7 +168,7 @@ const AddCustomer = () => {
                 // console.log(gst3);
 
                 validation.setValues({
-                    id: id,
+                    cid: id,
                     customerName: neededCustomer.name,
                     email: neededCustomer.email,
                     mobile: neededCustomer.contact,
@@ -192,9 +198,6 @@ const AddCustomer = () => {
                 // })
 
             }
-
-
-
 
         }
     }, [dispatch, id, allCustomers]);

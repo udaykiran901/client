@@ -3,7 +3,7 @@ import {
   onGettingPendingAssigningSamplesAPI,
   getAllAnalystAPI,
   assigningParamsToAnlystsAPI,
-  getMyJobsAPI,
+  getMyJobsAPI, getSingleJobAPI, submitJobData, rejectJobData
 } from "../../helpers/be_helpers";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -11,7 +11,7 @@ import {
   GET_PENDING_ASSIGNING_JOBS,
   GET_ALL_ANALYSTS,
   ASSIGN_PARAMS_TO_ANALYST,
-  GET_MY_JOBS,
+  GET_MY_JOBS, GET_SINGLE_JOB, SUBMIT_TEST_DETAILS, REJECT_TEST_DETAILS
 } from "../../helpers/url_helper";
 
 export const getPendingAssigningJobs = createAsyncThunk(
@@ -47,9 +47,39 @@ export const assigningParamsToAnlysts = createAsyncThunk(
   }
 );
 
-export const getMyJobs = createAsyncThunk(GET_MY_JOBS, async () => {
+export const getMyJobs = createAsyncThunk(GET_MY_JOBS, async (arg: any) => {
+  // console.log(arg, 'arggggggg')
   try {
-    const response = await getMyJobsAPI();
+    const response = await getMyJobsAPI(arg);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+});
+
+export const getSingleJob = createAsyncThunk(GET_SINGLE_JOB, async (jobId: any) => {
+  // console.log(arg, 'arggggggg')
+  try {
+    const response = await getSingleJobAPI(jobId);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+});
+
+export const submitTestDetails = createAsyncThunk(SUBMIT_TEST_DETAILS, async (testData: any) => {
+  console.log(testData, 'testData')
+  try {
+    const response = await submitJobData(testData);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+});
+
+export const rejectTestDetails = createAsyncThunk(REJECT_TEST_DETAILS, async (requirement: any) => {
+  try {
+    const response = await rejectJobData(requirement);
     return response.data;
   } catch (error) {
     return error;

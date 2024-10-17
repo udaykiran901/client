@@ -13,7 +13,7 @@ import { useParams } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";
 
-import { getProductDetail as productFullDetails } from "slices/thunk";
+import { getProductDetail as productFullDetails, getScope } from "slices/thunk";
 
 import { RootState } from "slices";
 import { BDInitialState } from "slices/BD/reducer";
@@ -195,35 +195,44 @@ const AddProduct = () => {
         (need: any) => need.id === parseInt(id)
       );
       const materialRequirement = materialToBeUpdated;
-      // console.log(materialToBeUpdated, 'bla');
-      console.log(materialRequirement, "bla2");
-      // console.log(parser, 'bla3');
-      setImg1(materialRequirement.image);
-      setImg2(materialRequirement.image_lg);
 
-      const parsedFeatures = JSON.parse(materialRequirement.features);
-      // console.log(parsedFeatures, 'parsedFeatures')
-      verticalformik.setValues({
-        name: materialRequirement.name,
-        category: materialRequirement.category,
-        base_price: materialRequirement.base_price,
-        isOffer: materialRequirement.isOffer,
-        offer: materialRequirement.offer,
-        prefix: materialRequirement.prefix,
-        complete_pack: materialRequirement.complete_pack,
-        description: materialRequirement.description,
-        no_of_days: materialRequirement.no_of_days,
-        interim_report: materialRequirement.interim_report,
-        interim_report_days: materialRequirement.interim_report_days,
-        // image: materialRequirement.image,
-        // image_lg: materialRequirement.image_lg,
-        features: parsedFeatures,
-        id: id,
-        old_image: materialRequirement.image,
-        old_image_lg: materialRequirement.image_lg,
-      });
+
+
+      if (materialRequirement) {
+
+
+        // console.log(materialToBeUpdated, 'bla');
+        console.log(materialRequirement, 'bla2');
+        // console.log(parser, 'bla3');
+        setImg1(materialRequirement.image);
+        setImg2(materialRequirement.image_lg);
+
+        const parsedFeatures = JSON.parse(materialRequirement.features);
+        // console.log(parsedFeatures, 'parsedFeatures')
+        verticalformik.setValues({
+          name: materialRequirement.name,
+          category: materialRequirement.category,
+          base_price: materialRequirement.base_price,
+          isOffer: materialRequirement.isOffer,
+          offer: materialRequirement.offer,
+          prefix: materialRequirement.prefix,
+          complete_pack: materialRequirement.complete_pack,
+          description: materialRequirement.description,
+          no_of_days: materialRequirement.no_of_days,
+          interim_report: materialRequirement.interim_report,
+          interim_report_days: materialRequirement.interim_report_days,
+          // image: materialRequirement.image,
+          // image_lg: materialRequirement.image_lg,
+          features: parsedFeatures, id: id,
+          old_image: materialRequirement.image,
+          old_image_lg: materialRequirement.image_lg,
+        });
+      } else {
+        dispatch(getScope());
+      }
+
     }
-  }, [dispatch, id]);
+  }, [dispatch, id, scope]);
 
   // useEffect(() => {
   //   if (loading) {
@@ -346,7 +355,7 @@ const AddProduct = () => {
                                     onBlur={verticalformik.handleBlur}
                                   />
                                   {verticalformik.errors.name &&
-                                  verticalformik.touched.name ? (
+                                    verticalformik.touched.name ? (
                                     <span className="text-danger">
                                       {verticalformik.errors.name}
                                     </span>
@@ -380,7 +389,7 @@ const AddProduct = () => {
                                       ))}
                                     </select>
                                     {verticalformik.errors.category &&
-                                    verticalformik.touched.category ? (
+                                      verticalformik.touched.category ? (
                                       <span className="text-danger">
                                         {verticalformik.errors.category}
                                       </span>
@@ -405,7 +414,7 @@ const AddProduct = () => {
                                     onBlur={verticalformik.handleBlur}
                                   />
                                   {verticalformik.errors.description &&
-                                  verticalformik.touched.description ? (
+                                    verticalformik.touched.description ? (
                                     <span className="text-danger">
                                       {verticalformik.errors.description}
                                     </span>
@@ -482,7 +491,7 @@ const AddProduct = () => {
                                         onBlur={verticalformik.handleBlur}
                                       />
                                       {verticalformik.errors.offer &&
-                                      verticalformik.touched.offer ? (
+                                        verticalformik.touched.offer ? (
                                         <span className="text-danger">
                                           {verticalformik.errors.offer}
                                         </span>
@@ -510,8 +519,8 @@ const AddProduct = () => {
                                         />
                                         {verticalformik.errors
                                           .interim_report_days &&
-                                        verticalformik.touched
-                                          .interim_report_days ? (
+                                          verticalformik.touched
+                                            .interim_report_days ? (
                                           <span className="text-danger">
                                             {
                                               verticalformik.errors
@@ -540,7 +549,7 @@ const AddProduct = () => {
                                     onBlur={verticalformik.handleBlur}
                                   />
                                   {verticalformik.errors.prefix &&
-                                  verticalformik.touched.prefix ? (
+                                    verticalformik.touched.prefix ? (
                                     <span className="text-danger">
                                       {verticalformik.errors.prefix}
                                     </span>
@@ -561,7 +570,7 @@ const AddProduct = () => {
                                     onBlur={verticalformik.handleBlur}
                                   />
                                   {verticalformik.errors.base_price &&
-                                  verticalformik.touched.base_price ? (
+                                    verticalformik.touched.base_price ? (
                                     <span className="text-danger">
                                       {verticalformik.errors.base_price}
                                     </span>
@@ -586,7 +595,7 @@ const AddProduct = () => {
                                     onBlur={verticalformik.handleBlur}
                                   />
                                   {verticalformik.errors.no_of_days &&
-                                  verticalformik.touched.no_of_days ? (
+                                    verticalformik.touched.no_of_days ? (
                                     <span className="text-danger">
                                       {verticalformik.errors.no_of_days}
                                     </span>
@@ -636,7 +645,7 @@ const AddProduct = () => {
                                     onBlur={verticalformik.handleBlur}
                                   />
                                   {verticalformik.errors.image &&
-                                  verticalformik.touched.image ? (
+                                    verticalformik.touched.image ? (
                                     <span className="text-danger">
                                       {verticalformik.errors.image}
                                     </span>
@@ -681,7 +690,7 @@ const AddProduct = () => {
                                     onBlur={verticalformik.handleBlur}
                                   />
                                   {verticalformik.errors.image_lg &&
-                                  verticalformik.touched.image_lg ? (
+                                    verticalformik.touched.image_lg ? (
                                     <span className="text-danger">
                                       {verticalformik.errors.image_lg}
                                     </span>
@@ -714,12 +723,12 @@ const AddProduct = () => {
                                               onBlur={verticalformik.handleBlur}
                                             />
                                             {verticalformik.errors.features &&
-                                            verticalformik.errors.features[
+                                              verticalformik.errors.features[
                                               index
-                                            ] &&
-                                            verticalformik.errors.features[
-                                              index
-                                            ].short_feature ? (
+                                              ] &&
+                                              verticalformik.errors.features[
+                                                index
+                                              ].short_feature ? (
                                               <span className="text-danger">
                                                 {
                                                   verticalformik.errors
@@ -749,12 +758,12 @@ const AddProduct = () => {
                                               onBlur={verticalformik.handleBlur}
                                             />
                                             {verticalformik.errors.features &&
-                                            verticalformik.errors.features[
+                                              verticalformik.errors.features[
                                               index
-                                            ] &&
-                                            verticalformik.errors.features[
-                                              index
-                                            ].description ? (
+                                              ] &&
+                                              verticalformik.errors.features[
+                                                index
+                                              ].description ? (
                                               <span className="text-danger">
                                                 {
                                                   verticalformik.errors

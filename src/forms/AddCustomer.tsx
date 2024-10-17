@@ -25,7 +25,7 @@ import { createSelector } from "reselect";
 import { UseSelector } from "react-redux";
 
 
-import { registerCustomer } from "slices/thunk";
+import { registerCustomer, getCustomersList } from "slices/thunk";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
@@ -103,30 +103,103 @@ const AddCustomer = () => {
 
     const { id } = useParams();
 
+    // useEffect(() => {
+    //     dispatch(getCustomersList());
+    // }, []);
+
     useEffect(() => {
         if (id) {
-            const neededCustomer = allCustomers.find((eachCust: any) => eachCust.customer_id === id);
+            const neededCustomer = allCustomers.find((eachCust: any) => eachCust.customer_id == id);
 
-            const { gst_number_1: gst1 } = neededCustomer.gst1;
-            const { gst_number_2: gst2 } = neededCustomer.gst2;
-            const { gst_number_3: gst3 } = neededCustomer.gst3;
-            console.log(gst1, 'gst1');
+            console.log(neededCustomer, 'neededCustomer');
+
+            if (!neededCustomer) {
+                dispatch(getCustomersList());
+            }
+
+            if (neededCustomer) {
 
 
 
-            validation.setValues({
-                id: id,
-                customerName: neededCustomer.name,
-                email: neededCustomer.email,
-                mobile: neededCustomer.contact,
-                gst_number_1: gst1,
-                gst_number_2: gst2,
-                gst_number_3: gst3,
-                pan: neededCustomer.pan_number,
-                customer_address: neededCustomer.address,
-            })
+                const gstNumbers = neededCustomer.gst.map(item => item.gst_number);
+
+                const rowNumbers = neededCustomer.gst.map(item => item.row_id);
+
+                console.log(gstNumbers)
+
+                let gst1 = '';
+                let gst2 = '';
+                let gst3 = '';
+
+                let row1 = '';
+                let row2 = '';
+                let row3 = '';
+
+
+                if (gstNumbers.length >= 1) {
+                    gst1 = gstNumbers[0];
+                    row1 = rowNumbers[0];
+                    // console.log(row1);
+                    // console.log(gst1);
+                }
+
+                if (gstNumbers.length >= 2) {
+                    gst2 = gstNumbers[1];
+                    row2 = rowNumbers[1];
+                    // console.log(row2);
+                    // console.log(gst2);
+                }
+
+                if (gstNumbers.length >= 3) {
+                    gst3 = gstNumbers[2];
+                    row3 = rowNumbers[2];
+                    // console.log(row3);
+                    // console.log(gst3);
+                }
+
+                // console.log(gst1);
+                // console.log(gst2);
+                // console.log(gst3);
+
+                validation.setValues({
+                    id: id,
+                    customerName: neededCustomer.name,
+                    email: neededCustomer.email,
+                    mobile: neededCustomer.contact,
+                    row_id1: row1,
+                    row_id2: row2,
+                    row_id3: row3,
+                    gst_number_1: gst1,
+                    gst_number_2: gst2,
+                    gst_number_3: gst3,
+                    pan: neededCustomer.pan_number,
+                    customer_address: neededCustomer.address,
+                })
+
+                // validation.setValues({
+                //     id: 'id',
+                //     customerName: 'neededCustomer.name',
+                //     email: 'neededCustomer.email',
+                //     mobile: 'neededCustomer.contact',
+                //     row_id1: 'row1',
+                //     row_id2: 'row2',
+                //     row_id3: 'row3',
+                //     gst_number_1: 'gst1',
+                //     gst_number_2: 'gst2',
+                //     gst_number_3: 'gst3',
+                //     pan: 'neededCustomer.pan_number',
+                //     customer_address: 'neededCustomer.address',
+                // })
+
+            }
+
+
+
+
         }
-    }, [dispatch, id]);
+    }, [dispatch, id, allCustomers]);
+
+
 
 
     return (

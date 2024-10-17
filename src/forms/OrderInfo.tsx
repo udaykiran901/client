@@ -1,19 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import withRouter from "Components/Common/withRouter";
 
-import { Col, Container, Row, Card, Table, Spinner } from "reactstrap";
+import { Col, Container, Row, Card, Table, Spinner, Alert, Modal, ModalHeader, Form, Input, } from "reactstrap";
+import { Assign } from "pages/Laboratory/Modals/Assign";
+
 
 import { useDispatch } from "react-redux";
 import { OrderSamples, Orders } from "pages/BD/types";
 import { getDateAndTime } from "pages/BD/CallBacksList";
 
-import { getCompleteOrderDetails, convertToTaxRequested } from "slices/thunk";
+import { renderSamplesTable } from "pages/BD/TrackSample";
+
+import { renderJobAssignedScreen } from "pages/Laboratory/LabHome";
+
+import { getCompleteOrderDetails, convertToTaxRequested, getPendingAssigningJobs, getAnalysts } from "slices/thunk";
 import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
 import { ONLINE } from "common/tokens";
 import { Link } from "react-router-dom";
 import Spinners from "Components/Common/Spinner";
+
+import { AssignModalType } from "pages/Laboratory/LabHome";
+import { Param } from "pages/BD/types";
+
+
 
 //customers data has to display appropriately
 // have to revise form fields
@@ -26,9 +37,8 @@ export const renderParameterDetails = (
   return (
     <div>
       <small
-        className={`mb-5 text-${
-          eachSample.chemicalParams.length === 0 ? "danger" : "warning"
-        }`}
+        className={`mb-5 text-${eachSample.chemicalParams.length === 0 ? "danger" : "warning"
+          }`}
       >
         {eachSample.chemicalParams.length !== 0 && "CHEMICAL PARAMETERS"}
       </small>
@@ -36,9 +46,8 @@ export const renderParameterDetails = (
         eachParam.selectedParams.map((eachSelectedParam, idx: number) => (
           <p key={idx}>
             <i
-              className={`mdi mdi-circle-medium align-middle text-${
-                index % 2 !== 0 ? "success" : "warning"
-              } me-1`}
+              className={`mdi mdi-circle-medium align-middle text-${index % 2 !== 0 ? "success" : "warning"
+                } me-1`}
             />
             {eachSelectedParam.testName}
           </p>
@@ -46,9 +55,8 @@ export const renderParameterDetails = (
       )}
 
       <small
-        className={`mb-5 text-${
-          eachSample.physicalParams.length === 0 ? "danger" : "warning"
-        }`}
+        className={`mb-5 text-${eachSample.physicalParams.length === 0 ? "danger" : "warning"
+          }`}
       >
         {eachSample.physicalParams.length !== 0 && "PHYSICAL PARAMETERS"}
       </small>
@@ -56,9 +64,8 @@ export const renderParameterDetails = (
         eachParam.selectedParams.map((eachSelectedParam, idx) => (
           <p key={idx}>
             <i
-              className={`mdi mdi-circle-medium align-middle text-${
-                index % 2 !== 0 ? "success" : "warning"
-              } me-1`}
+              className={`mdi mdi-circle-medium align-middle text-${index % 2 !== 0 ? "success" : "warning"
+                } me-1`}
             />
             {eachSelectedParam.testName}
           </p>
@@ -85,13 +92,56 @@ const getTaxRelatedColumns = (orderDetails: Orders) => {
 
 const OrderInfo = (props: any) => {
   const params = props.router.params;
+
   const dispatch: any = useDispatch();
+
+  const selectPropertiesLAB = createSelector(
+    (state: any) => state.lab,
+    (lab) => ({
+      loadingLab: lab.loading,
+      sampleAllocationPending: lab.sampleAllocationPending,
+      labStaff: lab.labStaff,
+    })
+  );
+
+  const { sampleAllocationPending, loadingLab, labStaff } =
+    useSelector(selectPropertiesLAB);
+  console.log(sampleAllocationPending, 'sampleAllocationPending')
+
+  const neededSamp = sampleAllocationPending.find((eacher) => eacher.order_id == params.id);
+  console.log(neededSamp, 'neededSamp');
+
+  const [assignModal, setAssignModal] = useState<AssignModalType>({
+    status: false,
+    sampleId: "",
+    parameters: [],
+    labStaff: [],
+  });
+
+  useEffect(() => {
+    dispatch(getAnalysts());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (labStaff.length > 0) {
+      setAssignModal({ ...assignModal, labStaff: labStaff });
+    }
+  }, [labStaff]);
+
+  useEffect(() => {
+    setAssignModal({ ...assignModal, status: false });
+  }, [sampleAllocationPending]);
 
   useEffect(() => {
     if (params && params.id) {
       dispatch(getCompleteOrderDetails(params.id));
     }
   }, [dispatch, params]);
+
+
+  useEffect(() => {
+    dispatch(getPendingAssigningJobs());
+  }, [dispatch]);
 
   const selectedProperties = createSelector(
     (state) => state.bd,
@@ -104,6 +154,8 @@ const OrderInfo = (props: any) => {
   const { orderInfo, loading }: any = useSelector(selectedProperties);
 
   const order: Orders = orderInfo;
+
+  console.log(order, 'order')
 
   const convertToTaxClicked = (id: number) => {
     dispatch(
@@ -137,6 +189,40 @@ const OrderInfo = (props: any) => {
 
     return shallReturn ? tableRow() : <React.Fragment></React.Fragment>;
   };
+
+  const renderSampleNotAssigned = (
+    sampleId: string,
+    sampleParameters: Param[]
+  ) => {
+    return (
+      <Alert
+        className="mt-2"
+        color="danger"
+        style={{ display: "inline-block" }}
+      >
+        This Sample is not yet assigned{" "}
+        <Link
+          to="#"
+          onClick={() =>
+            setAssignModal({
+              status: !assignModal.status,
+              sampleId: sampleId,
+              parameters: sampleParameters,
+              labStaff: labStaff,
+            })
+          }
+          className="alert-link"
+        >
+          Click here{" "}
+        </Link>
+        to Assign
+      </Alert>
+    );
+  };
+
+
+
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -298,13 +384,18 @@ const OrderInfo = (props: any) => {
                   </div>
                 </Card>
 
-                <Card className="p-3 shadow-lg">
+
+                {/* <Card>
                   <h5 className="text-primary mb-3">Sample's data</h5>
-                  <Row>
-                    {order &&
-                      order.samplesList &&
-                      order.samplesList.map(
-                        (eachSample: OrderSamples, index: number) => (
+                </Card> */}
+
+
+                <Row>
+                  {order &&
+                    order.samplesList &&
+                    order.samplesList.map(
+                      (eachSample: OrderSamples, index: number) => (
+                        <Card className="p-3 shadow-lg">
                           <div key={eachSample.sample_id}>
                             <div className="d-flex">
                               <div className="flex-shrink-0 me-3">
@@ -316,46 +407,136 @@ const OrderInfo = (props: any) => {
                               </div>
 
                               <div className="flex-grow-1">
-                                <p className="mb-lg-0">
-                                  <code>Sample - {index + 1 + "   "}</code>
-                                  <code>({eachSample.sample_id})</code>
-                                </p>
-                                <h6 className="mt-2">{eachSample.name}</h6>
-                                {renderParameterDetails(eachSample, index)}
+                                <Row>
 
-                                <div className="table-responsive">
-                                  <Table
-                                    className="table table-bordered"
-                                    style={{ borderColor: "#eff2f7" }}
-                                  >
-                                    <tbody>
-                                      {renderInputField(`source`, index)}
-                                      {renderInputField(`quantity`, index)}
-                                      {renderInputField(`brandName`, index)}
-                                      {renderInputField(`grade`, index)}
-                                      {renderInputField(`week_no`, index)}
-                                      {renderInputField(`ref_code`, index)}
-                                      {renderInputField(
-                                        `sample_id_optional_field`,
-                                        index
-                                      )}
-                                      {renderInputField(`site_name`, index)}
-                                    </tbody>
-                                  </Table>
-                                </div>
+                                  <Col lg={5}>
+                                    <p className="mb-lg-0">
+                                      <code>Sample - {index + 1 + "   "}</code>
+                                      <code>({eachSample.sample_id})</code>
+                                    </p>
+                                    {/* <h6 className="mt-2">{eachSample.name}</h6>
+                                {renderParameterDetails(eachSample, index)} */}
+
+
+                                    <div className="table-responsive">
+                                      <Table
+                                        className="table table-bordered"
+                                        style={{ borderColor: "#eff2f7" }}
+                                      >
+                                        <tbody>
+                                          {renderInputField(`source`, index)}
+                                          {renderInputField(`quantity`, index)}
+                                          {renderInputField(`brandName`, index)}
+                                          {renderInputField(`grade`, index)}
+                                          {renderInputField(`week_no`, index)}
+                                          {renderInputField(`ref_code`, index)}
+                                          {renderInputField(
+                                            `sample_id_optional_field`,
+                                            index
+                                          )}
+                                          {renderInputField(`site_name`, index)}
+                                        </tbody>
+                                      </Table>
+                                    </div>
+                                  </Col>
+
+
+                                  <Col lg={5}>
+                                    {neededSamp?.samples.map((eachSample: any, ind: number) =>
+                                      eachSample.job_assigned
+                                        ? renderJobAssignedScreen(eachSample)
+                                        : null
+                                    )}
+                                  </Col>
+
+                                </Row>
+
                               </div>
                             </div>
+
+
+
+                            <div className="table-responsive">
+
+                              {neededSamp?.samples.map((eachSample: any, ind: number) => (
+                                <div key={eachSample.sample_id}>
+                                  {!eachSample.job_assigned &&
+                                    renderSampleNotAssigned(
+                                      eachSample.sample_id,
+                                      eachSample.params
+                                    )}
+
+                                </div>))}
+
+                              <Table
+                                className="table table-bordered w-100"
+                                style={{ borderColor: "#eff2f7" }}
+                              >
+                                <thead
+                                  style={{
+                                    backgroundColor: "#2a3042",
+                                  }}
+                                >
+                                  <tr>
+                                    <td style={{ color: "#a6b0cf" }}>Parameters</td>
+                                    <td style={{ color: "#a6b0cf" }}>Discipline</td>
+                                    <td style={{ color: "#a6b0cf", width: "300px" }}>
+                                      Status
+                                    </td>
+                                    <td style={{ color: "#a6b0cf", width: "300px" }}>
+                                      Bench Record
+                                    </td>
+                                  </tr>
+                                </thead>
+
+                                <tbody>
+                                  {neededSamp?.samples.map((sample: any) =>
+                                    sample.params.map((eachParam: any) =>
+                                      renderSamplesTable(eachParam, true)
+                                    )
+                                  )}
+                                </tbody>
+
+                              </Table>
+                            </div>
+
                           </div>
-                        )
-                      )}
-                  </Row>
-                </Card>
+                        </Card>
+                      )
+                    )}
+                </Row>
+
               </Col>
             </Row>
           )}
           <ToastContainer />
         </Container>
       </div>
+
+      <Modal
+        size="lg"
+        isOpen={assignModal.status}
+        toggle={() => {
+          setAssignModal({
+            ...assignModal,
+            status: !assignModal.status,
+          });
+        }}
+      >
+        <ModalHeader
+          toggle={() => {
+            setAssignModal({
+              ...assignModal,
+              status: !assignModal.status,
+            });
+          }}
+        >
+          <div className="modal-title mt-0 h4">Assign Sample to Analyst</div>
+        </ModalHeader>
+        <div className="modal-body">
+          <Assign assignModal={assignModal} />
+        </div>
+      </Modal>
     </React.Fragment>
   );
 };

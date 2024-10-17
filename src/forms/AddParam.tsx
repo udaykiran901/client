@@ -140,25 +140,33 @@ const AddParam = () => {
 
 
       const paramsToBeUpdated = allParams.find((eachParam: any) => eachParam.paramId == (id));
-      console.log(paramsToBeUpdated, 'paramsToBeUpdated')
-      const { params, subgroup, discipline, isNabl, requirements, price } = paramsToBeUpdated;
-      const parsedUpdatedParams = JSON.parse(params);
-      console.log(parsedUpdatedParams, 'parsedUpdatedParams');
+      if (paramsToBeUpdated) {
 
-      nestedformik.setValues({
-        id: id,
-        isNabl: isNabl,
-        price: price,
-        discipline: discipline,
-        additional_info: "",
-        subgroup: subgroup,
-        requirements: requirements,
-      })
 
-      setrows1(parsedUpdatedParams)
+        console.log(paramsToBeUpdated, 'paramsToBeUpdated')
+        const { params, subgroup, discipline, isNabl, requirements, price } = paramsToBeUpdated;
+        const parsedUpdatedParams = JSON.parse(params);
+        console.log(parsedUpdatedParams, 'parsedUpdatedParams');
+
+        nestedformik.setValues({
+          id: id,
+          isNabl: isNabl,
+          price: price,
+          discipline: discipline,
+          additional_info: "",
+          subgroup: subgroup,
+          requirements: requirements,
+        })
+
+        setrows1(parsedUpdatedParams)
+
+      } else {
+        dispatch(getParams());
+      }
+
 
     }
-  }, [id])
+  }, [id, allParams])
 
   const [common_req, setCommon_req] = useState(true);
 

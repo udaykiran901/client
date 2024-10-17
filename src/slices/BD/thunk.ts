@@ -223,7 +223,7 @@ export const getCustomersList = createAsyncThunk(
   async () => {
     try {
       const response = await onGettingCustomersListAPI();
-
+      // console.log(response, 'cust dt')
       return response.data;
     } catch (error) {
       return error;

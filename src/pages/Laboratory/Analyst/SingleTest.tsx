@@ -47,6 +47,16 @@ import CoalSulphur from "forms/Tests/Coal/CoalSulphur";
 import CoalVMC from "forms/Tests/Coal/CoalVMC";
 import TetraCalcium from "forms/Tests/Cement (SRC)/TetraCalcium";
 import Tricalcium from "forms/Tests/Cement (SRC)/TricalciumAluminate";
+import SulphurSulphide from "forms/Tests/Cement (PSC)/SulphurSulphide";
+import MnO from "forms/Tests/GGBS/MnO";
+import DeterminationOfNoName1 from "forms/Tests/GGBS/NoName1";
+import DeterminationOfNoName2 from "forms/Tests/GGBS/NoName2";
+import LossOnIgnitionMs from "forms/Tests/MicroSilica/LossOnIgnitionMs";
+import MoistureContent from "forms/Tests/MicroSilica/MoistureContent";
+import SiliconDioxide from "forms/Tests/MicroSilica/SiliconDioxide";
+import CombinedWater from "forms/Tests/Gypsum/CombinedWater";
+import FreeWater from "forms/Tests/Gypsum/FreeWater";
+import DeterminationOfCao from "forms/Tests/Gypsum/MajorOxides";
 
 
 
@@ -120,6 +130,24 @@ const SingleTest = () => {
             {testId === '20240705104613800' && <Ph />}
             {testId === '20240926174128355' && <RelativeDensity />}
 
+            {/* {GGBS} */}
+            {testId === '20241017153345369' && < MnO />}
+            {testId === '20241017153410099' && <DeterminationOfNoName1 />}
+            {testId === '20241017153452301' && <DeterminationOfNoName2 />}
+            {testId === '20241017163745024' && <DeterminationOfSilica />}
+            {testId === '20241017152511925' && <DeterminationOfFerricOxide />}
+            {testId === '20241017152629895' && <DeterminationOfAlumina />}
+            {testId === '20241017152702360' && <DeterminationOfCaoAndMgo />}
+            {testId === '20241017152855360' && <DeterminationOfInsolubleResidue />}
+            {testId === '20241017152930628' && <SulphurSulphide />}
+
+            {/* {Gypsum} */}
+            {testId === '20241017180248284' && <DeterminationOfSulphuricAhydride />}
+            {testId === '20241017180539523' && <CombinedWater />}
+            {testId === '20241017180508199' && <FreeWater />}
+            {testId === '20241017180436602' && <LossOnIgnition />}
+            {testId === '20241017180607951' && <DeterminationOfCao />}
+
             {/* {Cement - OPC 43} */}
             {testId === '20240725181206384' && <DeterminationOfAlumina />}
             {testId === '20240725181303262' && <DeterminationOfCaoAndMgo />}
@@ -132,6 +160,20 @@ const SingleTest = () => {
             {testId === '20240725180823607' && <LossOnIgnition />}
             {testId === '20240927145206953' && <DeterminationOfLsf />}
             {testId === '20240927145320397' && <AluminatoIronOxide />}
+
+            {/* {Cement - OPC 53} */}
+            {testId === '20241017125328910' && <AluminatoIronOxide />}
+            {testId === '20241017123947963' && <LossOnIgnition />}
+            {testId === '20241017124113262' && <DeterminationOfSilica />}
+            {testId === '20241017124204974' && <DeterminationOfFerricOxide />}
+            {testId === '20241017124328505' && <DeterminationOfAlumina />}
+            {testId === '20241017124358066' && <DeterminationOfCaoAndMgo />}
+            {testId === '20241017124422637' && <DeterminationOfInsolubleResidue />}
+            {testId === '20241017124505253' && <DeterminationOfSulphuricAhydride />}
+            {testId === '20241017124550927' && <DeterminationOfChloride />}
+            {testId === '20241017124852882' && <DeterminationOfSodiumAndPotassium />}
+            {testId === '20241017125020781' && <DeterminationOfLsf />}
+
 
             {/* {Cement (SRC)} */}
             {testId === '20241009180129632' && <TetraCalcium />}
@@ -150,6 +192,14 @@ const SingleTest = () => {
             {testId === '20240725181634477' && <DeterminationOfCaoAndMgo />}
             {testId === '20241014181708441' && <DeterminationOfInsolubleResidue />}
             {testId === '20241014181746026' && <DeterminationOfSulphuricAhydride />}
+
+            {/* {Cement (PSC)} */}
+            {testId === '20241017112243076' && <SulphurSulphide />}
+            {testId === '20241017111857036' && <LossOnIgnition />}
+            {testId === '20241017112209542' && <DeterminationOfSilica />}
+            {testId === '20241017112322914' && <DeterminationOfCaoAndMgo />}
+            {testId === '20241017112414911' && <DeterminationOfSulphuricAhydride />}
+            {testId === '20241017113538472' && <DeterminationOfInsolubleResidue />}
 
             {/* {Bitumen} */}
             {testId === '20240705121419004' && <BitAboluteViscosity />}
@@ -177,6 +227,13 @@ const SingleTest = () => {
             {testId === '20241009151204921' && <CoalMoistureContent />}
             {testId === '20241009152338931' && <CoalSulphur />}
             {testId === '20241009151400519' && <CoalVMC />}
+
+            {/* {Micro Silica} */}
+            {testId === '20241017171203469' && <LossOnIgnitionMs />}
+            {testId === '20241017171108159' && <MoistureContent />}
+            {testId === '20241017171241377' && <SiliconDioxide />}
+
+
 
 
 

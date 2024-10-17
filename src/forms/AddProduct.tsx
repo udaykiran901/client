@@ -60,6 +60,10 @@ const categories = [
     category_id: "RAW_MATERIALS",
     label: "Raw Materials",
   },
+  {
+    category_id: "ORES_AND_MINERALS",
+    label: "Ores and Minerals",
+  },
 ];
 
 const AddProduct = () => {

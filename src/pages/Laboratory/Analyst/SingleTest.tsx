@@ -57,6 +57,23 @@ import SiliconDioxide from "forms/Tests/MicroSilica/SiliconDioxide";
 import CombinedWater from "forms/Tests/Gypsum/CombinedWater";
 import FreeWater from "forms/Tests/Gypsum/FreeWater";
 import DeterminationOfCao from "forms/Tests/Gypsum/MajorOxides";
+import DeterminationOfMgo from "forms/Tests/Limestone/Mgo";
+import CWPh from "forms/Tests/ConstructionWater/CWPh";
+import CWInOrganicSolids from "forms/Tests/ConstructionWater/CWInorganicSolids";
+import CWChlorides from "forms/Tests/ConstructionWater/CWChlorides";
+import CWH2SO4 from "forms/Tests/ConstructionWater/CWH2SO4";
+import CWSulphate from "forms/Tests/ConstructionWater/CWSulphate";
+import CWOrganicSolids from "forms/Tests/ConstructionWater/CWOrganicSolids";
+import CWNaOH from "forms/Tests/ConstructionWater/CWNaOH";
+import CWSS_VS from "forms/Tests/ConstructionWater/CWSS_VS";
+import DWSulphate from "forms/Tests/DrinkingWater/DWSulphate";
+import DWCalcium from "forms/Tests/DrinkingWater/DWCalcium";
+import DWChlorides from "forms/Tests/DrinkingWater/DWChlorides";
+import DWTotalDissolvedSolids from "forms/Tests/DrinkingWater/DWTotalDissolvedSolids";
+import DWPh from "forms/Tests/DrinkingWater/DWPh";
+import DWHardness from "forms/Tests/DrinkingWater/DWHardness";
+import DWMagnesium from "forms/Tests/DrinkingWater/DWMagnesium";
+import DWTotalAlkalinity from "forms/Tests/DrinkingWater/DWTotalAlkalinity";
 
 
 
@@ -148,6 +165,14 @@ const SingleTest = () => {
             {testId === '20241017180436602' && <LossOnIgnition />}
             {testId === '20241017180607951' && <DeterminationOfCao />}
 
+            {/* {Limestone} */}
+            {testId === '20240603163359530' && <LossOnIgnition />}
+            {testId === '20240603164124850' && <DeterminationOfMgo />}
+            {testId === '20240603164538716' && <DeterminationOfSilicaFa />}
+            {testId === '20240603163333486' && <DeterminationOfCao />}
+            {testId === '20240603163101240' && <DeterminationOfAlumina />}
+            {testId === '20241018111812991' && <DeterminationOfFerricOxide />}
+
             {/* {Cement - OPC 43} */}
             {testId === '20240725181206384' && <DeterminationOfAlumina />}
             {testId === '20240725181303262' && <DeterminationOfCaoAndMgo />}
@@ -173,7 +198,6 @@ const SingleTest = () => {
             {testId === '20241017124550927' && <DeterminationOfChloride />}
             {testId === '20241017124852882' && <DeterminationOfSodiumAndPotassium />}
             {testId === '20241017125020781' && <DeterminationOfLsf />}
-
 
             {/* {Cement (SRC)} */}
             {testId === '20241009180129632' && <TetraCalcium />}
@@ -233,9 +257,25 @@ const SingleTest = () => {
             {testId === '20241017171108159' && <MoistureContent />}
             {testId === '20241017171241377' && <SiliconDioxide />}
 
+            {/* {Construction Water} */}
+            {testId === '20241018155721231' && <CWPh />}
+            {testId === '20241018160112589' && <CWInOrganicSolids />}
+            {testId === '20241018160325886' && <CWChlorides />}
+            {testId === '20241018155925692' && <CWH2SO4 />}
+            {testId === '20241018160420486' && <CWSulphate />}
+            {testId === '20241018160028082' && <CWOrganicSolids />}
+            {testId === '20241018155833559' && <CWNaOH />}
+            {testId === '20241018160202556' && <CWSS_VS />}
 
-
-
+            {/* {Drinking Water} */}
+            {testId === '20241018161303536' && <DWSulphate />}
+            {testId === '20241018160948257' && <DWCalcium />}
+            {testId === '20241018161219085' && <DWChlorides />}
+            {testId === '20241018160731637' && <DWTotalDissolvedSolids />}
+            {testId === '20241018160638603' && <DWPh />}
+            {testId === '20241018160916131' && <DWHardness />}
+            {testId === '20241018161102975' && <DWMagnesium />}
+            {testId === '20241018161137225' && <DWTotalAlkalinity />}
 
           </div>
 

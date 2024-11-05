@@ -45,28 +45,39 @@ const BitElasticRecovery: React.FC = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-            const getRes = async () => {
-                // if (true) {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-
-                    const { elasticRec } = benchRec;
-                    console.log(elasticRec, 'rec112')
-
-                    setRecord(elasticRec);
-                    setEditbtn(true);
-
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            }
-            // };
-            getRes();
 
+                setBenchRecord(benchRec[0] || []);
+                setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'rec112');
+
+                        // Ensure elasticRec exists before destructuring
+                        if (benchRec[0].elasticRec) {
+                            const { elasticRec } = benchRec[0];
+
+                            setRecord(elasticRec);
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
-    }, [dispatch, singleJob,]);
+    }, [dispatch, singleJob, review]);
+
 
     const initialRecord: Record[] = Array.from({ length: 1 }, (_, index) => ({
         sno: index,
@@ -108,11 +119,11 @@ const BitElasticRecovery: React.FC = () => {
 
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { elasticRec: record }]
+            ? [{ elasticRec: record }]
             : [{ elasticRec: record }];
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { elasticRec: avgElasticRecovery() }]
+            ? [{ elasticRec: avgElasticRecovery() }]
             : [{ elasticRec: avgElasticRecovery() }];
 
 

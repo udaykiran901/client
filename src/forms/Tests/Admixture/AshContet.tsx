@@ -44,32 +44,37 @@ const AshContent: React.FC<any> = (props: any) => {
     // console.log(singleJob, 'singleJob');
 
     useEffect(() => {
-        if (singleJob.length > 0 && review) {
-            const job = singleJob[0];
+        if (singleJob.length === 0 || !review) return; // Early return if conditions are not met
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
+        const job = singleJob[0];
+        let benchRec;
+        try {
+            benchRec = JSON.parse(job.bench_record);
+        } catch (err) {
+            console.error("Failed to parse bench_record:", err);
+            return; // Exit if parsing fails
+        }
+
+        if (benchRec) {
+            setBenchRecord(benchRec || []); // Set bench record
+            setReportValues(JSON.parse(job.report_values) || []); // Handle report values
+
             const getRes = async () => {
-                // if (true) {
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-                    // const ashCont = benchRec[0]
-                    console.log(benchRec.ashContent, 'raw bench ashContent')
-                    const { w1, w2, w3 } = benchRec.ashContent;
-                    console.log(w1, w2, w3, 'in useEffec')
+                    const { w1, w2, w3 } = benchRec[0].ashContent;
+                    console.log("Ash content values:", w1, w2, w3);
                     setEditbtn(true);
                     setW1(w1);
                     setW2(w2);
                     setW3(w3);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Error accessing ashContent:", err);
                 }
-            }
-            // };
+            };
             getRes();
-
         }
     }, [dispatch, singleJob, review]);
+
 
     // useEffect(() => {
     //     const getRes = async () => {
@@ -126,12 +131,12 @@ const AshContent: React.FC<any> = (props: any) => {
         console.log("Result:", resultObj, "DMC:", DMC);
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { ashContent: { w1, w2, w3 } }]
+            ? [{ ashContent: { w1, w2, w3 } }]
             : [{ ashContent: { w1, w2, w3 } }];
 
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { ashContent: DMC }]
+            ? [{ ashContent: DMC }]
             : [{ ashContent: DMC }];
 
         const data = { updatedBenchRecord, updatedReportValues, jobId };

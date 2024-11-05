@@ -34,29 +34,38 @@ const TetraCalcium = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            const getRes = async () => {
-                // if (true) {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-
-                    console.log(benchRec, 'vvvvv')
-                    const { c4a, c3a } = benchRec.C4AF_C3A;
-
-                    setc3a(c3a);
-                    setc4a(c4a);
-
-
-                    setEditbtn(true);
-
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            }
-            // };
-            getRes();
 
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'vvvvv');
+
+                        // Ensure C4AF_C3A exists before destructuring
+                        if (benchRec[0].C4AF_C3A) {
+                            const { c4a, c3a } = benchRec[0].C4AF_C3A;
+
+                            setc3a(c3a);
+                            setc4a(c4a);
+
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     const handleOnSubmittingTest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

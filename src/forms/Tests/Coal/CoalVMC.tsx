@@ -37,24 +37,42 @@ const CoalVMC: React.FC = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            const getRes = async () => {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-
-                    console.log(benchRec, 'vvv')
-                    const { w1, w2, w3, m } = benchRec.VMC.resultObj;
-                    setW1(w1);
-                    setW2(w2);
-                    setW3(w3);
-                    setM(m);
-                    setEditbtn(true);
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            };
-            getRes();
+
+
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'vvv');
+
+                        // Ensure VMC and resultObj exist before destructuring
+                        if (benchRec[0].VMC && benchRec[0].VMC.resultObj) {
+                            const { w1, w2, w3, m } = benchRec[0].VMC.resultObj;
+
+                            setW1(w1);
+                            setW2(w2);
+                            setW3(w3);
+                            setM(m);
+
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [singleJob, review]);
+
 
     const handleOnSubmittingTest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

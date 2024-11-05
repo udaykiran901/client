@@ -33,23 +33,39 @@ const DWTotalDissolvedSolids = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            const getRes = async () => {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-                    const { v1, w1, w2 } = benchRec.TDS; // Adjust key based on your data structure
-
-                    setV1(v1);
-                    setW1(w1);
-                    setW2(w2);
-
-                    setEditbtn(true);
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            };
-            getRes();
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'bench record');
+
+                        // Ensure TDS exists before destructuring
+                        if (benchRec[0].TDS) {
+                            const { v1, w1, w2 } = benchRec[0].TDS; // Adjust key based on your data structure
+
+                            setV1(v1);
+                            setW1(w1);
+                            setW2(w2);
+
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     const handleOnSubmittingTest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

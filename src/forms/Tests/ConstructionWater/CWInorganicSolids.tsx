@@ -33,24 +33,39 @@ const CWInOrganicSolids = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            const getRes = async () => {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-
-                    const { ws, w1, w3 } = benchRec.CWOrganicSolids;
-
-                    setWs(ws);
-                    setW1(w1);
-                    setW3(w3);
-
-                    setEditbtn(true);
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            };
-            getRes();
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'vvvvv');
+
+                        // Ensure CWOrganicSolids and resultObj exist before destructuring
+                        if (benchRec[0].CWOrganicSolids) {
+                            const { ws, w1, w3 } = benchRec[0].CWOrganicSolids;
+
+                            setWs(ws);
+                            setW1(w1);
+                            setW3(w3);
+
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     const handleOnSubmittingTest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -122,7 +137,7 @@ const CWInOrganicSolids = () => {
             }}
         >
             <h3 style={{ textAlign: 'center', marginBottom: '20px', fontWeight: 'bold' }}>
-                CW Organic Solids Calculation
+                CW Inorganic Solids Calculation
             </h3>
 
             {renderInput("vol. of Sample (Ws)", "input1", ws, setWs)}

@@ -37,16 +37,16 @@ const DeterminationOfSulphuricAhydrideFa: React.FC = () => {
     const { singleJob } = useSelector(selectPropertiesLAB);
 
     useEffect(() => {
-        if (singleJob.length > 0 && review) {
-            const job = singleJob[0];
+        const job = singleJob[0];
+        const benchRec = JSON.parse(job.bench_record);
+        if (singleJob.length > 0 && review && benchRec != null) {
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
+            setBenchRecord(benchRec[0] || []);
             setReportValues(JSON.parse(job.report_values) || []);
             const getRes = async () => {
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
 
-                    const { w, w1, w2 } = benchRec.so3.resultObj;
+                    const { w, w1, w2 } = benchRec[0].so3.resultObj;
                     setW(w);
                     setW1(w1);
                     setW2(w2);
@@ -91,11 +91,11 @@ const DeterminationOfSulphuricAhydrideFa: React.FC = () => {
         const SO3 = (((w2 - w1) / w) * 34.3).toFixed(2);
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { so3: { resultObj } }]
+            ? [{ so3: { resultObj } }]
             : [{ so3: { resultObj } }];
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { so3: { SO3 } }]
+            ? [{ so3: { SO3 } }]
             : [{ so3: { SO3 } }];
 
         const data = { updatedBenchRecord, updatedReportValues, jobId };

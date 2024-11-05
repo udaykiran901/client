@@ -35,24 +35,37 @@ const DeterminationOfNoName2 = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            const getRes = async () => {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-                    const { ca, mg, al, si } = benchRec.major_oxides;
-
-                    setCa(ca);
-                    setMg(mg);
-                    setAl(al);
-                    setSi(si);
-
-                    setEditbtn(true);
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            };
-            getRes();
+
+                const getRes = async () => {
+                    try {
+                        // Accessing properties in benchRec and checking if major_oxides exist
+                        if (benchRec[0]?.major_oxides) {
+                            const { ca, mg, al, si } = benchRec[0].major_oxides;
+                            setCa(ca);
+                            setMg(mg);
+                            setAl(al);
+                            setSi(si);
+
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log("Error accessing major oxides:", err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     const handleOnSubmittingTest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

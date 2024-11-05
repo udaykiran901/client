@@ -43,32 +43,42 @@ const DeterminationOfFerricOxide = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-            const getRes = async () => {
-                // if (true) {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-
-                    console.log(benchRec, 'vvvvv')
-                    const { m, v, w } = benchRec.Fe2O3.resultObj;
-
-                    setV(v);
-                    setM(m);
-                    setW(w);
-
-
-                    setEditbtn(true);
-
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            }
-            // };
-            getRes();
 
+                setBenchRecord(benchRec || []);
+                setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'vvvvv');
+
+                        // Ensure benchRec[0] and benchRec[0].Fe2O3.resultObj exist before setting state
+                        if (benchRec[0]?.Fe2O3?.resultObj) {
+                            const { m, v, w } = benchRec[0].Fe2O3.resultObj;
+
+                            setV(v);
+                            setM(m);
+                            setW(w);
+
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log("Error accessing Fe2O3 resultObj:", err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     const handleOnSubmittingTest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -76,11 +86,11 @@ const DeterminationOfFerricOxide = () => {
         const Fe2O3 = ((v * 79.25 * m * 250 * 100) / (w * 1000 * 25)).toFixed(2);
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { Fe2O3: { resultObj } }]
+            ? [{ Fe2O3: { resultObj } }]
             : [{ Fe2O3: { resultObj } }];
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { Fe2O3: { Fe2O3 } }]
+            ? [{ Fe2O3: { Fe2O3 } }]
             : [{ Fe2O3: { Fe2O3 } }];
 
 

@@ -32,13 +32,13 @@ const DWHardness = () => {
     const { singleJob } = useSelector(selectPropertiesLAB);
 
     useEffect(() => {
-        if (singleJob.length > 0 && review) {
-            const job = singleJob[0];
+        const job = singleJob[0];
+        const benchRec = JSON.parse(job.bench_record);
+        if (singleJob.length > 0 && review && benchRec != null) {
 
             const getRes = async () => {
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-                    const { v1, f, i, m } = benchRec.hardness;
+                    const { v1, f, i, m } = benchRec[0].hardness;
 
                     setV1(v1);
                     setF(f);

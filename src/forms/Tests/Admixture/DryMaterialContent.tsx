@@ -43,32 +43,41 @@ const DryMaterialContent: React.FC<any> = ({ jobDetails }) => {
 
 
     useEffect(() => {
-        if (singleJob.length > 0 && review) {
+        if (singleJob.length > 0) {
             const job = singleJob[0];
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-            const getRes = async () => {
-                // if (true) {
-                try {
-                    const benchRec = JSON.parse(job.bench_record);
-                    // const ashCont = benchRec[0]
-                    console.log(benchRec.dmc, 'raw bench ashContent')
-                    const { w1, w2, w3 } = benchRec.dmc;
-                    console.log(w1, w2, w3, 'in useEffec')
-                    setEditbtn(true);
-                    setW1(w1);
-                    setW2(w2);
-                    setW3(w3);
-                } catch (err) {
-                    console.log(err);
-                }
-            }
-            // };
-            getRes();
+            // Check if job and bench_record are defined
+            if (job && job.bench_record) {
+                const benchRec = JSON.parse(job.bench_record);
 
+                if (review && benchRec != null) {
+                    setBenchRecord(benchRec || []); // Assuming benchRec is already parsed
+                    setReportValues(JSON.parse(job.report_values) || []);
+
+                    const getRes = async () => {
+                        try {
+                            console.log(benchRec[0].dmc, 'raw bench ashContent');
+                            const { w1, w2, w3 } = benchRec[0].dmc; // Ensure dmc exists
+                            console.log(w1, w2, w3, 'in useEffect');
+                            setEditbtn(true);
+                            setW1(w1);
+                            setW2(w2);
+                            setW3(w3);
+                        } catch (err) {
+                            console.log("Error accessing dmc properties:", err);
+                        }
+                    };
+
+                    getRes();
+                }
+            } else {
+                console.log("Job or bench_record is undefined");
+            }
+        } else {
+            console.log("singleJob array is empty");
         }
     }, [dispatch, singleJob, review]);
+
 
     const renderInput = (label: string, id: string, value: number, setValue: (val: number) => void) => (
         <div style={{ marginBottom: '15px' }}>
@@ -104,7 +113,7 @@ const DryMaterialContent: React.FC<any> = ({ jobDetails }) => {
         console.log("Result:", resultObj, "DMC:", DMC);
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { dmc: { w1, w2, w3 } }]
+            ? [{ dmc: { w1, w2, w3 } }]
             : [{ dmc: { w1, w2, w3 } }];
 
         const updatedReportValues = Array.isArray(reportValues)

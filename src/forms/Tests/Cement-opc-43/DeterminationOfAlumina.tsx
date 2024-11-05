@@ -52,35 +52,44 @@ const DeterminationOfAlumina: React.FC<any> = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-            const getRes = async () => {
-                // if (true) {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-
-
-                    const { w, m, v1, v2, v3, e, v } = benchRec.Al2O3.resultObj;
-
-                    setw(w)
-                    setm(m)
-                    setv1(v1)
-                    setv2(v2)
-                    setv3(v3)
-                    sete(e)
-                    setv(v)
-
-                    setEditbtn(true);
-
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            }
-            // };
-            getRes();
 
+                setBenchRecord(benchRec || []);
+                setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
+
+                const getRes = async () => {
+                    try {
+                        // Ensure that Al2O3.resultObj exists before destructuring
+                        if (benchRec[0].Al2O3?.resultObj) {
+                            const { w, m, v1, v2, v3, e, v } = benchRec[0].Al2O3.resultObj;
+
+                            setw(w);
+                            setm(m);
+                            setv1(v1);
+                            setv2(v2);
+                            setv3(v3);
+                            sete(e);
+                            setv(v);
+
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log("Error accessing Al2O3 resultObj:", err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
 
     const renderInput = (label: string, id: string, value: number, setValue: (val: number) => void, readOnly: boolean = false) => (
@@ -120,11 +129,11 @@ const DeterminationOfAlumina: React.FC<any> = () => {
 
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { Al2O3: { resultObj } }]
+            ? [{ Al2O3: { resultObj } }]
             : [{ Al2O3: { resultObj } }];
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { Al2O3: { value: Al2O3 } }]
+            ? [{ Al2O3: { value: Al2O3 } }]
             : [{ Al2O3: { value: Al2O3 } }];
 
 

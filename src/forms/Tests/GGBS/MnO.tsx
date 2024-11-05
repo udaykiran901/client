@@ -32,20 +32,34 @@ const MnO = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            const getRes = async () => {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-                    const { val } = benchRec.MnO;
-
-                    setVal(val);
-                    setEditbtn(true);
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            };
-            getRes();
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec[0].MnO, 'raw bench MnO content');
+
+                        // Check if MnO and MnO.val are defined before setting state
+                        if (benchRec[0].MnO && benchRec[0].MnO.val !== undefined) {
+                            setVal(benchRec[0].MnO.val);
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [singleJob, review]);
+
 
     const handleOnSubmittingTest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

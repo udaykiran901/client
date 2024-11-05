@@ -41,32 +41,42 @@ const DeterminationOfSodiumAndPotassium = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-            const getRes = async () => {
-                // if (true) {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-
-                    console.log(benchRec, 'vvvvv')
-                    const { w, na, k } = benchRec.alkali.resultObj;
-
-                    setW(w);
-                    setNa(na);
-                    setK(k);
-
-
-                    setEditbtn(true);
-
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            }
-            // };
-            getRes();
 
+                setBenchRecord(benchRec || []);
+                setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'vvvvv');
+
+                        // Ensure alkali and resultObj exist before destructuring
+                        if (benchRec[0].alkali && benchRec[0].alkali.resultObj) {
+                            const { w, na, k } = benchRec[0].alkali.resultObj;
+
+                            setW(w);
+                            setNa(na);
+                            setK(k);
+
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     const handleOnSubmittingTest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -74,11 +84,11 @@ const DeterminationOfSodiumAndPotassium = () => {
 
         const resultObj = { w, na, k };
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { alkali: { resultObj } }]
+            ? [{ alkali: { resultObj } }]
             : [{ alkali: { resultObj } }];
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { alkali: { alkali } }]
+            ? [{ alkali: { alkali } }]
             : [{ alkali: { alkali } }];
 
 

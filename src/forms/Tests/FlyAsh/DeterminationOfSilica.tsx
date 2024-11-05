@@ -8,9 +8,9 @@ import { createSelector } from "reselect";
 const DeterminationOfSilicaFa: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
-    const { pathname } = useLocation();
-    const { jobId } = useParams();
 
+    const { jobId } = useParams();
+    const { pathname } = useLocation();
     const review = pathname.includes("review");
 
     const [benchRecord, setBenchRecord] = useState([]);
@@ -40,25 +40,42 @@ const DeterminationOfSilicaFa: React.FC = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-
-            const getRes = async () => {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-                    const { w1, w2, w3 } = benchRec.silica.resultObj;
-                    setW1(w1);
-                    setW2(w2);
-                    setW3(w3);
-
-                    setEditbtn(true);
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            };
-            getRes();
+
+                setBenchRecord(benchRec[0] || []);
+                setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'vvvvv');
+
+                        // Ensure silica and resultObj exist before destructuring
+                        if (benchRec[0].silica && benchRec[0].silica.resultObj) {
+                            const { w1, w2, w3 } = benchRec[0].silica.resultObj;
+
+                            setW1(w1);
+                            setW2(w2);
+                            setW3(w3);
+
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     const renderInput = (label: string, id: string, value: number, setValue: (val: number) => void, readOnly: boolean = false) => (
         <div style={{ marginBottom: '15px' }}>
@@ -91,11 +108,11 @@ const DeterminationOfSilicaFa: React.FC = () => {
         const SiO3 = (((w2 - w3) / w1) * 100).toFixed(2);
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { silica: { resultObj } }]
+            ? [{ silica: { resultObj } }]
             : [{ silica: { resultObj } }];
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { silica: { SiO3 } }]
+            ? [{ silica: { SiO3 } }]
             : [{ silica: { SiO3 } }];
 
         const data = { updatedBenchRecord, updatedReportValues, jobId };

@@ -32,23 +32,40 @@ const CWSulphate = () => {
     useEffect(() => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
-            const getRes = async () => {
+
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-                    const { ws, w1, w2 } = benchRec.SulphateTest;  // Assuming the old object is SulphateTest
-
-                    setWs(ws);
-                    setW1(w1);
-                    setW2(w2);
-
-                    setEditbtn(true);
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            };
-            getRes();
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'vvvvv');
+
+                        // Ensure SulphateTest and required properties exist before destructuring
+                        if (benchRec[0].SulphateTest) {
+                            const { ws, w1, w2 } = benchRec[0].SulphateTest;
+
+                            setWs(ws);
+                            setW1(w1);
+                            setW2(w2);
+
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     const handleOnSubmittingTest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

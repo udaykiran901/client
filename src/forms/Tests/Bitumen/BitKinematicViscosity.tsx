@@ -53,23 +53,38 @@ const BitKinematicViscosity: React.FC = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-            const getRes = async () => {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-                    const { kinematicViscosity } = benchRec;
-                    console.log(kinematicViscosity, 'raw bench ashContent')
-                    setEditbtn(true);
-                    setRecord(kinematicViscosity);
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            }
-            getRes();
 
+                setBenchRecord(benchRec[0] || []);
+                setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'raw bench ashContent');
+
+                        // Ensure kinematicViscosity exists before setting it
+                        if (benchRec[0].kinematicViscosity) {
+                            setRecord(benchRec[0].kinematicViscosity);
+                        }
+
+                        setEditbtn(true);
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
-    }, [dispatch, singleJob,]);
+    }, [dispatch, singleJob, review]);
+
 
     const handleInputChange = (rowIndex: number, fieldName: string, value: number) => {
         setRecord(prevState =>
@@ -86,11 +101,11 @@ const BitKinematicViscosity: React.FC = () => {
         event.preventDefault();
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { kinematicViscosity: record }]
+            ? [{ kinematicViscosity: record }]
             : [{ kinematicViscosity: record }];
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { kinematicViscosity: avgViscosity() }]
+            ? [{ kinematicViscosity: avgViscosity() }]
             : [{ kinematicViscosity: avgViscosity() }];
 
 

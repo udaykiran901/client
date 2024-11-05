@@ -39,23 +39,41 @@ const LossOnIgnitionFa: React.FC = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-            const getRes = async () => {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-                    const { w1, w2, w3 } = benchRec.loi.resultObj;
-                    setW1(w1);
-                    setW2(w2);
-                    setW3(w3);
-                    setEditbtn(true);
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            };
-            getRes();
+
+                setBenchRecord(benchRec[0] || []);
+                setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'vvvvv');
+
+                        // Ensure loi and resultObj exist before destructuring
+                        if (benchRec[0].loi && benchRec[0].loi.resultObj) {
+                            const { w1, w2, w3 } = benchRec[0].loi.resultObj;
+
+                            setW1(w1);
+                            setW2(w2);
+                            setW3(w3);
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
-    }, [singleJob, review]);
+    }, [dispatch, singleJob, review]);
+
 
     const renderInput = (label: string, id: string, value: number, setValue: (val: number) => void) => (
         <div style={{ marginBottom: '15px' }}>
@@ -88,11 +106,11 @@ const LossOnIgnitionFa: React.FC = () => {
         const LOI = (((w2 - w3) * 100) / (w2 - w1)).toFixed(2);
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { loi: { resultObj } }]
+            ? [{ loi: { resultObj } }]
             : [{ loi: { resultObj } }];
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { loi: { LOI } }]
+            ? [{ loi: { LOI } }]
             : [{ loi: { LOI } }];
 
         const data = { updatedBenchRecord, updatedReportValues, jobId };

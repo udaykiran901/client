@@ -47,26 +47,31 @@ const Ph: React.FC<any> = ({ jobDetails }) => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-            const getRes = async () => {
-                // if (true) {
-                try {
-                    const benchRec = JSON.parse(job.bench_record);
-                    // const ashCont = benchRec[0]
-                    console.log(benchRec.ph.ph, 'raw bench ashContent')
-                    setEditbtn(true);
-                    setPh(benchRec.ph.ph);
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                const benchRec = JSON.parse(job.bench_record);
 
-                } catch (err) {
-                    console.log(err);
-                }
+                setBenchRecord(benchRec || []);
+                setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec[0].ph?.ph, 'raw bench ph content');
+
+                        // Ensure benchRec.ph and benchRec.ph.ph exist before setting state
+                        if (benchRec[0].ph) {
+                            setEditbtn(true);
+                            setPh(benchRec[0].ph);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
             }
-            // };
-            getRes();
-
         }
     }, [dispatch, singleJob, review]);
+
 
     const renderInput1 = () => (
         <div>
@@ -100,8 +105,8 @@ const Ph: React.FC<any> = ({ jobDetails }) => {
         event.preventDefault();
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { ph: { ph } }]
-            : [{ ph: { ph } }];
+            ? [{ ph: ph }]
+            : [{ ph: ph }];
 
         const updatedReportValues = Array.isArray(reportValues)
             ? [...reportValues, { ph: { ph } }]

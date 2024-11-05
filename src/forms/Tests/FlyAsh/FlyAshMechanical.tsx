@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { AppDispatch } from "index";
 import { submitTestDetails, getSingleJob } from "slices/thunk"; // Update with your actual imports
 import { createSelector } from "reselect";
@@ -20,6 +20,8 @@ const ResidueTest: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const { jobId } = useParams();
+    const { pathname } = useLocation();
+    const review = pathname.includes("review");
 
     const [record, setRecord] = useState<any>(initialRecord);
 
@@ -38,9 +40,9 @@ const ResidueTest: React.FC = () => {
     }, [dispatch, jobId]);
 
     useEffect(() => {
-        if (singleJob.length > 0) {
-            const job = singleJob[0];
-            const benchRecord = JSON.parse(job.bench_record) || {};
+        const job = singleJob[0];
+        const benchRecord = JSON.parse(job.bench_record);
+        if (singleJob.length > 0 && review && benchRecord != null) {
             // Initialize your record state with data from the job
             setRecord((prevState) => ({
                 ...prevState,

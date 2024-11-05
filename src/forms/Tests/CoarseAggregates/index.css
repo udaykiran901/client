@@ -1,0 +1,411 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    margin-top: 50px;
+}
+
+.heading-text {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.input-container {
+    margin-bottom: 15px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-container {
+    display: grid;
+    gap: 10px;
+}
+
+.header-row,
+.data-row {
+    display: flex;
+    gap: 10px;
+}
+
+.table-header {
+    font-weight: bold;
+    flex: 1;
+    text-align: center;
+}
+
+.table-cell {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.button-style {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #2b3142;
+    color: #fff;
+    font-size: 10px;
+    transition: background-color 0.3s;
+    width: 75px;
+}
+
+.button-style:hover {
+    background-color: #3c4457;
+}
+
+.constants-container .label-bold {
+    font-weight: bold;
+}
+
+.fields-to-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
+
+/* Add test form */
+.addtest-form {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff9f7;
+}
+
+/* Add  Employee form */
+.add-employee-form {
+    display: flex;
+    gap: 10px;
+}
+
+.highlighted-text {
+    color: #ff5821;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.two-fields-container {
+    display: flex;
+    gap: 10px;
+}
+
+.work-profile-container {
+    background-color: #fff9f7;
+    padding: 0px 20px;
+}
+
+/* Add customer form */
+
+/* Create order form */
+
+.discipline-text {
+    color: black;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.no-test-text {
+    color: #c0bcbb;
+    font-size: 12px;
+}
+
+.test-items-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    margin: 16px 0px;
+}
+
+.test-item {
+    border: 1px solid #ff5821;
+    border-radius: 2px;
+    padding: 8px 8px 8px 16px;
+    margin: 2px 16px 4px 0px;
+    background-color: #fff;
+    font-size: 10px;
+    position: relative;
+    display: inline;
+}
+
+.testitem-deleteBtn {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    background-color: #fff;
+    color: #ff5821;
+    border: 1px solid #ff5821;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    z-index: 1;
+}
+
+.selected-test-btn {
+    border: 1px solid rgb(0, 255, 0);
+    color: rgb(0, 255, 0);
+}
+
+.testitem-deleteBtn:hover {
+    background-color: #ff5821;
+    color: #fff;
+    border: 1px solid #fff;
+    transition: 0.3s;
+}
+
+.selected-test-btn>button:hover {
+    background-color: rgb(0, 255, 0);
+    color: #fff;
+    border: 1px solid #fff;
+    transition: 0.3s;
+}
+
+.orders-dynamic-fields {
+    display: flex;
+    flex-direction: column;
+}
+
+.create-order-main-container::-webkit-scrollbar,
+.create-order-container::-webkit-scrollbar {
+    display: none;
+}
+
+.form-details {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-details>h2 {
+    color: #ff5821;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.calculations-section {
+    display: flex;
+    flex-direction: column;
+
+    gap: 30px;
+    padding: 20px;
+    padding-left: 50px;
+}
+
+.test-submission-fom {
+    padding: 30px;
+    border-radius: 20px;
+
+    border-left: 4px solid #ff5821;
+    border-top-left-radius: 0px;
+    background-color: #fff9f7;
+}
+
+/* LeaveRequestForm.css */
+
+.leave-form {
+    width: 600px;
+    margin: 0px auto;
+}
+
+.form-details {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.highlighted-text {
+    color: #007bff;
+    color: #656262;
+}
+
+.two-cols-form {
+    display: flex;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 40px;
+}
+
+.label-text {
+    font-weight: bold;
+    display: block;
+}
+
+.input-field-1000 {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.textarea-field {
+    height: 100px;
+}
+
+input:read-only {
+    cursor: not-allowed;
+}
+
+.ref-number {
+    color: #ff5821;
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 20px;
+}
+
+.search-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 6vh;
+}
+
+.button-container {
+    margin-top: 10px;
+}
+
+.left-sec {
+    width: 600px;
+}
+
+.fields-title {
+    color: #ff5821;
+    margin-top: 20px 0px 10px;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.input-container-sm {
+    margin-right: 20px;
+    width: 200px;
+}
+
+.input-field-10 {
+    width: 200px;
+}
+
+textarea,
+textarea .input-field-10 {
+    resize: none;
+    background-color: transparent;
+    border: 1px solid #ff5821 !important;
+}
+
+.exceptional-100vw {
+    overflow-x: auto;
+}
+
+.one-mould {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ff5821;
+    box-sizing: content-box;
+    border-radius: 4px;
+
+    display: flex;
+    gap: 20px;
+    /* width: 100%; */
+}
+
+.before-after-soacked-container {
+    display: flex;
+    gap: 30px;
+}
+
+.special-test {
+    margin-top: 20px;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.plan-input-field {
+    margin: 0px;
+}
+
+.plan-two-field-container {
+    gap: 0px;
+}
+
+.heading-fields-textarea {
+    background-color: #ff5821;
+    color: #fff;
+    border: 1px solid #ccc !important;
+}
+
+.table-margin-top {
+    margin-top: 20px;
+}
+
+.test-submission-fom input:read-only {
+    background-color: #e6e2e1 !important;
+}
+
+.constants-container {
+    margin-top: 30px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.separate-test-container {
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+.test-name-text {
+    color: #ff5821;
+    font-weight: 600;
+}
+
+.mb-5 {
+    margin-bottom: 50px;
+}
+
+.mt-5 {
+    margin-top: 50px;
+}

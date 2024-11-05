@@ -33,20 +33,34 @@ const CWH2SO4 = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            const getRes = async () => {
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-                    const { v1 } = benchRec; // Destructure the required values
-
-                    setV1(v1); // Set the fetched values to state
-                    setEditbtn(true); // Enable edit mode if reviewing
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            };
-            getRes();
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'vvvvv');
+
+                        if (benchRec[0]) {
+                            const { v1 } = benchRec[0]; // Destructure the required values
+
+                            setV1(v1);
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     // Handle form submission
     const handleOnSubmittingTest = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -146,7 +160,7 @@ const CWH2SO4 = () => {
 
             <div style={{ marginTop: '20px', fontWeight: 'bold' }}>
                 <p>Calculation Result:</p>
-                <p>(H2SO4) = {v1}</p>
+                {/* <p>(H2SO4) = {v1}</p> */}
                 <p>(H2SO4) = {v1.toFixed(2)}</p>
             </div>
         </form>

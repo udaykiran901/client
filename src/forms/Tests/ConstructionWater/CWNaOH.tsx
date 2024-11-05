@@ -31,23 +31,36 @@ const CWNaOH = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            const getRes = async () => {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-
-                    console.log(job, benchRec, 'Data Loaded for Editing');
-                    const { v1 } = benchRec.NaOH_Test;
-
-                    setV1(v1);
-                    setEditbtn(true);
-
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            };
-            getRes();
+
+                const getRes = async () => {
+                    try {
+                        console.log(job, benchRec, 'Data Loaded for Editing');
+
+                        // Ensure NaOH_Test and its properties exist before destructuring
+                        if (benchRec[0].NaOH_Test) {
+                            const { v1 } = benchRec[0].NaOH_Test;
+
+                            setV1(v1);
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     const handleOnSubmittingTest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

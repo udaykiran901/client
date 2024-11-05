@@ -43,32 +43,41 @@ const DeterminationOfCaoAndMgo: React.FC<any> = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-            const getRes = async () => {
-                // if (true) {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-
-                    console.log(benchRec, 'vvvvv')
-                    const { w, m, cav, mgv } = benchRec.caMg.resultObj;
-
-                    setw(w)
-                    setm(m)
-                    setCav(cav);
-                    setMgv(mgv);
-
-                    setEditbtn(true);
-
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            }
-            // };
-            getRes();
 
+                setBenchRecord(benchRec || []);
+                setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
+
+                const getRes = async () => {
+                    try {
+                        // Ensure that caMg.resultObj exists before destructuring
+                        if (benchRec[0].caMg?.resultObj) {
+                            const { w, m, cav, mgv } = benchRec[0].caMg.resultObj;
+
+                            setw(w);
+                            setm(m);
+                            setCav(cav);
+                            setMgv(mgv);
+
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.error("Error accessing caMg resultObj:", err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     const renderInput = (label: string, id: string, value: number, setValue: (val: number) => void) => (
         <div style={{ marginBottom: '15px' }}>
@@ -104,11 +113,11 @@ const DeterminationOfCaoAndMgo: React.FC<any> = () => {
 
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { caMg: { resultObj } }]
+            ? [{ caMg: { resultObj } }]
             : [{ caMg: { resultObj } }];
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { caMg: { ca, mg } }]
+            ? [{ caMg: { ca, mg } }]
             : [{ caMg: { ca, mg } }];
 
 

@@ -41,32 +41,42 @@ const DeterminationOfSilica = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-            const getRes = async () => {
-                // if (true) {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-
-                    console.log(benchRec, 'vvvvv')
-                    const { w, w1, w2 } = benchRec.SiO3.resultObj;
-
-                    setW(w);
-                    setW1(w1);
-                    setW2(w2);
-
-
-                    setEditbtn(true);
-
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            }
-            // };
-            getRes();
 
+                setBenchRecord(benchRec || []);
+                setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'vvvvv');
+
+                        // Ensure benchRec[0] and benchRec[0].SiO3.resultObj exist before setting state
+                        if (benchRec[0]?.SiO3?.resultObj) {
+                            const { w, w1, w2 } = benchRec[0].SiO3.resultObj;
+
+                            setW(w);
+                            setW1(w1);
+                            setW2(w2);
+
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log("Error accessing SiO3 resultObj:", err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     const handleOnSubmittingTest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -74,11 +84,11 @@ const DeterminationOfSilica = () => {
         const SiO3 = (((w1 - w2) * 100) / w).toFixed(2);
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { SiO3: { resultObj } }]
+            ? [{ SiO3: { resultObj } }]
             : [{ SiO3: { resultObj } }];
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { SiO3: { SiO3 } }]
+            ? [{ SiO3: { SiO3 } }]
             : [{ SiO3: { SiO3 } }];
 
 

@@ -35,25 +35,41 @@ const DWChlorides = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            const getRes = async () => {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-
-                    const { v1, b, f, i, n } = benchRec.DWChlorides;
-                    setV1(v1);
-                    setB(b);
-                    setF(f);
-                    setI(i);
-                    setN(n);
-
-                    setEditbtn(true);
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            };
-            getRes();
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'bench record');
+
+                        // Ensure the DWChlorides property exists before destructuring
+                        if (benchRec[0].DWChlorides) {
+                            const { v1, b, f, i, n } = benchRec[0].DWChlorides;
+
+                            setV1(v1);
+                            setB(b);
+                            setF(f);
+                            setI(i);
+                            setN(n);
+
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     const handleOnSubmittingTest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

@@ -41,32 +41,42 @@ const LossOnIgnition = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-            const getRes = async () => {
-                // if (true) {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-
-                    console.log(benchRec, 'vvvvv')
-                    const { w1, w2, w3 } = benchRec.LOI.resultObj;
-
-                    setW1(w1);
-                    setW2(w2);
-                    setW3(w3);
-
-
-                    setEditbtn(true);
-
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            }
-            // };
-            getRes();
 
+                setBenchRecord(benchRec || []);
+                setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'vvvvv');
+
+                        // Ensure LOI and resultObj exist before destructuring
+                        if (benchRec[0].LOI && benchRec[0].LOI.resultObj) {
+                            const { w1, w2, w3 } = benchRec[0].LOI.resultObj;
+
+                            setW1(w1);
+                            setW2(w2);
+                            setW3(w3);
+
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     const handleOnSubmittingTest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -74,11 +84,11 @@ const LossOnIgnition = () => {
         const LOI = ((((w2 - w3) / (w2 - w1)) * 100)).toFixed(2);
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { LOI: { resultObj } }]
+            ? [{ LOI: { resultObj } }]
             : [{ LOI: { resultObj } }];
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { LOI: { LOI } }]
+            ? [{ LOI: { LOI } }]
             : [{ LOI: { LOI } }];
 
 

@@ -43,33 +43,44 @@ const DeterminationOfChloride = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-            const getRes = async () => {
-                // if (true) {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-
-                    console.log(benchRec, 'vvvvv')
-                    const { n, w, y, x, z } = benchRec.cl.resultObj;
-
-                    setW(w);
-                    setN(n);
-                    setY(y);
-                    setX(x);
-                    setZ(z);
-
-                    setEditbtn(true);
-
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            }
-            // };
-            getRes();
 
+                setBenchRecord(benchRec || []);
+                setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'vvvvv');
+
+                        // Ensure cl and resultObj exist before destructuring
+                        if (benchRec[0].cl && benchRec[0].cl.resultObj) {
+                            const { n, w, y, x, z } = benchRec[0].cl.resultObj;
+
+                            setW(w);
+                            setN(n);
+                            setY(y);
+                            setX(x);
+                            setZ(z);
+
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     const handleOnSubmittingTest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -77,11 +88,11 @@ const DeterminationOfChloride = () => {
         const cl = (((10 - (10 - y) - x) * n * 0.03545 * 100) / w).toFixed(2);
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { cl: { resultObj } }]
+            ? [{ cl: { resultObj } }]
             : [{ cl: { resultObj } }];
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { cl: { cl } }]
+            ? [{ cl: { cl } }]
             : [{ cl: { cl } }];
 
 

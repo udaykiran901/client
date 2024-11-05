@@ -59,28 +59,38 @@ const BitDuctility: React.FC = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-            const getRes = async () => {
-                // if (true) {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-
-                    const { record } = benchRec.ductility;
-                    console.log(benchRec, 'rec112')
-
-                    setRecord(record);
-                    setEditbtn(true);
-
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            }
-            // };
-            getRes();
 
+                setBenchRecord(benchRec[0] || []);
+                setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
+
+                const getRes = async () => {
+                    try {
+                        // Ensure ductility and its record exist before destructuring
+                        if (benchRec[0].ductility && benchRec[0].ductility.record) {
+                            const { record } = benchRec[0].ductility;
+                            console.log(benchRec, 'rec112');
+
+                            setRecord(record);
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
-    }, [dispatch, singleJob,]);
+    }, [dispatch, singleJob, review]);
+
 
     const handleInputChange = (rowIndex: number, fieldName: string, value: number) => {
         setRecord(prevState =>
@@ -104,11 +114,11 @@ const BitDuctility: React.FC = () => {
         const avgDuctility = parseFloat((record[0].final - record[0].initial).toFixed(3))
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { ductility: resultObj }]
+            ? [{ ductility: resultObj }]
             : [{ ductility: resultObj }];
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { ductility: avgDuctility }]
+            ? [{ ductility: avgDuctility }]
             : [{ ductility: avgDuctility }];
 
 

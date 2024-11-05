@@ -40,26 +40,42 @@ const BitAboluteViscosity: React.FC = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-            const getRes = async () => {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-                    const { resultObj } = benchRec.absViscosity;
-                    const { temp, viscosities } = resultObj;
-                    console.log(benchRec.absViscosity, 'raw bench ashContent')
-                    console.log(resultObj, 'raw bench ashContent')
-                    setEditbtn(true);
-                    setTemp(temp);
-                    setViscosities(viscosities)
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            }
-            getRes();
 
+                setBenchRecord(benchRec[0] || []);
+                setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec.absViscosity, 'raw bench absViscosity');
+
+                        // Ensure absViscosity and resultObj exist before destructuring
+                        if (benchRec[0].absViscosity && benchRec[0].absViscosity.resultObj) {
+                            const { resultObj } = benchRec[0].absViscosity;
+                            const { temp, viscosities } = resultObj;
+
+                            setTemp(temp);
+                            setViscosities(viscosities);
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     const handleOnSubmittingTest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -67,11 +83,11 @@ const BitAboluteViscosity: React.FC = () => {
         const resultObj = { temp, viscosities };
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { absViscosity: { resultObj } }]
+            ? [{ absViscosity: { resultObj } }]
             : [{ absViscosity: { resultObj } }];
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { absViscosity: { avgViscosity } }]
+            ? [{ absViscosity: { avgViscosity } }]
             : [{ absViscosity: { avgViscosity } }];
 
 

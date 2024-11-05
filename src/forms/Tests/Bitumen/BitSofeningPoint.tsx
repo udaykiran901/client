@@ -45,27 +45,38 @@ const BitSofeningPoint: React.FC = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-            const getRes = async () => {
-                // if (true) {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-
-                    const { record } = benchRec.softeningPoint;
-
-                    setRecord(record);
-                    setEditbtn(true);
-
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            }
-            // };
-            getRes();
 
+                setBenchRecord(benchRec[0].softeningPoint.resultObj || []);
+                setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec[0].softeningPoint.record, 'raw bench softeningPoint');
+
+                        if (benchRec[0] && benchRec[0].softeningPoint && benchRec[0].softeningPoint.record) {
+                            const rec = benchRec[0].softeningPoint.record;
+
+                            setRecord(rec);
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     const initialRecord: Record[] = Array.from({ length: 2 }, (_, index) => ({
         sno: index,
@@ -126,11 +137,11 @@ const BitSofeningPoint: React.FC = () => {
 
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { softeningPoint: { record } }]
+            ? [{ softeningPoint: { record } }]
             : [{ softeningPoint: { record } }];
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { softeningPoint: { avgTemp: getAvgTemp() } }]
+            ? [{ softeningPoint: { avgTemp: getAvgTemp() } }]
             : [{ softeningPoint: { avgTemp: getAvgTemp() } }];
 
 
@@ -163,7 +174,7 @@ const BitSofeningPoint: React.FC = () => {
             style={{
                 display: 'flex',
                 flexDirection: 'column',
-                maxWidth: '600px',
+                maxWidth: '900px',
                 margin: '0 auto',
                 padding: '20px',
                 border: '1px solid #ddd',
@@ -175,7 +186,7 @@ const BitSofeningPoint: React.FC = () => {
         >
             <h3 style={{ textAlign: 'center', marginBottom: '20px', fontWeight: 'bold' }}>Softening Point Test</h3>
 
-            <div className="two-fields-container">
+            <div className="two-fields-container" style={{ display: 'flex', flexDirection: 'row' }}>
                 {record.map((eachRec) => renderDataSheet(eachRec))}
             </div>
 

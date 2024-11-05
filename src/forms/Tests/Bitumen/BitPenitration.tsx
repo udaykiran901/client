@@ -57,28 +57,37 @@ const BitPenitration: React.FC = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-            const getRes = async () => {
-                // if (true) {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-
-                    const { penetration } = benchRec;
-
-
-                    setRecord(penetration);
-                    setEditbtn(true);
-
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            }
-            // };
-            getRes();
 
+                setBenchRecord(benchRec[0] || []);
+                setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'raw bench penetration');
+
+                        // Ensure penetration exists before setting it
+                        if (benchRec[0] && benchRec[0].penetration) {
+                            setRecord(benchRec[0].penetration);
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
-    }, [dispatch, singleJob]);
+    }, [dispatch, singleJob, review]);
+
 
     const initialRecord: Record = {
         temp: 0,
@@ -134,11 +143,11 @@ const BitPenitration: React.FC = () => {
 
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { penetration: record }]
+            ? [{ penetration: record }]
             : [{ penetration: record }];
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { penetration: getAveragePenetration() }]
+            ? [{ penetration: getAveragePenetration() }]
             : [{ penetration: getAveragePenetration() }];
 
 

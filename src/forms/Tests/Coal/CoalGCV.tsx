@@ -43,29 +43,50 @@ const CoalGCV: React.FC = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            try {
-                const benchRec = JSON.parse(job.bench_record);
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
+                try {
+                    benchRec = JSON.parse(job.bench_record);
+                } catch (err) {
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
+                }
 
-                console.log(benchRec, 'vvvvv')
-                const { w, w1, w2, t1, t2, n, dt2, a, b, c, d } = benchRec.GVC.resultObj;
-                setW(w);
-                setW1(w1);
-                setW2(w2);
-                setT1(t1);
-                setT2(t2);
-                setN(n);
-                setDt2(dt2);
-                setA(a);
-                setB(b);
-                setC(c);
-                setD(d);
+                // setBenchRecord(benchRec || []);
+                // setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
 
-                setEditbtn(true);
-            } catch (err) {
-                console.log(err);
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'vvvvv');
+
+                        // Ensure GVC and resultObj exist before destructuring
+                        if (benchRec[0].GVC && benchRec[0].GVC.resultObj) {
+                            const { w, w1, w2, t1, t2, n, dt2, a, b, c, d } = benchRec[0].GVC.resultObj;
+
+                            setW(w);
+                            setW1(w1);
+                            setW2(w2);
+                            setT1(t1);
+                            setT2(t2);
+                            setN(n);
+                            setDt2(dt2);
+                            setA(a);
+                            setB(b);
+                            setC(c);
+                            setD(d);
+
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
             }
         }
     }, [dispatch, singleJob, review]);
+
 
     const handleOnSubmittingTest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -466,9 +487,9 @@ const CoalGCV: React.FC = () => {
             </div>
 
             <div style={{ marginTop: '20px', fontWeight: 'bold' }}>
-                <p>GVC = (A - (B + C + D)) / W</p>
-                <p>GVC = ({a} - ({b} + {c} + {d})) / {w}</p>
-                <p>GVC = {((a - (b + c + d)) / w).toFixed(2)}</p>
+                <p>GCV = (A - (B + C + D)) / W</p>
+                <p>GCV = ({a} - ({b} + {c} + {d})) / {w}</p>
+                <p>GCV = {((a - (b + c + d)) / w).toFixed(2)}</p>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'row' }}>

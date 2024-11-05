@@ -33,23 +33,37 @@ const SulphurSulphide = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            const getRes = async () => {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-                    const { w, e, v } = benchRec.SulphurSulphide;
-
-                    setw(w);
-                    sete(e);
-                    setv(v);
-
-                    setEditbtn(true);
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            };
-            getRes();
+
+                const getRes = async () => {
+                    try {
+                        // Ensure SulphurSulphide exists in benchRec
+                        if (benchRec[0].SulphurSulphide) {
+                            const { w, e, v } = benchRec[0].SulphurSulphide;
+
+                            setw(w);
+                            sete(e);
+                            setv(v);
+
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     const handleOnSubmittingTest = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

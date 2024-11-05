@@ -55,29 +55,39 @@ const BitBinderContent: React.FC = () => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
 
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-            const getRes = async () => {
-                // if (true) {
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-
-                    console.log(benchRec, 'vv')
-
-                    const { record } = benchRec.binderContent.resultObj;
-
-                    setRecord(record);
-                    setEditbtn(true);
-
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
-            }
-            // };
-            getRes();
 
+                setBenchRecord(benchRec[0] || []);
+                setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec, 'vv');
+
+                        // Ensure binderContent and resultObj exist before destructuring
+                        if (benchRec[0].binderContent && benchRec[0].binderContent.resultObj) {
+                            const { record } = benchRec[0].binderContent.resultObj;
+
+                            setRecord(record);
+                            setEditbtn(true);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
+                };
+                getRes();
+            }
         }
     }, [dispatch, singleJob, review]);
+
 
     const initialRecord: Record[] = [{
         sno: 0,
@@ -120,11 +130,11 @@ const BitBinderContent: React.FC = () => {
 
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { binderContent: { resultObj } }]
+            ? [{ binderContent: { resultObj } }]
             : [{ binderContent: { resultObj } }];
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { binderContent: { pbc: record[0].pbc.toFixed(2) } }]
+            ? [{ binderContent: { pbc: record[0].pbc.toFixed(2) } }]
             : [{ binderContent: { pbc: record[0].pbc.toFixed(2) } }];
 
 

@@ -74,7 +74,21 @@ import DWPh from "forms/Tests/DrinkingWater/DWPh";
 import DWHardness from "forms/Tests/DrinkingWater/DWHardness";
 import DWMagnesium from "forms/Tests/DrinkingWater/DWMagnesium";
 import DWTotalAlkalinity from "forms/Tests/DrinkingWater/DWTotalAlkalinity";
-
+import SulphuricAnHydride from "forms/Tests/CoarseAggregates/SulphuricAnHydride";
+import CAGGReductionAlkalinity from "forms/Tests/CoarseAggregates/CAGGReductionAlkalinity";
+import DeterminationOfDissolvedSilica from "forms/Tests/CoarseAggregates/DeterminationOfDissolvedSilica";
+import CAggChlorides from "forms/Tests/CoarseAggregates/CAggChlorides";
+import Elongation from "forms/Tests/CoarseAggregates/Elongation";
+import ImpactValue from "forms/Tests/CoarseAggregates/ImpactValue";
+import SpecificGravity from "forms/Tests/CoarseAggregates/SpecificGravity";
+import FABulkDensity from "forms/Tests/CoarseAggregates/BulkDensity";
+import CASieveAnalysis from "forms/Tests/CoarseAggregates/SieveAnalysis";
+import Flakiness from "forms/Tests/CoarseAggregates/Flakiness";
+import WaterAbsorption from "forms/Tests/CoarseAggregates/WaterAbsorption";
+import CrushingValue from "forms/Tests/CoarseAggregates/CrushingValue";
+import FAsoundness from "forms/Tests/CoarseAggregates/FAsoundness";
+import FAMaterialsFinerThan75mic from "forms/Tests/Fine Aggregates/FAMaterialsFinerThan75mic";
+import SoilDirectSherTest from "forms/Tests/Soil/SoilDirectSherTest";
 
 
 import { getSingleJob } from "slices/thunk";
@@ -82,6 +96,7 @@ import Spinners from "Components/Common/Spinner";
 
 import { RootState } from "slices";
 import { LabInitialState } from "slices/Lab/reducer";
+import TenPercent from "forms/Tests/CoarseAggregates/TenPercentFines";
 
 const SingleTest = () => {
   document.title = "Laboratory | KDM Engineers Group";
@@ -276,6 +291,34 @@ const SingleTest = () => {
             {testId === '20241018160916131' && <DWHardness />}
             {testId === '20241018161102975' && <DWMagnesium />}
             {testId === '20241018161137225' && <DWTotalAlkalinity />}
+
+            {/* {Coarse Aggregate} */} {/* {CHEMICAL} */}
+            {testId === "20240603152632189" && <SulphuricAnHydride />}
+            {testId === '20240603152558837' && <CAGGReductionAlkalinity />}
+            {testId === '20240603152719784' && <DeterminationOfDissolvedSilica />}
+            {testId === '20241021144524426' && <CAggChlorides />}
+            {/* {PHYSICAL} */}
+            {testId === '20240603114056308' && <Elongation />}
+            {testId === '20240603113357288' && <ImpactValue />}
+            {testId === '20240603110746458' && <SpecificGravity />}
+            {testId === '20241025150540629' && <FABulkDensity />}
+            {testId === '20240603110650703' && <CASieveAnalysis />}
+            {testId === '20240603114310620' && <TenPercent />}
+            {testId === '20240603110925231' && <Flakiness />}
+            {testId === '20240603113240675' && <WaterAbsorption />}
+            {testId === '20240603113616648' && <CrushingValue />}
+            {testId === '20240603114000964' && <FAsoundness />}
+
+            {/* {Fine Aggregate} */} {/* {PHYSICAL} */}
+            {testId === '20240603154625743' && <FABulkDensity />}
+            {testId === '20240603154745807' && <CASieveAnalysis />}
+            {testId === '20240603154835861'}
+            {testId === '20240603154907770' && <SpecificGravity />}
+            {testId === '20240603154948905' && <WaterAbsorption />}
+            {testId === '20240603155915967' && <FAMaterialsFinerThan75mic />}
+
+            {/* {Soil} */}
+            {testId === '20241030160212755' && <SoilDirectSherTest />}
 
           </div>
 

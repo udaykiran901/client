@@ -43,28 +43,42 @@ const ChlorideIonContent: React.FC<any> = () => {
     useEffect(() => {
         if (singleJob.length > 0 && review) {
             const job = singleJob[0];
-            setBenchRecord(JSON.parse(job.bench_record) || []);
-            setReportValues(JSON.parse(job.report_values) || []);
-            const getRes = async () => {
-                // if (true) {
+
+            // Check if job and job.bench_record are defined before proceeding
+            if (job && job.bench_record) {
+                let benchRec;
                 try {
-                    const benchRec = JSON.parse(job.bench_record);
-                    // const ashCont = benchRec[0]
-                    console.log(benchRec, 'raw bench ashContent')
-                    const { v1, v2, v3 } = benchRec.clContent;
-                    console.log(v1, v2, v3, 'in useEffec')
-                    setEditbtn(true);
-                    setV1(v1);
-                    setV2(v2);
-                    setV3(v3);
+                    benchRec = JSON.parse(job.bench_record);
                 } catch (err) {
-                    console.log(err);
+                    console.error("Failed to parse bench_record:", err);
+                    return; // Exit if parsing fails
                 }
+
+                setBenchRecord(benchRec || []);
+                setReportValues(job.report_values ? JSON.parse(job.report_values) : []);
+
+                const getRes = async () => {
+                    try {
+                        console.log(benchRec[0]?.clContent, 'raw bench clContent');
+
+                        // Ensure benchRec[0] and benchRec[0].clContent exist before setting state
+                        if (benchRec[0]?.clContent) {
+                            const { v1, v2, v3 } = benchRec[0].clContent;
+                            setEditbtn(true);
+                            setV1(v1);
+                            setV2(v2);
+                            setV3(v3);
+                        }
+                    } catch (err) {
+                        console.error("Error accessing clContent:", err);
+                    }
+                };
+                getRes();
             }
-            // };
-            getRes();
         }
-    }, [singleJob]);
+    }, [singleJob, review]);
+    // Include review in the dependencies
+
 
     const rejectFunction = async () => {
         const requirement = { jobId }
@@ -120,11 +134,11 @@ const ChlorideIonContent: React.FC<any> = () => {
         const value = ((v3 * v2 * 35.45 * 100) / (v1 * 1000)).toFixed(2);
 
         const updatedBenchRecord = Array.isArray(benchRecord)
-            ? [...benchRecord, { clContent: resultObj }]
+            ? [{ clContent: resultObj }]
             : [{ clContent: resultObj }];
 
         const updatedReportValues = Array.isArray(reportValues)
-            ? [...reportValues, { clContent: value }]
+            ? [{ clContent: value }]
             : [{ clContent: value }];
 
         const data = { updatedBenchRecord, updatedReportValues, jobId };

@@ -22,6 +22,7 @@ import AddEmp from "forms/AddEmp";
 import Profile from "pages/Dashboard";
 import EmpList from "pages/HRandAdmin/EmpList";
 import AddProduct from "forms/AddProduct";
+import About from "pages/About/About";
 
 import GeneratePdfButton from "pages/TestReports/Nabl/nablreport";
 // import JobsList from "pages/Laboratory/Analyst/JobsList";
@@ -47,17 +48,19 @@ import LabHome from "pages/Laboratory/LabHome";
 import MyJobs from "pages/Laboratory/Analyst/MyJobs";
 import Scope from "pages/BD/Scope";
 import AddCustomer from "forms/AddCustomer";
+import { components } from "react-select";
 
 const commonRoutes = [{ path: "/profile", component: <Profile /> }];
 
 const BDRoutes = [
   ...commonRoutes,
   { path: "/bd/cust", component: <AddCustomer /> },
+
   { path: `/bd/cust/:id`, component: <AddCustomer /> },
   { path: "/bd/product", component: <UserLoginForm /> },
   { path: "/bd/orders-list", component: <UserLoginForm /> },
   { path: "/bd/add-product", component: <AddProduct /> },
-  { path: '/bd/add-product/:id', component: <AddProduct /> },
+  { path: "/bd/add-product/:id", component: <AddProduct /> },
   { path: "/bd/add-param", component: <AddParam /> },
   { path: "/bd/add-param/:id", component: <AddParam /> },
   { path: "/bd/call-backs", component: <CallBacksList /> },
@@ -95,7 +98,8 @@ const BDRoutes = [
 ];
 
 const LaboratoryRoutes = [
-  { path: "/lab", component: <LabHome /> }, { path: "/review/test/:jobId/:testId", component: <SingleTest /> },
+  { path: "/lab", component: <LabHome /> },
+  { path: "/review/test/:jobId/:testId", component: <SingleTest /> },
   ...commonRoutes,
 ];
 
@@ -108,8 +112,9 @@ const HRandAdminRoutes = [
 const publicRoutes = [
   { path: "/ecommerce/login", component: <UserLoginForm /> },
   { path: "/ecommerce/register", component: <UserRegister /> },
+
   { path: "/", exact: true, component: <Welcome /> },
-  { path: "/repo", exact: true, component: <GeneratePdfButton /> },
+  { path: "/about", component: <About /> },
   {
     path: "/ecommerce-product-detail/:id?",
     component: <EcommerceProductDetail />,

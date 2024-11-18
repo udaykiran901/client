@@ -219,11 +219,12 @@ export const deleteCart = createAsyncThunk(
 
 export const addProductToCart = createAsyncThunk(
   "ecommerce/addtocart",
-  async ({ data }: { data: any }) => {
+  async ({ data }: { data: any }, { dispatch }) => {
     try {
       const response = await addToCartAPI({ data });
       toast.success(response.data.message, { autoClose: 5000 });
       console.log(response);
+      dispatch(getCart());
       return response;
     } catch (error: any) {
       console.log(error);

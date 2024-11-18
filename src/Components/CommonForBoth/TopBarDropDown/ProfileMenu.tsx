@@ -24,6 +24,7 @@ import { useDispatch } from "react-redux";
 import { getProfile } from "slices/auth/profile/reducer";
 
 import { RootState } from "slices";
+import { getCart } from "slices/thunk";
 
 const ProfileMenu = (props: any) => {
   const [menu, setMenu] = useState(false);
@@ -35,14 +36,15 @@ const ProfileMenu = (props: any) => {
     })
   );
 
-  // const selectedProps2 = createSelector(
-  //   (state: any) => state.ecommerce,
-  //   (ecommerce) => ({
-  //     cart: ecommerce.cart,
-  //   })
-  // );
+  const selectedProps2 = createSelector(
+    (state: any) => state.ecommerce,
+    (ecommerce) => ({
+      cart: ecommerce.cart,
+    })
+  );
 
   const { user } = useSelector(selectProfileProperties);
+  const { cart } = useSelector(selectedProps2);
   // const { cart } = useSelector(selectedProps2);
 
   const { email } = user;
@@ -52,10 +54,6 @@ const ProfileMenu = (props: any) => {
   useEffect(() => {
     dispatch(getProfile());
   }, [dispatch]);
-
-  // useEffect(() => {
-  //   dispatch(getCart());
-  // }, [dispatch]);
 
   // useEffect(() => {
   //   if (localStorage.getItem(KDM_ECOMMERCE_USER_JWT_TOKEN)) {
@@ -70,6 +68,12 @@ const ProfileMenu = (props: any) => {
   // }, [user]);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (cart.length === 0) {
+      dispatch(getCart());
+    }
+  }, [cart]);
 
   const onClickLogout = () => {
     navigate("/ecommerce/login");
@@ -115,7 +119,7 @@ const ProfileMenu = (props: any) => {
 
           <Link to={"/ecommerce-cart"}>
             <DropdownItem>
-              <span className="badge bg-success float-end">{0}</span>
+              <span className="badge bg-success float-end">{cart.length}</span>
               <i className="bx bx-wrench font-size-16 align-middle me-1" />
               {props.t("Cart")}
             </DropdownItem>

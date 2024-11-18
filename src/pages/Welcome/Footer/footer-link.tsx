@@ -10,7 +10,11 @@ const FooterLink = () => {
       <Row>
         <Col lg="6">
           <div className="mb-4">
-            <img src={logolight} alt="" height="40" />
+            <img
+              src="https://res.cloudinary.com/dkxnygkto/image/upload/v1689250804/Picsart_23-07-13_09-58-34-572_i6qsjj.png"
+              alt=""
+              height="40"
+            />
           </div>
 
           <p className="mb-2">

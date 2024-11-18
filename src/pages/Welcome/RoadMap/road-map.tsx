@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
 
-//swiper
+// Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "../../../../node_modules/swiper/swiper.scss";
@@ -15,15 +15,12 @@ const RoadMap = () => {
             <Col lg="12">
               <div className="text-center mb-5">
                 <div className="small-title">Timeline</div>
-
                 <p>
                   Embark on a journey through our rich timeline, where each
                   milestone marks a significant chapter in our commitment to
                   excellence. From our humble beginnings to becoming a
-                  trailblazer in [industry/sector], every step reflects our
-                  unwavering dedication to innovation and quality. Witness the
-                  evolution of our company as we continue to redefine boundaries
-                  and shape a brighter tomorrow.
+                  trailblazer in our industry, every step reflects our
+                  dedication to innovation and quality.
                 </p>
               </div>
             </Col>
@@ -36,24 +33,13 @@ const RoadMap = () => {
                   slidesPerView={1}
                   spaceBetween={10}
                   navigation
-                  pagination={{
-                    clickable: true,
-                  }}
+                  pagination={{ clickable: true }}
                   breakpoints={{
-                    678: {
-                      slidesPerView: 2,
-                    },
-                    992: {
-                      slidesPerView: 3,
-                    },
-                    1400: {
-                      slidesPerView: 4,
-                    },
+                    678: { slidesPerView: 2 },
+                    992: { slidesPerView: 3 },
+                    1400: { slidesPerView: 4 },
                   }}
-                  autoplay={{
-                    delay: 2500,
-                    disableOnInteraction: false,
-                  }}
+                  autoplay={{ delay: 2500, disableOnInteraction: false }}
                   loop={true}
                   modules={[Pagination, Navigation, Autoplay]}
                   className="owl-carousel owl-theme events navs-carousel"
@@ -62,17 +48,22 @@ const RoadMap = () => {
                   <SwiperSlide className="item event-list">
                     <div>
                       <div className="event-date">
-                        <div className="text-primary mb-1">December, 2019</div>
-                        <h5 className="mb-4">ICO Platform Idea</h5>
+                        <div className="text-primary fw-bold para mb-1">
+                          2012
+                        </div>
+                        <h5 className="mb-4">
+                          ESTABLISHED KDM ENGINEERS (IND) Pvt Ltd.
+                        </h5>
                       </div>
                       <div className="event-down-icon">
                         <i className="bx bx-down-arrow-circle h1 text-primary down-arrow-icon"></i>
                       </div>
-
                       <div className="mt-3 px-3">
                         <p className="text-muted">
-                          It will be as simple as occidental in fact it will be
-                          Cambridge
+                          Founded with a vision to revolutionize the engineering
+                          sector, KDM Engineers (IND) Pvt Ltd. laid the
+                          groundwork by embracing advanced methodologies and a
+                          strong commitment to quality.
                         </p>
                       </div>
                     </div>
@@ -81,17 +72,20 @@ const RoadMap = () => {
                   <SwiperSlide className="item event-list">
                     <div>
                       <div className="event-date">
-                        <div className="text-primary mb-1">January, 2020</div>
-                        <h5 className="mb-4">Research on project</h5>
+                        <div className="text-primary fw-bold mb-1">2018</div>
+                        <h5 className="mb-4">
+                          ESTABLISHED KDM ENGINEERS AND CONSULTANTS Pvt Ltd.
+                        </h5>
                       </div>
                       <div className="event-down-icon">
                         <i className="bx bx-down-arrow-circle h1 text-primary down-arrow-icon"></i>
                       </div>
-
                       <div className="mt-3 px-3">
                         <p className="text-muted">
-                          To an English person, it will seem like simplified
-                          English existence.
+                          Expanding our horizons, we launched KDM Engineers and
+                          Consultants Pvt Ltd., offering comprehensive
+                          consultancy services that pushed boundaries and set
+                          new standards in engineering excellence.
                         </p>
                       </div>
                     </div>
@@ -100,17 +94,20 @@ const RoadMap = () => {
                   <SwiperSlide className="item event-list active">
                     <div>
                       <div className="event-date">
-                        <div className="text-primary mb-1">February, 2020</div>
-                        <h5 className="mb-4">ICO & Token Design</h5>
+                        <div className="text-primary fw-bold mb-1">2021</div>
+                        <h5 className="mb-4">
+                          COMPLETED 26+ DETAILED ENGINEERING PROJECTS
+                        </h5>
                       </div>
                       <div className="event-down-icon">
                         <i className="bx bx-down-arrow-circle h1 text-primary down-arrow-icon"></i>
                       </div>
-
                       <div className="mt-3 px-3">
                         <p className="text-muted">
-                          For science, music, sport, etc, Europe uses the same
-                          vocabulary.
+                          Reaching a significant milestone, our team
+                          successfully delivered over 26 intricate engineering
+                          projects, demonstrating our capability to handle
+                          complex demands with precision.
                         </p>
                       </div>
                     </div>
@@ -119,16 +116,20 @@ const RoadMap = () => {
                   <SwiperSlide className="item event-list">
                     <div>
                       <div className="event-date">
-                        <div className="text-primary mb-1">March, 2020</div>
-                        <h5 className="mb-4">ICO Launch Platform</h5>
+                        <div className="text-primary  fw-bold mb-1">2025</div>
+                        <h5 className="mb-4">
+                          TO BE A PREMIER ORGANIZATION AT NATIONAL LEVEL
+                        </h5>
                       </div>
                       <div className="event-down-icon">
                         <i className="bx bx-down-arrow-circle h1 text-primary down-arrow-icon"></i>
                       </div>
-
                       <div className="mt-3 px-3">
                         <p className="text-muted">
-                          New common language will be more simple than existing.
+                          We aspire to establish our presence as a leading
+                          organization nationwide, setting benchmarks in
+                          quality, innovation, and sustainable engineering
+                          practices.
                         </p>
                       </div>
                     </div>
@@ -137,36 +138,20 @@ const RoadMap = () => {
                   <SwiperSlide className="item event-list">
                     <div>
                       <div className="event-date">
-                        <div className="text-primary mb-1">April, 2020</div>
-                        <h5 className="mb-4">Token sale round 1</h5>
+                        <div className="text-primary  fw-bold mb-1">2030</div>
+                        <h5 className="mb-4">
+                          TO CREATE AN INTERNATIONAL IMAGE
+                        </h5>
                       </div>
                       <div className="event-down-icon">
                         <i className="bx bx-down-arrow-circle h1 text-primary down-arrow-icon"></i>
                       </div>
-
                       <div className="mt-3 px-3">
-                        <p className="text-muted">
-                          It will be as simple as occidental in fact it will be
-                          Cambridge
-                        </p>
-                      </div>
-                    </div>
-                  </SwiperSlide>
-
-                  <SwiperSlide className="item event-list ">
-                    <div>
-                      <div className="event-date">
-                        <div className="text-primary mb-1">May, 2020</div>
-                        <h5 className="mb-4">Token sale round 2</h5>
-                      </div>
-                      <div className="event-down-icon">
-                        <i className="bx bx-down-arrow-circle h1 text-primary down-arrow-icon"></i>
-                      </div>
-
-                      <div className="mt-3 px-3">
-                        <p className="text-muted">
-                          To an English person, it will seem like simplified
-                          English existence.
+                        <p className="text-muted fs-6">
+                          Committed to global excellence, we are taking steps to
+                          make our mark internationally, leveraging partnerships
+                          and cutting-edge technology to build a worldwide
+                          reputation.
                         </p>
                       </div>
                     </div>

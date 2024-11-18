@@ -48,9 +48,14 @@ const Navbar = () => {
       >
         <Container>
           <Link className="navbar-logo" to="/">
-            <img src={logoDark} alt="" height="36" className="logo logo-dark" />
             <img
-              src={logoLight}
+              src="https://res.cloudinary.com/dkxnygkto/image/upload/v1689250804/Picsart_23-07-13_09-58-34-572_i6qsjj.png"
+              alt=""
+              height="36"
+              className="logo logo-dark"
+            />
+            <img
+              src="https://res.cloudinary.com/dkxnygkto/image/upload/v1689250804/Picsart_23-07-13_09-58-34-572_i6qsjj.png"
               alt=""
               height="36"
               className="logo logo-light"
@@ -100,7 +105,7 @@ const Navbar = () => {
 
               <li className="nav-item">
                 <NavLink>
-                  <Link className="text-black" to={"/"}>
+                  <Link className="text-black" to={"/about"}>
                     About
                   </Link>
                 </NavLink>

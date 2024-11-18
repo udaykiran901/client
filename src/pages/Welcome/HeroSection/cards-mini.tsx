@@ -18,7 +18,7 @@ const CardsMini = () => {
       color: "warning",
       icon: "bx bx-map",
       value:
-        "Regd. Office and Corporate Office D. No. 8-12-96/S/401.Sri Ramana ColonKarmanghat, Saroornagar (M)Hyderabad",
+        "Regd. Office and Corporate Office D. No. 8-12-96/S/401.Sri Ramana Colony Karmanghat, Saroornagar (M)Hyderabad",
     },
   ];
 

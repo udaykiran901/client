@@ -89,6 +89,12 @@ import CrushingValue from "forms/Tests/CoarseAggregates/CrushingValue";
 import FAsoundness from "forms/Tests/CoarseAggregates/FAsoundness";
 import FAMaterialsFinerThan75mic from "forms/Tests/Fine Aggregates/FAMaterialsFinerThan75mic";
 import SoilDirectSherTest from "forms/Tests/Soil/SoilDirectSherTest";
+import SoilSpecificG from "forms/Tests/Soil/SoilSpecificG";
+import SoilHeavyWeightCompaction from "forms/Tests/Soil/SoilHeavyWeightCompaction";
+import Soil_LL_PL from "forms/Tests/Soil/Soil_LL_PL";
+import SoilFreeSwellInd from "forms/Tests/Soil/SoilFreeSwellInd";
+import SoilGrainSizeAnaly from "forms/Tests/Soil/SoilGrainSizeAnaly";
+import Soil_CAliforniaBRT from "forms/Tests/Soil/Soil_CAliforniaBRT";
 
 
 import { getSingleJob } from "slices/thunk";
@@ -132,7 +138,7 @@ const SingleTest = () => {
 
   return (
     <React.Fragment>
-      <div className="page-content" style={{ width: 1200 }}>
+      <div className="page-content" style={{ width: 1400 }}>
         <Container fluid>
 
           {/* <Link to={`/analyst/my-jobs/${jobId}`}> */}
@@ -319,6 +325,12 @@ const SingleTest = () => {
 
             {/* {Soil} */}
             {testId === '20241030160212755' && <SoilDirectSherTest />}
+            {testId === '20241030160434500' && <SoilSpecificG />}
+            {testId === '20241030155125602' && <SoilHeavyWeightCompaction />}
+            {testId === '20241030160342875' && <Soil_LL_PL />}
+            {testId === '20241030160258129' && <SoilFreeSwellInd />}
+            {testId === '20241030160649674' && <SoilGrainSizeAnaly />}
+            {testId === '20241030160530081' && <Soil_CAliforniaBRT />}
 
           </div>
 

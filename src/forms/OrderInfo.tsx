@@ -14,7 +14,7 @@ import { renderSamplesTable } from "pages/BD/TrackSample";
 
 import { renderJobAssignedScreen } from "pages/Laboratory/LabHome";
 
-import { getCompleteOrderDetails, convertToTaxRequested, getPendingAssigningJobs, getAnalysts } from "slices/thunk";
+import { getCompleteOrderDetails, convertToTaxRequested, getPendingAssigningJobs, getAnalysts, } from "slices/thunk";
 import { createSelector } from "reselect";
 import { useSelector } from "react-redux";
 import { ONLINE } from "common/tokens";
@@ -25,12 +25,66 @@ import { AssignModalType } from "pages/Laboratory/LabHome";
 import { Param } from "pages/BD/types";
 
 import { useParams } from "react-router-dom";
+import ReactDOM from "react-dom";
+
+import { handleGeneratePdf } from "pages/TestReports/Nabl/nablreport";
 
 
 
 //customers data has to display appropriately
 // have to revise form fields
 // have to cross check all the fields
+
+const dummyBillData: any = {
+  selectedSamples: [
+    {
+      sampleName: 'Sample 1',
+      isOffer: true,
+      offer: '10% Off',
+      chemicalParams: [{ param: 'pH', value: 7 }],
+      physicalParams: [{ param: 'Weight', value: 10 }],
+    },
+    {
+      sampleName: 'Sample 2',
+      isOffer: false,
+      offer: '',
+      chemicalParams: [{ param: 'Moisture', value: 5 }],
+      physicalParams: [{ param: 'Weight', value: 8 }],
+    }
+  ],
+  customerDetails: {
+    name: 'John Doe',
+    address: '123 Main St, City, State, 12345',
+    pan_number: 'ABCDE1234F',
+    gst_number: 'GST123456',
+  },
+  orderDetails: {
+    ref: 'ORD-001',
+    project_name: 'Project XYZ',
+    subject: 'Sample Analysis',
+    discount: 15, // 15% discount
+    transportation_fee: 200, // Example fee
+  },
+};
+
+// const handleTestReport = () => {
+//   const newTab = window.open('', '_blank');
+
+//   if (newTab) {
+//     newTab.document.write(
+//       "<!DOCTYPE html><html><head><link rel='icon' href='https://res.cloudinary.com/dkxnygkto/image/upload/v1689250804/Picsart_23-07-13_09-58-34-572_i6qsjj.png' /><title>KDM | LIMS</title></head><body>"
+//     );
+
+//     // Correct the syntax here: remove the extra closing brace
+//     ReactDOM.render(<GenerateReport />, newTab.document.body);
+
+//     newTab.document.write('</body></html>');
+//     newTab.document.close();
+//   } else {
+//     alert('Popup blocked. Please allow popups for this site.');
+//   }
+// };
+
 
 export const renderParameterDetails = (
   eachSample: OrderSamples,
@@ -91,6 +145,10 @@ const getTaxRelatedColumns = (orderDetails: Orders) => {
     </>
   );
 };
+
+const handleReport = () => {
+
+}
 
 const OrderInfo = (props: any) => {
   const params = props.router.params;
@@ -170,6 +228,9 @@ const OrderInfo = (props: any) => {
       convertToTaxRequested({ order_number: id, orderId: order.order_id })
     );
   };
+
+
+
 
   const samples = (order.samplesList || []).map((eachSample) => ({
     sample_id: eachSample.sample_id,
@@ -308,6 +369,31 @@ const OrderInfo = (props: any) => {
                             </td>
                           </tr>
                         )}
+
+                        {/* {!order.converted_to_tax && order.registration_done && (
+                          <tr>
+                            <th style={{ maxWidth: "100px" }}>
+                              Genrate Test Report
+                            </th>
+                            <td>
+                              {" "}
+                              <button
+                                type="button"
+                                className="btn btn-primary"
+                              // onClick={() =>
+                              //   convertToTaxClicked(order.order_number)
+                              // }
+                              >
+                                {" "}
+                                Test Report{" "}
+                                {loading ? (
+                                  <i className="bx bx-loader bx-spin "></i>
+                                ) : null}
+                              </button>
+                            </td>
+                          </tr>
+                        )} */}
+
                         {order.converted_to_tax && getTaxRelatedColumns(order)}
                         <tr>
                           <th style={{ maxWidth: "100px" }}>Order Placed On</th>
@@ -454,7 +540,29 @@ const OrderInfo = (props: any) => {
                                         ? renderJobAssignedScreen(eachSample)
                                         : null
                                     )}
+
+                                    <button
+                                      type="button"
+                                      className="btn btn-primary"
+                                      onClick={
+                                        handleReport
+                                      }
+                                    >
+                                      {" "}
+                                      Test Report{" "}
+                                      {loading ? (
+                                        <i className="bx bx-loader bx-spin "></i>
+                                      ) : null}
+                                    </button>
                                   </Col>
+
+                                  {/* <Col lg={5}>
+                                    {neededSamp?.samples.map((eachSample: any, ind: number) =>
+                                      eachSample.job_assigned
+                                        ? renderJobAssignedScreen(eachSample)
+                                        : null
+                                    )}
+                                  </Col> */}
 
                                 </Row>
 

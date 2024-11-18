@@ -23,6 +23,7 @@ import Profile from "pages/Dashboard";
 import EmpList from "pages/HRandAdmin/EmpList";
 import AddProduct from "forms/AddProduct";
 
+import GeneratePdfButton from "pages/TestReports/Nabl/nablreport";
 // import JobsList from "pages/Laboratory/Analyst/JobsList";
 
 import SingleTest from "pages/Laboratory/Analyst/SingleTest";
@@ -108,6 +109,7 @@ const publicRoutes = [
   { path: "/ecommerce/login", component: <UserLoginForm /> },
   { path: "/ecommerce/register", component: <UserRegister /> },
   { path: "/", exact: true, component: <Welcome /> },
+  { path: "/repo", exact: true, component: <GeneratePdfButton /> },
   {
     path: "/ecommerce-product-detail/:id?",
     component: <EcommerceProductDetail />,

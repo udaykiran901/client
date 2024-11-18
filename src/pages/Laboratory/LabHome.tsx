@@ -165,7 +165,7 @@ export const renderJobAssignedScreen = (eachSample: Samples) => {
 
 
   return (
-    <div className="d-flex flex-column" >
+    <div className="d-flex flex-column" style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
       {chemist && (
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <>

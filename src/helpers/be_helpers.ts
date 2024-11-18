@@ -258,6 +258,7 @@ export const onGettingQuotationsAPI = () => api.get(url.GET_QUOTATIONS, null);
 export const onRequestingConversionToTax = (id: number) =>
   api.create(url.TAX_CONVERSION_REQUESTED, id);
 
+
 //statistics or Graphs
 export const onGettingOnlineDailyUsersCount = () =>
   api.get(url.GET_ONLINE_DAILY_USERS_COUNT, null);

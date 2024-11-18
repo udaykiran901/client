@@ -129,11 +129,9 @@ const FABulkDensity = () => {
         const resultObj = {
             record,
         };
-
         // const r0 = record[0];
         // const r1 = record[1];
         // console.log(r0, r1, 'got from db')
-
         const valuesObj = [
             {
                 description: 'Loose',
@@ -194,7 +192,6 @@ const FABulkDensity = () => {
                                 step="0.01"
                             />
                         </div>
-
 
                         <div>
                             <label style={styles.label}>Rodded A2</label>

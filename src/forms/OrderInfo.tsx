@@ -27,63 +27,9 @@ import { Param } from "pages/BD/types";
 import { useParams } from "react-router-dom";
 import ReactDOM from "react-dom";
 
-import { handleGeneratePdf } from "pages/TestReports/Nabl/nablreport";
 
+import { fetchPDF } from "pages/TestReports/BeRepo";
 
-
-//customers data has to display appropriately
-// have to revise form fields
-// have to cross check all the fields
-
-const dummyBillData: any = {
-  selectedSamples: [
-    {
-      sampleName: 'Sample 1',
-      isOffer: true,
-      offer: '10% Off',
-      chemicalParams: [{ param: 'pH', value: 7 }],
-      physicalParams: [{ param: 'Weight', value: 10 }],
-    },
-    {
-      sampleName: 'Sample 2',
-      isOffer: false,
-      offer: '',
-      chemicalParams: [{ param: 'Moisture', value: 5 }],
-      physicalParams: [{ param: 'Weight', value: 8 }],
-    }
-  ],
-  customerDetails: {
-    name: 'John Doe',
-    address: '123 Main St, City, State, 12345',
-    pan_number: 'ABCDE1234F',
-    gst_number: 'GST123456',
-  },
-  orderDetails: {
-    ref: 'ORD-001',
-    project_name: 'Project XYZ',
-    subject: 'Sample Analysis',
-    discount: 15, // 15% discount
-    transportation_fee: 200, // Example fee
-  },
-};
-
-// const handleTestReport = () => {
-//   const newTab = window.open('', '_blank');
-
-//   if (newTab) {
-//     newTab.document.write(
-//       "<!DOCTYPE html><html><head><link rel='icon' href='https://res.cloudinary.com/dkxnygkto/image/upload/v1689250804/Picsart_23-07-13_09-58-34-572_i6qsjj.png' /><title>KDM | LIMS</title></head><body>"
-//     );
-
-//     // Correct the syntax here: remove the extra closing brace
-//     ReactDOM.render(<GenerateReport />, newTab.document.body);
-
-//     newTab.document.write('</body></html>');
-//     newTab.document.close();
-//   } else {
-//     alert('Popup blocked. Please allow popups for this site.');
-//   }
-// };
 
 
 export const renderParameterDetails = (
@@ -146,9 +92,7 @@ const getTaxRelatedColumns = (orderDetails: Orders) => {
   );
 };
 
-const handleReport = () => {
 
-}
 
 const OrderInfo = (props: any) => {
   const params = props.router.params;
@@ -545,7 +489,7 @@ const OrderInfo = (props: any) => {
                                       type="button"
                                       className="btn btn-primary"
                                       onClick={
-                                        handleReport
+                                        fetchPDF
                                       }
                                     >
                                       {" "}

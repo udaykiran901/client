@@ -24,7 +24,8 @@ import EmpList from "pages/HRandAdmin/EmpList";
 import AddProduct from "forms/AddProduct";
 import About from "pages/About/About";
 
-import GeneratePdfButton from "pages/TestReports/Nabl/nablreport";
+import PdfViewer from "pages/TestReports/BeRepo";
+
 // import JobsList from "pages/Laboratory/Analyst/JobsList";
 
 import SingleTest from "pages/Laboratory/Analyst/SingleTest";
@@ -115,6 +116,7 @@ const publicRoutes = [
 
   { path: "/", exact: true, component: <Welcome /> },
   { path: "/about", component: <About /> },
+  { path: "/repo", component: <PdfViewer /> },
   {
     path: "/ecommerce-product-detail/:id?",
     component: <EcommerceProductDetail />,
